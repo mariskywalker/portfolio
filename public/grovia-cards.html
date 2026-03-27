@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Grovia, Customer Cards</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background: linear-gradient(135deg, #e8e0d8 0%, #ddd5cc 30%, #cfd8dc 70%, #d4cfe0 100%);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+
+  .scene {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 60px 48px;
+  }
+
+  .blob-pink {
+    position: fixed;
+    width: 200px; height: 130px;
+    background: rgba(230, 110, 90, 0.5);
+    border-radius: 50%;
+    bottom: 70px; left: 20px;
+    filter: blur(35px);
+    pointer-events: none;
+  }
+  .blob-blue {
+    position: fixed;
+    width: 220px; height: 170px;
+    background: rgba(175, 185, 228, 0.4);
+    border-radius: 50%;
+    top: 50px; right: 60px;
+    filter: blur(45px);
+    pointer-events: none;
+  }
+
+  /* ── Cards wrapper ── */
+  .cards-wrapper {
+    display: flex;
+    align-items: flex-start;
+    position: relative;
+    padding: 70px 50px 30px 30px;
+  }
+
+  /* ── Floating icons ── */
+  .icon-asterisk {
+    position: absolute;
+    top: -10px; right: 10px;
+    width: 170px; height: 170px;
+    transition: transform .5s cubic-bezier(.34, 1.56, .64, 1), filter .4s;
+    filter: drop-shadow(0 14px 32px rgba(245, 191, 66, .4));
+    pointer-events: none;
+    z-index: 20;
+  }
+  .icon-heart {
+    position: absolute;
+    bottom: -20px; left: 90px;
+    width: 140px; height: 120px;
+    transition: transform .5s cubic-bezier(.34, 1.56, .64, 1), filter .4s;
+    filter: drop-shadow(0 10px 26px rgba(249, 116, 110, .45));
+    pointer-events: none;
+    z-index: 20;
+  }
+
+  .icon-asterisk.hovered {
+    transform: translateY(-16px) rotate(20deg) scale(1.1);
+    filter: drop-shadow(0 24px 48px rgba(245, 191, 66, .65));
+  }
+  .icon-heart.hovered {
+    transform: translateY(-14px) rotate(-14deg) scale(1.12);
+    filter: drop-shadow(0 22px 44px rgba(249, 116, 110, .7));
+  }
+
+  /* ── Customers card ── */
+  .card-customers {
+    width: 340px;
+    background: rgba(255, 255, 255, .62);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    border: 1px solid rgba(255, 255, 255, .9);
+    border-radius: 20px;
+    padding: 26px 22px 22px;
+    box-shadow: 0 8px 40px rgba(0,0,0,.10), 0 1px 0 rgba(255,255,255,.8) inset;
+    position: relative;
+    z-index: 1;
+    transition: transform .35s cubic-bezier(.25,.46,.45,.94), box-shadow .35s;
+  }
+  .card-customers:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 16px 50px rgba(0,0,0,.13), 0 1px 0 rgba(255,255,255,.8) inset;
+  }
+
+  .card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 22px;
+  }
+  .card-title {
+    font-size: 17px;
+    font-weight: 700;
+    color: #111;
+    letter-spacing: -.3px;
+  }
+  .sort-btn {
+    font-size: 11px;
+    color: #888;
+    background: rgba(0,0,0,.05);
+    border: none;
+    border-radius: 8px;
+    padding: 5px 9px;
+    cursor: pointer;
+    font-family: 'Inter', sans-serif;
+  }
+
+  .metric-row {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 10px;
+    border-radius: 12px;
+    transition: background .15s;
+  }
+  .metric-row:hover { background: rgba(0,0,0,.03); }
+  .metric-row.active { background: rgba(230,100,100,.08); }
+
+  .icon-wrap {
+    width: 44px; height: 44px;
+    border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .icon-wrap.purple  { background: #ece8f5; }
+  .icon-wrap.yellow  { background: #fdf3de; }
+  .icon-wrap.lavender { background: #e8e8f5; }
+
+  .metric-info { flex: 1; }
+  .metric-value {
+    font-size: 22px;
+    font-weight: 700;
+    color: #111;
+    letter-spacing: -.5px;
+    line-height: 1;
+    margin-bottom: 3px;
+  }
+  .metric-label { font-size: 12px; color: #555; }
+  .metric-change { font-size: 10px; margin-top: 2px; }
+  .metric-change.down    { color: #e05555; }
+  .metric-change.neutral { color: #888; }
+
+  .divider { height: 1px; background: rgba(0,0,0,.06); margin: 4px 0; }
+
+  .all-link {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 16px;
+    font-size: 13px;
+    font-weight: 500;
+    color: #333;
+    cursor: pointer;
+  }
+  .arrow-circle {
+    width: 22px; height: 22px;
+    border-radius: 50%;
+    background: rgba(0,0,0,.07);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 11px;
+  }
+
+  /* ── Evolution card ── */
+  .card-evolution {
+    width: 340px;
+    background: rgba(255, 255, 255, .58);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    border: 1px solid rgba(255, 255, 255, .85);
+    border-radius: 20px;
+    padding: 20px;
+    box-shadow: 0 12px 48px rgba(0,0,0,.13);
+    position: relative;
+    z-index: 3;
+    margin-left: -40px;
+    margin-top: 48px;
+    transition: transform .35s cubic-bezier(.25,.46,.45,.94), box-shadow .35s;
+  }
+  .card-evolution:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 20px 60px rgba(0,0,0,.16);
+  }
+
+  .evo-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+  }
+  .evo-title {
+    font-size: 15px;
+    font-weight: 700;
+    color: #111;
+    letter-spacing: -.2px;
+  }
+  .evo-btn {
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    background: rgba(255,255,255,.8);
+    border: 1px solid rgba(0,0,0,.08);
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer;
+    font-size: 12px; color: #555;
+  }
+
+  .chart-area { position: relative; height: 180px; }
+  canvas#chart { display: block; }
+
+  .x-labels {
+    display: flex;
+    justify-content: space-between;
+    padding: 0 8px;
+    margin-top: 6px;
+  }
+  .x-label { font-size: 10px; color: #aaa; }
+</style>
+</head>
+<body>
+
+<div class="blob-pink"></div>
+<div class="blob-blue"></div>
+
+<div class="scene">
+  <div class="cards-wrapper">
+
+    <!-- Asterisk 3D icon -->
+    <div class="icon-asterisk" id="ico-asterisk">
+      <svg viewBox="80 770 570 390" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <filter id="fa0" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="28.95"/></filter>
+          <filter id="fa1" x="-5%"  y="-5%"  width="110%" height="110%"><feGaussianBlur stdDeviation="2"/></filter>
+          <filter id="fa2" x="-8%"  y="-8%"  width="116%" height="116%"><feGaussianBlur stdDeviation="4.45"/></filter>
+          <linearGradient id="lga0" x1="175" y1="841" x2="368" y2="1178" gradientUnits="userSpaceOnUse">
+            <stop stop-color="white" stop-opacity="0.11"/>
+            <stop offset="1" stop-color="#FCB346" stop-opacity="0"/>
+          </linearGradient>
+          <linearGradient id="lga1" x1="151" y1="829" x2="251" y2="1147" gradientUnits="userSpaceOnUse">
+            <stop stop-color="#FFE5A7"/>
+            <stop offset="1" stop-color="#FAA839"/>
+          </linearGradient>
+        </defs>
+        <path filter="url(#fa0)" d="M588 917L431 941L473 851C476 846 470 841 461 840L398 830C389 828 380 831 378 836L336 927L221 861C215 857 204 857 198 861L151 888C145 891 145 897 151 901L266 967L109 991C100 993 95 998 98 1003L115 1040C117 1045 126 1048 135 1047L291 1022L249 1113C247 1118 252 1123 261 1124L325 1134C333 1135 342 1132 345 1127L387 1037L501 1103C508 1107 518 1107 525 1103L571 1076C578 1072 578 1066 571 1063L457 997L613 972C622 971 627 966 625 961L608 924C605 919 596 916 588 917Z" fill="#F5BF42"/>
+        <path filter="url(#fa2)" d="M588 898L472 916C454 919 437 909 442 899L473 832C476 827 470 822 461 821L398 811C389 809 380 812 378 817L347 884C342 894 319 898 306 890L221 842C215 838 204 838 198 842L151 869C145 872 145 878 151 882L236 931C249 938 243 952 225 954L109 972C100 974 95 979 98 984L115 1021C117 1026 126 1029 135 1028L250 1010C268 1007 285 1016 280 1027L249 1094C247 1099 252 1104 261 1105L325 1115C333 1116 342 1113 345 1108L376 1042C381 1031 403 1028 417 1035L501 1084C508 1088 518 1088 525 1084L571 1057C578 1053 578 1047 571 1044L487 995C473 987 480 974 498 971L613 953C622 952 627 947 625 942L608 905C605 900 596 897 588 898Z" fill="#E19836"/>
+        <path filter="url(#fa1)" d="M588 910L472 928C454 931 437 921 442 911L473 844C476 839 470 834 461 833L398 823C389 821 380 824 378 829L347 896C342 907 319 910 306 902L221 854C215 850 204 850 198 854L151 881C145 884 145 890 151 894L236 943C249 950 243 964 225 966L109 984C100 986 95 991 98 996L115 1033C117 1038 126 1041 135 1040L250 1022C268 1019 285 1028 280 1039L249 1106C247 1111 252 1116 261 1117L325 1127C333 1128 342 1125 345 1120L376 1054C381 1043 403 1040 417 1047L501 1096C508 1100 518 1100 525 1096L571 1069C578 1065 578 1059 571 1056L487 1007C473 999 480 986 498 983L613 965C622 964 627 959 625 954L608 917C605 912 596 909 588 910Z" fill="#FCB346"/>
+        <path d="M196 826C203 822 216 822 223 826L308 875C319 882 339 879 344 870L375 803C377 797 388 793 399 795L462 805C473 806 479 813 476 819L445 885C441 894 456 903 471 900L587 883C597 881 608 884 611 890L628 927C631 933 624 940 614 941L499 959C483 961 477 973 489 980L573 1028C581 1033 581 1040 573 1044L527 1071C519 1076 507 1076 499 1071L415 1023C403 1016 383 1019 379 1028L348 1095C345 1101 334 1104 324 1103L260 1093C250 1091 243 1085 246 1079L277 1013C281 1003 267 995 251 997L136 1015C125 1017 114 1013 112 1007L95 970C92 964 98 958 108 957L224 939C240 936 245 925 233 918L149 869C141 865 141 858 149 853L196 826Z" fill="white" fill-opacity="0.43"/>
+        <path d="M196 826C203 822 216 822 223 826L308 875C319 882 339 879 344 870L375 803C377 797 388 793 399 795L462 805C473 806 479 813 476 819L445 885C441 894 456 903 471 900L587 883C597 881 608 884 611 890L628 927C631 933 624 940 614 941L499 959C483 961 477 973 489 980L573 1028C581 1033 581 1040 573 1044L527 1071C519 1076 507 1076 499 1071L415 1023C403 1016 383 1019 379 1028L348 1095C345 1101 334 1104 324 1103L260 1093C250 1091 243 1085 246 1079L277 1013C281 1003 267 995 251 997L136 1015C125 1017 114 1013 112 1007L95 970C92 964 98 958 108 957L224 939C240 936 245 925 233 918L149 869C141 865 141 858 149 853L196 826Z" fill="url(#lga0)" stroke="url(#lga1)" stroke-width="5"/>
+      </svg>
+    </div>
+
+    <!-- Heart 3D icon (large blur layer removed) -->
+    <div class="icon-heart" id="ico-heart">
+      <svg viewBox="510 545 480 310" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <filter id="fh3" x="-10%" y="-10%" width="120%" height="120%"><feGaussianBlur stdDeviation="4.16"/></filter>
+          <linearGradient id="lgh3" x1="663" y1="644" x2="808" y2="896" gradientUnits="userSpaceOnUse">
+            <stop stop-color="white" stop-opacity="0.2"/>
+            <stop offset="1" stop-color="#FF7F78"/>
+          </linearGradient>
+          <linearGradient id="lgh4" x1="558" y1="679" x2="645" y2="944" gradientUnits="userSpaceOnUse">
+            <stop stop-color="#F9B4AE"/>
+            <stop offset="1" stop-color="#F9746E"/>
+          </linearGradient>
+        </defs>
+        <path filter="url(#fh3)" d="M819 582C754 585 706 622 707 664L707 680L681 680C615 679 557 709 551 750C545 798 605 838 679 839L934 841C950 841 964 833 963 822L960 662C959 616 895 578 819 582Z" fill="#F9746E"/>
+        <path d="M701 653C700 614 748 579 815 576L817 576C895 572 961 608 962 652L965 800C965 810 951 818 933 819H933L676 817C600 816 538 778 545 733C550 694 611 665 678 666H679C691 666 701 660 701 653Z" fill="white" fill-opacity="0.1"/>
+        <path d="M701 653C700 614 748 579 815 576L817 576C895 572 961 608 962 652L965 800C965 810 951 818 933 819H933L676 817C600 816 538 778 545 733C550 694 611 665 678 666H679C691 666 701 660 701 653Z" fill="url(#lgh3)" stroke="url(#lgh4)" stroke-width="5"/>
+      </svg>
+    </div>
+
+    <!-- Customers card -->
+    <div class="card-customers" id="card-c">
+      <div class="card-header">
+        <span class="card-title">Customers</span>
+        <button class="sort-btn">Sort by Newest</button>
+      </div>
+
+      <div class="metric-row">
+        <div class="icon-wrap purple">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+            <rect x="3" y="4" width="14" height="13" rx="2" stroke="#7c5cbf" stroke-width="1.5" fill="none"/>
+            <line x1="3" y1="8" x2="17" y2="8" stroke="#7c5cbf" stroke-width="1.5"/>
+            <line x1="7" y1="2" x2="7" y2="6" stroke="#7c5cbf" stroke-width="1.5" stroke-linecap="round"/>
+            <line x1="13" y1="2" x2="13" y2="6" stroke="#7c5cbf" stroke-width="1.5" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <div class="metric-info">
+          <div class="metric-value">20</div>
+          <div class="metric-label">Sessions this week</div>
+          <div class="metric-change down">↓ 31 prev. week</div>
+        </div>
+      </div>
+
+      <div class="divider"></div>
+
+      <div class="metric-row">
+        <div class="icon-wrap yellow">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+            <rect x="4" y="2" width="12" height="16" rx="2" stroke="#d4900a" stroke-width="1.5" fill="none"/>
+            <line x1="7" y1="7"  x2="13" y2="7"  stroke="#d4900a" stroke-width="1.5" stroke-linecap="round"/>
+            <line x1="7" y1="10" x2="13" y2="10" stroke="#d4900a" stroke-width="1.5" stroke-linecap="round"/>
+            <line x1="7" y1="13" x2="11" y2="13" stroke="#d4900a" stroke-width="1.5" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <div class="metric-info">
+          <div class="metric-value">12</div>
+          <div class="metric-label">Pending reports</div>
+          <div class="metric-change neutral">= prev. week</div>
+        </div>
+      </div>
+
+      <div class="divider"></div>
+
+      <div class="metric-row active">
+        <div class="icon-wrap lavender">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+            <path d="M4 4h12a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1H6l-3 3V5a1 1 0 0 1 1-1z" stroke="#7070c0" stroke-width="1.5" fill="none" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <div class="metric-info">
+          <div class="metric-value">35</div>
+          <div class="metric-label">New messages</div>
+        </div>
+      </div>
+
+      <div class="all-link">
+        <span>All customers</span>
+        <div class="arrow-circle">→</div>
+      </div>
+    </div>
+
+    <!-- Evolution card -->
+    <div class="card-evolution" id="card-e">
+      <div class="evo-header">
+        <span class="evo-title">Evolution</span>
+        <div class="evo-btn">›</div>
+      </div>
+      <div class="chart-area">
+        <canvas id="chart" width="300" height="180"></canvas>
+      </div>
+      <div class="x-labels">
+        <span class="x-label">Feb 16</span>
+        <span class="x-label">Feb 18</span>
+        <span class="x-label">Feb 18</span>
+        <span class="x-label">Feb 18</span>
+        <span class="x-label">Feb 24</span>
+        <span class="x-label">Mar 09</span>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+  new Chart(document.getElementById('chart'), {
+    type: 'line',
+    data: {
+      labels: ['Feb 16','Feb 18','Feb 18','Feb 18','Feb 24','Mar 09'],
+      datasets: [
+        { data: [3.2,1.5,9.8,7.2,5.5,6.1], borderColor: 'rgba(66,133,244,.9)',  backgroundColor: 'transparent', borderWidth: 2, tension: .42, pointRadius: 0 },
+        { data: [6.0,8.5,9.5,6.8,7.2,6.0], borderColor: 'rgba(52,168,83,.85)',  backgroundColor: 'transparent', borderWidth: 2, tension: .42, pointRadius: 0 },
+        { data: [4.5,9.2,5.8,8.5,4.2,5.8], borderColor: 'rgba(234,67,53,.9)',   backgroundColor: 'transparent', borderWidth: 2, tension: .42, pointRadius: 0 },
+        { data: [5.5,7.0,8.8,5.2,8.0,5.5], borderColor: 'rgba(251,188,4,.9)',   backgroundColor: 'transparent', borderWidth: 2, tension: .42, pointRadius: 0 },
+        { data: [2.8,6.5,7.2,9.0,6.5,6.2], borderColor: 'rgba(0,180,180,.85)',  backgroundColor: 'transparent', borderWidth: 2, tension: .42, pointRadius: 0 },
+      ]
+    },
+    options: {
+      responsive: false,
+      animation: false,
+      plugins: { legend: { display: false } },
+      scales: {
+        x: { display: false, grid: { display: false } },
+        y: {
+          min: 0, max: 10,
+          ticks: { stepSize: 3, font: { size: 10, family: 'Inter' }, color: '#aaa', padding: 4 },
+          grid: { color: 'rgba(0,0,0,.06)', lineWidth: 1, borderDash: [4,4] },
+          border: { display: false }
+        }
+      }
+    }
+  });
+
+  const cardC = document.getElementById('card-c');
+  const cardE = document.getElementById('card-e');
+  const icoA  = document.getElementById('ico-asterisk');
+  const icoH  = document.getElementById('ico-heart');
+
+  cardC.addEventListener('mouseenter', () => icoA.classList.add('hovered'));
+  cardC.addEventListener('mouseleave', () => icoA.classList.remove('hovered'));
+  cardE.addEventListener('mouseenter', () => icoH.classList.add('hovered'));
+  cardE.addEventListener('mouseleave', () => icoH.classList.remove('hovered'));
+</script>
+</body>
+</html>

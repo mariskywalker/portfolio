@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Elements, Casa do Urso</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Nunito', sans-serif; background: #fff; color: #1a2a3a; padding: 48px 64px; max-width: 1040px; }
+  .section-title { font-size: 22px; font-weight: 800; color: #1a2a3a; margin-bottom: 20px; }
+  .card { background: #fff; border: 1.5px solid #e8eaed; border-radius: 20px; padding: 40px 32px 36px; margin-bottom: 48px; }
+  .card--gray { background: #f4f5f7; border-color: #f4f5f7; }
+  .icon-grid { display: flex; justify-content: center; gap: 64px; align-items: flex-start; }
+  .icon-item { display: flex; flex-direction: column; align-items: center; gap: 12px; text-align: center; }
+  .icon-wrap { width: 72px; height: 72px; display: flex; align-items: center; justify-content: center; }
+  .icon-label { font-size: 15px; font-weight: 700; color: #1a2a3a; line-height: 1.2; }
+  .icon-sub { font-size: 13px; font-weight: 400; color: #8a9ab0; margin-top: 2px; }
+  svg { display: block; }
+  .block-grid { display: flex; justify-content: center; gap: 28px; margin-bottom: 24px; flex-wrap: wrap; }
+  .block-item { display: flex; flex-direction: column; align-items: center; gap: 10px; text-align: center; }
+  .block-swatch { width: 100px; height: 100px; border-radius: 20px; }
+  .block-label { font-size: 14px; font-weight: 700; color: #1a2a3a; }
+  .block-sub { font-size: 12px; color: #8a9ab0; margin-top: -4px; }
+  .block-note { text-align: center; font-size: 13px; color: #8a9ab0; margin-top: 8px; }
+</style>
+</head>
+<body>
+
+  <p class="section-title">Main Icons</p>
+  <div class="card">
+    <div class="icon-grid">
+
+      <div class="icon-item">
+        <div class="icon-wrap">
+          <svg width="64" height="64" viewBox="0 0 472 359" xmlns="http://www.w3.org/2000/svg">
+            <path fill="#f5c042" d="M345.699 216.586L281.422 179.5L345.699 142.414C349.32 140.324 350.559 135.699 348.469 132.078L333.328 105.867C331.238 102.25 326.609 101.008 322.988 103.098L258.711 140.184V66.016C258.711 61.836 255.32 58.449 251.141 58.449H220.863C216.68 58.449 213.289 61.836 213.289 66.016V140.188L149.016 103.102C145.395 101.012 140.766 102.254 138.672 105.871L123.531 132.078C121.441 135.695 122.68 140.324 126.305 142.414L190.578 179.5L126.305 216.586C122.68 218.676 121.441 223.305 123.531 226.926L138.672 253.133C140.766 256.754 145.395 257.992 149.016 255.906L213.289 218.82V292.984C213.289 297.164 216.68 300.551 220.863 300.551H251.141C255.32 300.551 258.711 297.164 258.711 292.984V218.813L322.988 255.898C326.609 257.992 331.238 256.754 333.328 253.129L348.469 226.918C350.559 223.301 349.32 218.676 345.699 216.586Z"/>
+          </svg>
+        </div>
+        <div><div class="icon-label">Asterisk</div><div class="icon-sub">School</div></div>
+      </div>
+
+      <div class="icon-item">
+        <div class="icon-wrap">
+          <svg width="64" height="64" viewBox="0 0 472 359" xmlns="http://www.w3.org/2000/svg">
+            <path fill="#f97472" d="M343.797 78.699C315.164 54.355 272.578 58.734 246.297 85.789L236.004 96.371L225.711 85.789C199.48 58.734 156.844 54.355 128.211 78.699C95.402 106.641 93.68 156.785 123.039 187.074L224.145 291.227C230.676 297.949 241.281 297.949 247.813 291.227L348.914 187.074C378.328 156.785 376.609 106.641 343.797 78.699Z"/>
+          </svg>
+        </div>
+        <div><div class="icon-label">Heart</div><div class="icon-sub">Clinic</div></div>
+      </div>
+
+      <div class="icon-item">
+        <div class="icon-wrap">
+          <svg width="64" height="64" viewBox="0 0 472 359" xmlns="http://www.w3.org/2000/svg">
+            <path fill="#44a0c4" d="M137.492 124.973C137.492 122.41 139.023 120.094 141.379 119.082L233.473 79.539C235.086 78.844 236.914 78.844 238.527 79.539L330.621 119.082C332.977 120.094 334.508 122.41 334.508 124.973V273.57C334.508 277.109 331.633 279.98 328.09 279.98H143.906C140.363 279.98 137.492 277.109 137.492 273.57V124.973Z"/>
+          </svg>
+        </div>
+        <div><div class="icon-label">House</div><div class="icon-sub">Family</div></div>
+      </div>
+
+      <div class="icon-item">
+        <div class="icon-wrap">
+          <svg width="64" height="64" viewBox="0 0 472 359" xmlns="http://www.w3.org/2000/svg">
+            <path fill="#cd9459" d="M166.707 85.938C164.074 67.207 147.992 52.809 128.543 52.809C107.246 52.809 89.984 70.07 89.984 91.367C89.984 109.289 102.211 124.344 118.781 128.676Z"/>
+            <path fill="#111" d="M152.359 88.156C150.73 76.547 140.762 67.625 128.711 67.625C115.508 67.625 104.809 78.32 104.809 91.523C104.809 102.629 112.387 111.961 122.66 114.645Z"/>
+            <path fill="#cd9459" d="M305.297 85.938C307.926 67.207 324.008 52.809 343.457 52.809C364.758 52.809 382.02 70.07 382.02 91.367C382.02 109.289 369.793 124.344 353.223 128.676Z"/>
+            <path fill="#111" d="M320.762 86.594C322.395 74.988 332.363 66.063 344.414 66.063C357.617 66.063 368.313 76.762 368.313 89.961C368.313 101.066 360.738 110.398 350.465 113.082Z"/>
+            <path fill="#cd9459" d="M235.684 306.191C267.496 306.191 329.5 305.195 361.387 262.246C373.602 245.797 381.391 223.211 381.391 192.18C381.391 80.047 299.891 52.809 235.684 52.809C171.48 52.809 89.98 78.531 89.98 192.18C89.98 222.492 97.418 244.738 109.125 261.082C140.754 305.18 203.582 306.191 235.684 306.191Z"/>
+            <path fill="#111" d="M236.598 211.273C252.184 210.215 268.75 194.723 268.75 181.164C268.75 167.602 255.113 161.496 234.953 161.496H234.539C214.359 161.496 200.723 167.113 200.723 181.164C200.723 195.215 217.27 210.23 232.875 211.273Z"/>
+            <path fill="#111" d="M172.469 164.707C180.227 164.707 186.516 157.594 186.516 148.816C186.516 140.039 180.227 132.922 172.469 132.922C164.711 132.922 158.422 140.039 158.422 148.816C158.422 157.594 164.711 164.707 172.469 164.707Z"/>
+            <path fill="#111" d="M296.512 164.707C304.27 164.707 310.559 157.594 310.559 148.816C310.559 140.039 304.27 132.922 296.512 132.922C288.754 132.922 282.465 140.039 282.465 148.816C282.465 157.594 288.754 164.707 296.512 164.707Z"/>
+            <path fill="#111" d="M216.301 249.586C213.93 249.586 211.496 249.359 209.094 248.883C202.684 247.613 197.391 244.859 194.191 241.109C193.641 240.469 193.715 239.504 194.359 238.953C195.004 238.402 195.965 238.477 196.516 239.121C199.227 242.289 204.031 244.754 209.691 245.871C215.262 246.969 220.969 246.68 225.344 245.059C228.863 243.758 233.074 241.02 233.074 235.387V207.371C233.074 206.527 233.762 205.84 234.602 205.84C235.445 205.84 236.133 206.527 236.133 207.371V235.387C236.133 241.172 232.676 245.625 226.418 247.934C223.434 249.035 219.945 249.586 216.301 249.586Z"/>
+            <path fill="#111" d="M252.945 249.59C249.301 249.59 245.813 249.039 242.844 247.938C236.57 245.625 233.129 241.172 233.129 235.387V207.371C233.129 206.527 233.816 205.84 234.66 205.84C235.5 205.84 236.188 206.527 236.188 207.371V235.387C236.188 241.035 240.383 243.758 243.918 245.059C248.293 246.68 254 246.973 259.57 245.871C265.23 244.754 270.035 242.289 272.746 239.121C273.297 238.48 274.258 238.402 274.902 238.953C275.547 239.504 275.621 240.469 275.07 241.109C271.875 244.844 266.578 247.613 260.168 248.883C257.734 249.359 255.301 249.59 252.945 249.59Z"/>
+          </svg>
+        </div>
+        <div><div class="icon-label">Bear</div><div class="icon-sub">Methodology</div></div>
+      </div>
+
+    </div>
+  </div>
+
+  <p class="section-title">Geometric Blocks</p>
+  <div class="card card--gray">
+    <div class="block-grid">
+
+      <div class="block-item">
+        <div class="block-swatch" style="background:#E8858A;"></div>
+        <div class="block-label">Sweet Block</div>
+        <div class="block-sub">Cards, backgrounds</div>
+      </div>
+
+      <div class="block-item">
+        <div class="block-swatch" style="background:#4497C3;"></div>
+        <div class="block-label">Blue Block</div>
+        <div class="block-sub">Buttons, icons</div>
+      </div>
+
+      <div class="block-item">
+        <div class="block-swatch" style="background:#F5BF42;"></div>
+        <div class="block-label">Yellow Block</div>
+        <div class="block-sub">Alerts, highlights</div>
+      </div>
+
+      <div class="block-item">
+        <div class="block-swatch" style="background:#5DC198;"></div>
+        <div class="block-label">Mint Block</div>
+        <div class="block-sub">Nature, wellness</div>
+      </div>
+
+      <div class="block-item">
+        <div class="block-swatch" style="background:#032E4D;"></div>
+        <div class="block-label">Navy Block</div>
+        <div class="block-sub">Backgrounds, headers</div>
+      </div>
+
+    </div>
+    <p class="block-note">The colored blocks reference building toys, reinforcing the connection with the children's universe.</p>
+  </div>
+
+</body>
+</html>

@@ -1,0 +1,966 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>UTOPIA TOKYO, Masked. Marked. Watched.</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Bebas+Neue&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --masks-grid-rows: 12;
+    --masks-grid-container-height: 100vh;
+    --masks-grid-item-height: calc(var(--masks-grid-container-height) / var(--masks-grid-rows));
+    --masks-grid-row-spacing: calc(var(--masks-grid-item-height) - 1px);
+    --col-size: 60px;
+    --accent: #c8f0ff;
+    --accent2: #ff4e4e;
+    --fg: #e8e8e0;
+    --bg: #080808;
+    --grid-line: rgba(255,255,255,0.07);
+  }
+
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--fg);
+    font-family: 'Space Mono', monospace;
+    overflow-x: hidden;
+    cursor: crosshair;
+  }
+
+  /* ── GRID BACKGROUND ── */
+  .grid-bg {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    background-image:
+      linear-gradient(var(--grid-line) 1px, transparent 1px),
+      linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
+    background-size: var(--col-size) var(--masks-grid-item-height);
+    pointer-events: none;
+  }
+
+  /* ── NOISE OVERLAY ── */
+  .noise {
+    position: fixed;
+    inset: 0;
+    z-index: 1;
+    opacity: 0.03;
+    pointer-events: none;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    background-size: 200px 200px;
+  }
+
+  /* ── VIGNETTE ── */
+  .vignette {
+    position: fixed;
+    inset: 0;
+    z-index: 2;
+    background: radial-gradient(ellipse at center, transparent 40%, rgba(0,0,0,0.7) 100%);
+    pointer-events: none;
+  }
+
+  /* ── SCANLINES ── */
+  .scanlines {
+    position: fixed;
+    inset: 0;
+    z-index: 3;
+    background: repeating-linear-gradient(
+      to bottom,
+      transparent,
+      transparent 2px,
+      rgba(0,0,0,0.08) 2px,
+      rgba(0,0,0,0.08) 4px
+    );
+    pointer-events: none;
+  }
+
+  /* ── CONTENT ── */
+  .content { position: relative; z-index: 10; }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.5rem 2.5rem;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+    background: rgba(8,8,8,0.6);
+    backdrop-filter: blur(8px);
+  }
+
+  .nav-logo {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.4rem;
+    letter-spacing: 0.15em;
+    color: var(--fg);
+    text-decoration: none;
+  }
+
+  .nav-logo span { color: var(--accent); }
+
+  .nav-coords {
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    color: rgba(255,255,255,0.35);
+  }
+
+  .nav-right {
+    display: flex;
+    gap: 2rem;
+    align-items: center;
+  }
+
+  .nav-right a {
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.45);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+
+  .nav-right a:hover { color: var(--accent); }
+
+  /* ── HERO ── */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 2rem 2.5rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-tag {
+    font-size: 0.6rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.3);
+    margin-bottom: 2rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .hero-tag::before {
+    content: '';
+    display: inline-block;
+    width: 24px;
+    height: 1px;
+    background: var(--accent2);
+  }
+
+  .hero-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(5rem, 14vw, 14rem);
+    line-height: 0.9;
+    letter-spacing: -0.01em;
+    color: var(--fg);
+    position: relative;
+  }
+
+  .hero-title .glitch {
+    position: relative;
+    display: inline-block;
+  }
+
+  .hero-title .glitch::before,
+  .hero-title .glitch::after {
+    content: attr(data-text);
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%;
+  }
+
+  .hero-title .glitch::before {
+    color: var(--accent2);
+    clip-path: polygon(0 0, 100% 0, 100% 35%, 0 35%);
+    transform: translateX(-3px);
+    animation: glitch1 4s infinite;
+  }
+
+  .hero-title .glitch::after {
+    color: var(--accent);
+    clip-path: polygon(0 65%, 100% 65%, 100% 100%, 0 100%);
+    transform: translateX(3px);
+    animation: glitch2 4s infinite;
+  }
+
+  @keyframes glitch1 {
+    0%, 90%, 100% { transform: translateX(0); opacity: 0; }
+    92% { transform: translateX(-4px); opacity: 1; }
+    94% { transform: translateX(4px); opacity: 1; }
+    96% { transform: translateX(0); opacity: 0; }
+  }
+
+  @keyframes glitch2 {
+    0%, 90%, 100% { transform: translateX(0); opacity: 0; }
+    93% { transform: translateX(4px); opacity: 1; }
+    95% { transform: translateX(-4px); opacity: 1; }
+    97% { transform: translateX(0); opacity: 0; }
+  }
+
+  .hero-subtitle-row {
+    display: flex;
+    align-items: flex-end;
+    gap: 3rem;
+    margin-top: 1.5rem;
+  }
+
+  .hero-subtitle {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+  }
+
+  .hero-subtitle span {
+    font-size: 0.8rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.4);
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+  }
+
+  .hero-subtitle span::before {
+    content: '';
+    color: var(--accent2);
+    font-size: 0.6rem;
+  }
+
+  .hero-cta {
+    margin-top: 4rem;
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+  }
+
+  .btn-enter {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--bg);
+    background: var(--fg);
+    border: none;
+    padding: 1rem 2rem;
+    cursor: crosshair;
+    transition: background 0.2s, color 0.2s;
+    clip-path: polygon(8px 0%, 100% 0%, calc(100% - 8px) 100%, 0% 100%);
+  }
+
+  .btn-enter:hover {
+    background: var(--accent);
+  }
+
+  .btn-secondary {
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    color: rgba(255,255,255,0.35);
+    text-transform: uppercase;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    cursor: pointer;
+    transition: color 0.2s;
+    border: none;
+    background: none;
+    font-family: 'Space Mono', monospace;
+  }
+
+  .btn-secondary:hover { color: var(--fg); }
+
+  .hero-version {
+    position: absolute;
+    bottom: 2rem;
+    right: 2.5rem;
+    font-size: 0.6rem;
+    letter-spacing: 0.2em;
+    color: rgba(255,255,255,0.2);
+  }
+
+  .hero-jp {
+    position: absolute;
+    right: 2.5rem;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 0.65rem;
+    letter-spacing: 0.4em;
+    color: rgba(255,255,255,0.12);
+    writing-mode: vertical-rl;
+    text-orientation: mixed;
+  }
+
+  /* ── TICKER ── */
+  .ticker {
+    border-top: 1px solid rgba(255,255,255,0.08);
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    background: rgba(255,255,255,0.02);
+    overflow: hidden;
+    padding: 0.6rem 0;
+    position: relative;
+  }
+
+  .ticker-inner {
+    display: flex;
+    gap: 4rem;
+    animation: ticker 20s linear infinite;
+    white-space: nowrap;
+  }
+
+  .ticker-inner span {
+    font-size: 0.6rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.25);
+    flex-shrink: 0;
+  }
+
+  .ticker-inner .accent-tick { color: var(--accent2); }
+
+  @keyframes ticker {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+
+  /* ── MASKS GRID ── */
+  .masks-section {
+    padding: 6rem 2.5rem;
+  }
+
+  .section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 3rem;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    padding-bottom: 1.5rem;
+  }
+
+  .section-label {
+    font-size: 0.6rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.3);
+  }
+
+  .section-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 3rem;
+    letter-spacing: 0.05em;
+    line-height: 1;
+    color: var(--fg);
+  }
+
+  .section-count {
+    font-size: 0.6rem;
+    letter-spacing: 0.2em;
+    color: rgba(255,255,255,0.25);
+  }
+
+  .masks-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 1px;
+    background: rgba(255,255,255,0.06);
+  }
+
+  .mask-card {
+    background: var(--bg);
+    aspect-ratio: 3/4;
+    position: relative;
+    overflow: hidden;
+    cursor: crosshair;
+    group: true;
+  }
+
+  .mask-card:hover .mask-overlay { opacity: 1; }
+  .mask-card:hover .mask-img { transform: scale(1.04); filter: brightness(0.7); }
+
+  .mask-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: brightness(0.5) saturate(0.3);
+    transition: transform 0.6s cubic-bezier(0.25,0.46,0.45,0.94), filter 0.4s;
+  }
+
+  .mask-placeholder {
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, #111 0%, #1a1a1a 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.6s cubic-bezier(0.25,0.46,0.45,0.94);
+  }
+
+  .mask-placeholder svg {
+    width: 60px;
+    height: 60px;
+    opacity: 0.08;
+  }
+
+  .mask-card:hover .mask-placeholder { transform: scale(1.04); }
+
+  .mask-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(0,0,0,0.9) 0%, transparent 60%);
+    opacity: 0;
+    transition: opacity 0.4s;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 1.5rem;
+  }
+
+  .mask-name-en {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.6rem;
+    letter-spacing: 0.08em;
+    color: var(--fg);
+    line-height: 1;
+  }
+
+  .mask-name-jp {
+    font-size: 0.65rem;
+    letter-spacing: 0.3em;
+    color: rgba(255,255,255,0.4);
+    margin-top: 0.3rem;
+  }
+
+  .mask-info {
+    position: absolute;
+    top: 1rem;
+    left: 1rem;
+    font-size: 0.55rem;
+    letter-spacing: 0.25em;
+    color: rgba(255,255,255,0.2);
+  }
+
+  /* Card labels even when not hovering */
+  .mask-bottom {
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    padding: 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+  }
+
+  .mask-bottom-name {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.1rem;
+    letter-spacing: 0.1em;
+    color: rgba(255,255,255,0.6);
+  }
+
+  /* ── STATS BAR ── */
+  .stats-bar {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    border-top: 1px solid rgba(255,255,255,0.08);
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+  }
+
+  .stat-item {
+    padding: 2.5rem;
+    border-right: 1px solid rgba(255,255,255,0.08);
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .stat-item:last-child { border-right: none; }
+
+  .stat-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 3.5rem;
+    color: var(--fg);
+    line-height: 1;
+  }
+
+  .stat-num span { color: var(--accent); font-size: 1.5rem; }
+
+  .stat-label {
+    font-size: 0.6rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.3);
+  }
+
+  /* ── MANIFESTO ── */
+  .manifesto {
+    padding: 8rem 2.5rem;
+    max-width: 900px;
+  }
+
+  .manifesto-text {
+    font-size: clamp(1.1rem, 2.5vw, 1.6rem);
+    line-height: 1.6;
+    color: rgba(255,255,255,0.55);
+    font-weight: 400;
+  }
+
+  .manifesto-text strong {
+    color: var(--fg);
+    font-weight: 700;
+  }
+
+  /* ── ATTRIBUTES ── */
+  .attributes {
+    padding: 4rem 2.5rem 6rem;
+  }
+
+  .attributes-grid {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 1px;
+    background: rgba(255,255,255,0.06);
+    margin-top: 2rem;
+  }
+
+  .attr-item {
+    background: var(--bg);
+    padding: 2rem 1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    transition: background 0.2s;
+    cursor: crosshair;
+  }
+
+  .attr-item:hover { background: rgba(255,255,255,0.03); }
+
+  .attr-bar-wrap {
+    width: 2px;
+    height: 80px;
+    background: rgba(255,255,255,0.08);
+    position: relative;
+  }
+
+  .attr-bar-fill {
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    background: var(--fg);
+    transition: height 1s cubic-bezier(0.25,0.46,0.45,0.94);
+  }
+
+  .attr-name {
+    font-size: 0.55rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.35);
+    text-align: center;
+  }
+
+  .attr-val {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.5rem;
+    color: var(--fg);
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    border-top: 1px solid rgba(255,255,255,0.08);
+    padding: 2rem 2.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .footer-logo {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.2rem;
+    letter-spacing: 0.15em;
+    color: rgba(255,255,255,0.3);
+  }
+
+  .footer-copy {
+    font-size: 0.6rem;
+    letter-spacing: 0.15em;
+    color: rgba(255,255,255,0.2);
+  }
+
+  /* ── CURSOR DOT ── */
+  .cursor {
+    width: 6px; height: 6px;
+    background: var(--accent);
+    border-radius: 50%;
+    position: fixed;
+    pointer-events: none;
+    z-index: 9999;
+    transform: translate(-50%, -50%);
+    transition: transform 0.05s;
+    mix-blend-mode: screen;
+  }
+
+  .cursor-ring {
+    width: 30px; height: 30px;
+    border: 1px solid rgba(200,240,255,0.4);
+    border-radius: 50%;
+    position: fixed;
+    pointer-events: none;
+    z-index: 9998;
+    transform: translate(-50%, -50%);
+    transition: width 0.3s, height 0.3s, transform 0.12s;
+    mix-blend-mode: screen;
+  }
+
+  /* ── LOADING SCREEN ── */
+  .loader {
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    background: var(--bg);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1.5rem;
+    transition: opacity 0.8s, visibility 0.8s;
+  }
+
+  .loader.hidden { opacity: 0; visibility: hidden; }
+
+  .loader-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 4rem;
+    letter-spacing: 0.2em;
+    color: var(--fg);
+    position: relative;
+  }
+
+  .loader-title::after {
+    content: '_';
+    animation: blink 1s step-end infinite;
+  }
+
+  @keyframes blink { 50% { opacity: 0; } }
+
+  .loader-bar-wrap {
+    width: 200px;
+    height: 1px;
+    background: rgba(255,255,255,0.1);
+  }
+
+  .loader-bar {
+    height: 100%;
+    background: var(--accent);
+    width: 0%;
+    animation: load 2s cubic-bezier(0.4,0,0.2,1) forwards;
+  }
+
+  @keyframes load { to { width: 100%; } }
+
+  .loader-pct {
+    font-size: 0.65rem;
+    letter-spacing: 0.3em;
+    color: rgba(255,255,255,0.3);
+  }
+
+  .loader-status {
+    font-size: 0.6rem;
+    letter-spacing: 0.25em;
+    color: rgba(255,255,255,0.2);
+    animation: statusCycle 0.4s step-end infinite;
+  }
+
+  @keyframes statusCycle {
+    0%  { content: '[LOADING]'; }
+    50% { opacity: 0.3; }
+  }
+
+  /* ── HORIZONTAL SCROLL MARQUEE ── */
+  .marquee-section {
+    padding: 3rem 0;
+    overflow: hidden;
+    border-top: 1px solid rgba(255,255,255,0.06);
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+  }
+
+  .marquee-track {
+    display: flex;
+    gap: 4rem;
+    animation: marquee 25s linear infinite;
+    white-space: nowrap;
+  }
+
+  .marquee-track .m-item {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 5rem;
+    letter-spacing: 0.05em;
+    color: rgba(255,255,255,0.06);
+    flex-shrink: 0;
+    line-height: 1;
+  }
+
+  .marquee-track .m-item.hi { color: rgba(255,255,255,0.15); }
+
+  @keyframes marquee {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+
+</style>
+</head>
+<body>
+
+<!-- Loader -->
+<div class="loader" id="loader">
+  <div class="loader-title">UTOPIA TOKYO</div>
+  <div class="loader-bar-wrap"><div class="loader-bar" id="loaderBar"></div></div>
+  <div class="loader-pct" id="loaderPct">0%</div>
+  <div class="loader-status">[LOADING]</div>
+</div>
+
+<!-- Backgrounds -->
+<div class="grid-bg"></div>
+<div class="noise"></div>
+<div class="vignette"></div>
+<div class="scanlines"></div>
+
+<!-- Cursor -->
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<!-- Content -->
+<div class="content">
+
+  <!-- Nav -->
+  <nav>
+    <a href="#" class="nav-logo">UTOPIA<span>TOKYO</span></a>
+    <div class="nav-coords">35.6762°N / 139.6503°E</div>
+    <div class="nav-right">
+      <a href="#">Masks</a>
+      <a href="#">Discover</a>
+      <a href="#">VERSION 2.0</a>
+    </div>
+  </nav>
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="hero-tag">Masked · Marked · Watched</div>
+    <h1 class="hero-title">
+      <span class="glitch" data-text="UTOPIA">UTOPIA</span><br>
+      <span class="glitch" data-text="TOKYO">TOKYO</span>
+    </h1>
+    <div class="hero-subtitle-row">
+      <div class="hero-subtitle">
+        <span>Masked</span>
+        <span>Marked</span>
+        <span>Watched</span>
+      </div>
+    </div>
+    <div class="hero-cta">
+      <button class="btn-enter">[ ENTER WEBSITE ]</button>
+      <button class="btn-secondary">&gt;_EXECUTE_CREATION</button>
+    </div>
+    <div class="hero-version">VERSION: 2.0.0–RC.1</div>
+    <div class="hero-jp">東京ユートピア · マスクド · マークド · ウォッチド</div>
+  </section>
+
+  <!-- Ticker -->
+  <div class="ticker">
+    <div class="ticker-inner" id="ticker">
+      <span>UTOPIA TOKYO</span><span class="accent-tick">///</span>
+      <span>MASKED. MARKED. WATCHED.</span><span class="accent-tick">///</span>
+      <span>35.6762°N 139.6503°E</span><span class="accent-tick">///</span>
+      <span>VERSION 2.0.0-RC.1</span><span class="accent-tick">///</span>
+      <span>東京 · JAPAN</span><span class="accent-tick">///</span>
+      <span>HOLOGRAPHIC FUTURES</span><span class="accent-tick">///</span>
+      <span>UTOPIA TOKYO</span><span class="accent-tick">///</span>
+      <span>MASKED. MARKED. WATCHED.</span><span class="accent-tick">///</span>
+      <span>35.6762°N 139.6503°E</span><span class="accent-tick">///</span>
+      <span>VERSION 2.0.0-RC.1</span><span class="accent-tick">///</span>
+      <span>東京 · JAPAN</span><span class="accent-tick">///</span>
+      <span>HOLOGRAPHIC FUTURES</span><span class="accent-tick">///</span>
+    </div>
+  </div>
+
+  <!-- Stats -->
+  <div class="stats-bar">
+    <div class="stat-item">
+      <div class="stat-num">14<span>+</span></div>
+      <div class="stat-label">Unique Masks</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num">6</div>
+      <div class="stat-label">Attributes</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num">∞</div>
+      <div class="stat-label">Combinations</div>
+    </div>
+  </div>
+
+  <!-- Manifesto -->
+  <div class="manifesto">
+    <p class="manifesto-text">
+      Holographic billboards light up the <strong>towering skyline</strong>, while traditional temples and shrines are overshadowed, reduced to mere relics in a city dominated by technology. The government's promise of a <strong>perfect society</strong> has become a tool of oppression. Constant surveillance monitors the masses, their every action recorded, their freedom traded for the <strong>illusion of security</strong>.
+    </p>
+  </div>
+
+  <!-- Masks Grid -->
+  <section class="masks-section">
+    <div class="section-header">
+      <div>
+        <div class="section-label">Collection</div>
+        <div class="section-title">EXPLORE MASKS</div>
+      </div>
+      <div class="section-count">14 / 14 MASKS</div>
+    </div>
+
+    <div class="masks-grid" id="masksGrid"></div>
+  </section>
+
+  <!-- Attributes -->
+  <section class="attributes">
+    <div class="section-header">
+      <div>
+        <div class="section-label">Stats</div>
+        <div class="section-title">ATTRIBUTES</div>
+      </div>
+    </div>
+    <div class="attributes-grid" id="attrsGrid"></div>
+  </section>
+
+  <!-- Marquee -->
+  <div class="marquee-section">
+    <div class="marquee-track">
+      <span class="m-item">UTOPIA</span>
+      <span class="m-item hi">TOKYO</span>
+      <span class="m-item">MASKS</span>
+      <span class="m-item">東京</span>
+      <span class="m-item hi">2.0.0</span>
+      <span class="m-item">UTOPIA</span>
+      <span class="m-item hi">TOKYO</span>
+      <span class="m-item">MASKS</span>
+      <span class="m-item">東京</span>
+      <span class="m-item hi">2.0.0</span>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer>
+    <div class="footer-logo">UTOPIA TOKYO</div>
+    <div class="footer-copy">©2026 · JAPAN · 35.6762°N 139.6503°E</div>
+  </footer>
+
+</div>
+
+<script>
+  // ── LOADER ──
+  const loader = document.getElementById('loader');
+  const pct = document.getElementById('loaderPct');
+  let p = 0;
+  const iv = setInterval(() => {
+    p += Math.random() * 8;
+    if (p >= 100) { p = 100; clearInterval(iv); setTimeout(() => loader.classList.add('hidden'), 400); }
+    pct.textContent = Math.floor(p) + '%';
+  }, 80);
+
+  // ── CURSOR ──
+  const cur = document.getElementById('cursor');
+  const ring = document.getElementById('cursorRing');
+  let mx = 0, my = 0, rx = 0, ry = 0;
+  document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; cur.style.left = mx + 'px'; cur.style.top = my + 'px'; });
+  (function animRing() {
+    rx += (mx - rx) * 0.12;
+    ry += (my - ry) * 0.12;
+    ring.style.left = rx + 'px';
+    ring.style.top = ry + 'px';
+    requestAnimationFrame(animRing);
+  })();
+
+  // ── MASKS ──
+  const masks = [
+    { name: 'Samurai', jp: 'サムライ' },
+    { name: 'Hannya', jp: 'ハンニャ' },
+    { name: 'Oni', jp: '鬼' },
+    { name: 'Tengu', jp: '天狗' },
+    { name: 'Okame', jp: 'おかめ' },
+    { name: 'Kitsune', jp: 'キツネ' },
+    { name: 'Namahage', jp: 'ナマハゲ' },
+    { name: 'Hyottoko', jp: 'ヒョットコ' },
+    { name: 'Ultraman', jp: 'ウルトラマン' },
+    { name: 'Komainu', jp: '狛犬' },
+    { name: 'Animegao', jp: 'アニメ顔' },
+    { name: 'Kappa', jp: 'カッパ' },
+    { name: 'Noh', jp: '能' },
+    { name: 'Kendo', jp: '剣道' },
+  ];
+
+  const maskColors = ['#1a1215','#0f1a12','#12141a','#1a1209','#0a1a18','#1a0f0f','#141018','#0d1a14'];
+
+  const grid = document.getElementById('masksGrid');
+  masks.forEach((m, i) => {
+    const card = document.createElement('div');
+    card.className = 'mask-card';
+    card.innerHTML = `
+      <div class="mask-placeholder" style="background:${maskColors[i % maskColors.length]};">
+        <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="50" cy="38" r="22" stroke="white" stroke-width="1.5"/>
+          <ellipse cx="50" cy="70" rx="18" ry="12" stroke="white" stroke-width="1.5"/>
+          <line x1="38" y1="34" x2="44" y2="38" stroke="white" stroke-width="1.5"/>
+          <line x1="62" y1="34" x2="56" y2="38" stroke="white" stroke-width="1.5"/>
+          <path d="M42 46 Q50 52 58 46" stroke="white" stroke-width="1.5" fill="none"/>
+        </svg>
+      </div>
+      <div class="mask-info">${String(i+1).padStart(2,'0')} / ${masks.length}</div>
+      <div class="mask-overlay">
+        <div class="mask-name-en">${m.name.toUpperCase()}</div>
+        <div class="mask-name-jp">${m.jp}</div>
+      </div>
+      <div class="mask-bottom"><div class="mask-bottom-name">${m.name.toUpperCase()}</div></div>
+    `;
+    grid.appendChild(card);
+  });
+
+  // ── ATTRIBUTES ──
+  const attrs = [
+    { name: 'Strength', jp: '強さ', val: 10 },
+    { name: 'Agility', jp: '敏捷性', val: 10 },
+    { name: 'Vitality', jp: '活力', val: 10 },
+    { name: 'Intellect', jp: '知性', val: 10 },
+    { name: 'Spirit', jp: 'スピリット', val: 10 },
+    { name: 'Ferocity', jp: '凶暴性', val: 10 },
+  ];
+
+  const attrsEl = document.getElementById('attrsGrid');
+  attrs.forEach(a => {
+    const el = document.createElement('div');
+    el.className = 'attr-item';
+    el.innerHTML = `
+      <div class="attr-val">${a.val}</div>
+      <div class="attr-bar-wrap"><div class="attr-bar-fill" style="height:0%" data-h="${a.val * 10}%"></div></div>
+      <div class="attr-name">${a.jp}<br>${a.name.toUpperCase()}</div>
+    `;
+    attrsEl.appendChild(el);
+  });
+
+  // Animate bars on scroll
+  const bars = document.querySelectorAll('.attr-bar-fill');
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        bars.forEach(b => b.style.height = b.dataset.h);
+        obs.disconnect();
+      }
+    });
+  }, { threshold: 0.3 });
+  obs.observe(attrsEl);
+</script>
+</body>
+</html>

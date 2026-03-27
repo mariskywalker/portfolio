@@ -1,0 +1,126 @@
+function SensoryIconSparkles({
+  src,
+  alt = "",
+  className,
+}: {
+  src: string;
+  alt?: string;
+  className?: string;
+}) {
+  const [hovered, setHovered] = useState(false);
+  const [sparkles, setSparkles] = useState<
+    Array<{
+      id: number;
+      x: number;
+      y: number;
+      size: number;
+      dx: number;
+      dy: number;
+      rot: number;
+      color: string;
+      opacity: number;
+    }>
+  >([]);
+  const nextIdRef = useRef(0);
+  const lastSpawnRef = useRef(0);
+  const rectRef = useRef<DOMRect | null>(null);
+
+  const spawn = (x: number, y: number) => {
+    const now = performance.now();
+    if (now - lastSpawnRef.current < 75) return;
+    lastSpawnRef.current = now;
+
+    const baseId = nextIdRef.current;
+    nextIdRef.current += 1;
+
+    const palette = [
+      "#F5BF42", // amarelo
+      "#F9746E", // rosa
+      "#4497C3", // azul
+      "#CD995B", // dourado/caramelo
+      "#FCB346", // variação do amarelo
+    ];
+
+    // Dust-like neon particles (tuned for performance)
+    const created = Array.from({ length: 6 }).map((_, i) => {
+      const size = 1.2 + Math.random() * 2.2;
+      const dx = (Math.random() - 0.5) * 12;
+      const dy = 2 + Math.random() * 9;
+      const rot = Math.random() * 360;
+      const color = palette[Math.floor(Math.random() * palette.length)];
+      const opacity = 0.35 + Math.random() * 0.65;
+      return {
+        id: baseId + i,
+        x: x + (Math.random() - 0.5) * 22,
+        y: y + (Math.random() - 0.5) * 22,
+        size,
+        dx,
+        dy,
+        rot,
+        color,
+        opacity,
+      };
+    });
+
+    const createdIds = new Set(created.map((s) => s.id));
+    setSparkles((prev) => [...prev, ...created].slice(-35));
+
+    // Auto-expire: single timeout per batch (avoids many timers)
+    window.setTimeout(() => {
+      setSparkles((prev) => prev.filter((p) => !createdIds.has(p.id)));
+    }, 650);
+  };
+
+  return (
+    <div
+      className="relative inline-flex sensory-icon-sparkles"
+      data-hovered={hovered ? "true" : "false"}
+      onMouseEnter={(e) => {
+        // Start fresh when re-entering
+        setSparkles([]);
+        setHovered(true);
+        rectRef.current = (e.currentTarget as HTMLDivElement).getBoundingClientRect();
+      }}
+      onMouseLeave={() => {
+        setHovered(false);
+        rectRef.current = null;
+      }}
+      onMouseMove={(e) => {
+        if (!hovered) return;
+        const rect = rectRef.current ?? e.currentTarget.getBoundingClientRect();
+        rectRef.current = rect;
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        spawn(x, y);
+      }}
+    >
+      <img
+        src={src}
+        alt={alt}
+        aria-hidden={alt ? undefined : "true"}
+        draggable={false}
+        className={className ?? "h-[120px] w-auto opacity-90"}
+      />
+
+      <div className="pointer-events-none absolute inset-0">
+        {sparkles.map((s) => (
+          <span
+            key={s.id}
+            className="sensory-sparkle"
+            style={{
+              left: s.x,
+              top: s.y,
+              width: s.size,
+              height: s.size,
+              ["--dx" as any]: `${s.dx}px`,
+              ["--dy" as any]: `${s.dy}px`,
+              ["--rot" as any]: `${s.rot}deg`,
+              ["--c" as any]: s.color,
+              opacity: s.opacity,
+            }}
+          />
+        ))}
+      </div>
+    </div>
+  );
+}

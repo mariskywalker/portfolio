@@ -1,0 +1,985 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PokerBros, Case Study</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Work+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet" />
+  <style>
+    /* ── RESET & BASE ───────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --gold:    #FED201;
+      --amber:   #EFAF55;
+      --purple:  #42105E;
+      --navy:    #141533;
+      --red:     #E14545;
+      --bg:      #07041a;
+      --surface: #0d0a1c;
+      --card:    #141533;
+      --border:  #251660;
+      --muted:   #6a58a0;
+      --body:    #c0aede;
+      --light:   #e0d0ff;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Work Sans', sans-serif;
+      background: var(--bg);
+      color: var(--body);
+      line-height: 1.7;
+      overflow-x: hidden;
+    }
+
+    ::selection { background: var(--gold); color: var(--navy); }
+
+    /* ── SCROLL PROGRESS ───────────────────────── */
+    #progress-bar {
+      position: fixed;
+      top: 0; left: 0;
+      height: 3px;
+      width: 0%;
+      background: var(--gold);
+      z-index: 1000;
+      transition: width .1s linear;
+    }
+
+    /* ── NAV ────────────────────────────────────── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 500;
+      padding: 1rem 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: rgba(7,4,26,.85);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid transparent;
+      transition: border-color .3s;
+    }
+    nav.scrolled { border-color: var(--border); }
+
+    .nav-logo {
+      font-family: 'Anton', sans-serif;
+      font-size: 16px;
+      letter-spacing: 3px;
+      color: var(--gold);
+      text-decoration: none;
+    }
+    .nav-logo span { color: #fff; }
+    .nav-logo span b { color: var(--red); }
+
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+      list-style: none;
+    }
+    .nav-links a {
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--muted);
+      text-decoration: none;
+      transition: color .2s;
+    }
+    .nav-links a:hover { color: var(--gold); }
+
+    .nav-back {
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--muted);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: color .2s;
+    }
+    .nav-back:hover { color: var(--gold); }
+
+    /* ── HERO ───────────────────────────────────── */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 8rem 2rem 5rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 60% 50% at 80% 20%, rgba(66,16,94,.35) 0%, transparent 70%),
+        radial-gradient(ellipse 40% 40% at 10% 80%, rgba(254,210,1,.06) 0%, transparent 60%),
+        var(--bg);
+    }
+
+    .hero-spade {
+      position: absolute;
+      right: -80px;
+      top: 50%;
+      transform: translateY(-50%);
+      opacity: .035;
+      width: 600px;
+      pointer-events: none;
+      animation: floatSpade 8s ease-in-out infinite;
+    }
+    @keyframes floatSpade {
+      0%, 100% { transform: translateY(-50%) rotate(-2deg); }
+      50%       { transform: translateY(-53%) rotate(2deg); }
+    }
+
+    .hero-inner { position: relative; z-index: 1; max-width: 900px; }
+
+    .hero-eyebrow {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 4px;
+      color: var(--amber);
+      text-transform: uppercase;
+      margin-bottom: 1.5rem;
+      opacity: 0;
+      animation: fadeUp .8s .2s forwards;
+    }
+
+    .hero-title {
+      font-family: 'Anton', sans-serif;
+      font-size: clamp(52px, 10vw, 110px);
+      line-height: .92;
+      letter-spacing: 2px;
+      color: #fff;
+      margin-bottom: .5rem;
+      opacity: 0;
+      animation: fadeUp .9s .35s forwards;
+    }
+    .hero-title .gold { color: var(--gold); }
+
+    .hero-subtitle {
+      font-family: 'Anton', sans-serif;
+      font-size: clamp(18px, 3vw, 28px);
+      letter-spacing: 6px;
+      color: var(--muted);
+      margin-bottom: 2.5rem;
+      opacity: 0;
+      animation: fadeUp .9s .5s forwards;
+    }
+
+    .hero-desc {
+      font-size: 17px;
+      color: var(--body);
+      max-width: 560px;
+      line-height: 1.75;
+      margin-bottom: 2.5rem;
+      opacity: 0;
+      animation: fadeUp .9s .65s forwards;
+    }
+
+    .hero-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 3rem;
+      opacity: 0;
+      animation: fadeUp .9s .8s forwards;
+    }
+
+    .tag {
+      font-size: 11px;
+      font-weight: 700;
+      padding: 4px 12px;
+      border-radius: 20px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+    .tag-gold   { background: rgba(254,210,1,.12); color: var(--gold); border: 1px solid rgba(254,210,1,.3); }
+    .tag-purple { background: rgba(66,16,94,.3);   color: #c4a0ff;     border: 1px solid var(--border); }
+    .tag-red    { background: rgba(225,69,69,.12); color: var(--red);  border: 1px solid rgba(225,69,69,.3); }
+
+    .hero-scroll {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 11px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--muted);
+      opacity: 0;
+      animation: fadeUp .9s 1s forwards;
+    }
+    .hero-scroll-line {
+      width: 40px;
+      height: 1px;
+      background: var(--muted);
+      animation: expandLine 1.5s 1.2s forwards;
+      transform-origin: left;
+      transform: scaleX(0);
+    }
+    @keyframes expandLine { to { transform: scaleX(1); } }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ── LAYOUT ─────────────────────────────────── */
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 0 2rem;
+    }
+
+    /* ── SECTION BASE ───────────────────────────── */
+    .section {
+      padding: 7rem 0;
+      border-bottom: 1px solid var(--border);
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity .7s, transform .7s;
+    }
+    .section.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .section-label {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 5px;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 1.25rem;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .section-label::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+
+    h2 {
+      font-family: 'Anton', sans-serif;
+      font-size: clamp(32px, 5vw, 52px);
+      letter-spacing: 2px;
+      color: #fff;
+      line-height: 1;
+      margin-bottom: 1.5rem;
+    }
+
+    h3 {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--light);
+      margin-bottom: .75rem;
+      margin-top: 2.5rem;
+    }
+    h3:first-child { margin-top: 0; }
+
+    p {
+      font-size: 16px;
+      color: var(--body);
+      line-height: 1.8;
+      margin-bottom: 1.25rem;
+    }
+
+    strong { color: var(--light); font-weight: 600; }
+
+    /* ── PULL QUOTE ─────────────────────────────── */
+    .pull-quote {
+      font-family: 'Anton', sans-serif;
+      font-size: clamp(22px, 3.5vw, 36px);
+      letter-spacing: 1px;
+      color: var(--gold);
+      line-height: 1.25;
+      padding: 2.5rem 0 2.5rem 2rem;
+      border-left: 4px solid var(--gold);
+      margin: 3rem 0;
+    }
+
+    /* ── STAT GRID ──────────────────────────────── */
+    .stat-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin: 2.5rem 0;
+    }
+    .stat-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 1.5rem 1.25rem;
+      text-align: center;
+    }
+    .stat-n {
+      font-family: 'Anton', sans-serif;
+      font-size: 48px;
+      color: var(--gold);
+      letter-spacing: 2px;
+      line-height: 1;
+    }
+    .stat-l {
+      font-size: 12px;
+      color: var(--muted);
+      margin-top: .35rem;
+      line-height: 1.4;
+    }
+
+    /* ── COLOUR PALETTE ─────────────────────────── */
+    .palette {
+      display: flex;
+      gap: 10px;
+      margin: 2rem 0;
+    }
+    .swatch {
+      flex: 1;
+      border-radius: 12px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+      transition: transform .2s;
+    }
+    .swatch:hover { transform: translateY(-4px); }
+    .swatch-color { height: 72px; }
+    .swatch-info  { background: var(--card); padding: 10px 12px; }
+    .swatch-name  { font-size: 12px; font-weight: 700; color: var(--light); line-height: 1.2; }
+    .swatch-hex   { font-size: 11px; color: var(--muted); font-family: monospace; margin-top: 2px; }
+
+    /* ── FEATURE GRID ───────────────────────────── */
+    .feature-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin: 2rem 0;
+    }
+    .feature-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 1.5rem;
+      transition: border-color .2s, transform .2s;
+    }
+    .feature-card:hover { border-color: var(--purple); transform: translateY(-2px); }
+    .feature-num {
+      font-family: 'Anton', sans-serif;
+      font-size: 36px;
+      color: rgba(254,210,1,.15);
+      line-height: 1;
+      margin-bottom: .5rem;
+    }
+    .feature-title {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--light);
+      margin-bottom: .4rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+    .feature-desc { font-size: 13px; color: var(--muted); line-height: 1.6; margin: 0; }
+
+    /* ── EXECUTION BLOCKS ───────────────────────── */
+    .execution-block {
+      border-left: 3px solid var(--border);
+      padding-left: 2rem;
+      margin: 2.5rem 0;
+      transition: border-color .3s;
+    }
+    .execution-block:hover { border-color: var(--gold); }
+    .execution-tag {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--amber);
+      margin-bottom: .6rem;
+    }
+    .execution-title {
+      font-size: 20px;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: .75rem;
+    }
+    .execution-desc { font-size: 15px; color: var(--body); line-height: 1.75; margin: 0; }
+
+    /* ── PRINCIPLES ─────────────────────────────── */
+    .principles {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+    .principle {
+      padding: 1.75rem 0;
+      border-bottom: 1px solid var(--border);
+      display: grid;
+      grid-template-columns: 200px 1fr;
+      gap: 2rem;
+      align-items: start;
+    }
+    .principle:last-child { border-bottom: none; }
+    .principle-label {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--gold);
+      letter-spacing: .5px;
+      padding-top: 2px;
+    }
+    .principle-text { font-size: 15px; color: var(--body); line-height: 1.7; margin: 0; }
+
+    /* ── PLATFORM GRID ──────────────────────────── */
+    .platform-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin: 2rem 0;
+    }
+    .platform-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.25rem;
+      text-align: center;
+      transition: border-color .2s;
+    }
+    .platform-card:hover { border-color: var(--amber); }
+    .platform-icon { font-size: 24px; margin-bottom: .5rem; }
+    .platform-name {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--light);
+      letter-spacing: .5px;
+      text-transform: uppercase;
+    }
+
+    /* ── MOTION FRAMES ──────────────────────────── */
+    .frames {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .frame {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+      padding: 1.1rem 1.5rem;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      cursor: default;
+      transition: background .2s, border-color .2s;
+    }
+    .frame:hover { background: var(--card); border-color: var(--purple); }
+    .frame-n {
+      font-family: 'Anton', sans-serif;
+      font-size: 14px;
+      color: rgba(254,210,1,.4);
+      min-width: 28px;
+      letter-spacing: 1px;
+    }
+    .frame-text {
+      font-size: 15px;
+      font-weight: 500;
+      color: var(--light);
+      line-height: 1.4;
+    }
+
+    /* ── CLOSING ────────────────────────────────── */
+    .closing {
+      padding: 7rem 0 5rem;
+      text-align: center;
+    }
+    .closing-statement {
+      font-family: 'Anton', sans-serif;
+      font-size: clamp(28px, 5vw, 52px);
+      letter-spacing: 2px;
+      color: #fff;
+      line-height: 1.1;
+      max-width: 700px;
+      margin: 0 auto 3rem;
+    }
+    .closing-statement .gold { color: var(--gold); }
+
+    .cta-row {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    .btn {
+      font-family: 'Work Sans', sans-serif;
+      font-size: 13px;
+      font-weight: 700;
+      padding: 12px 28px;
+      border-radius: 8px;
+      cursor: pointer;
+      text-decoration: none;
+      letter-spacing: .5px;
+      transition: all .2s;
+      display: inline-block;
+    }
+    .btn-primary { background: var(--gold); color: var(--navy); border: none; }
+    .btn-primary:hover { background: #ffe84d; transform: translateY(-2px); }
+    .btn-ghost { background: transparent; color: var(--body); border: 1.5px solid var(--border); }
+    .btn-ghost:hover { border-color: var(--light); color: #fff; transform: translateY(-2px); }
+
+    /* ── FOOTER ─────────────────────────────────── */
+    footer {
+      padding: 2rem;
+      border-top: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .footer-logo {
+      font-family: 'Anton', sans-serif;
+      font-size: 14px;
+      letter-spacing: 3px;
+      color: var(--gold);
+    }
+    .footer-logo span { color: #fff; }
+    .footer-logo span b { color: var(--red); }
+    .footer-note { font-size: 12px; color: var(--muted); }
+
+    /* ── RESPONSIVE ─────────────────────────────── */
+    @media (max-width: 640px) {
+      nav { padding: .75rem 1rem; }
+      .nav-links { display: none; }
+      .hero { padding: 6rem 1.25rem 4rem; }
+      .container { padding: 0 1.25rem; }
+      .section { padding: 4rem 0; }
+      .stat-grid { grid-template-columns: repeat(3, 1fr); }
+      .feature-grid { grid-template-columns: 1fr; }
+      .platform-grid { grid-template-columns: repeat(3, 1fr); }
+      .principle { grid-template-columns: 1fr; gap: .5rem; }
+      .palette { flex-wrap: wrap; }
+      .swatch { min-width: calc(33% - 8px); }
+      .pull-quote { font-size: 20px; }
+      footer { flex-direction: column; gap: .75rem; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- PROGRESS BAR -->
+<div id="progress-bar"></div>
+
+<!-- NAV -->
+<nav id="nav">
+  <a href="#" class="nav-logo">P♠KER <span><b>B</b>ROS</span></a>
+  <ul class="nav-links">
+    <li><a href="#context">Context</a></li>
+    <li><a href="#role">Role</a></li>
+    <li><a href="#approach">Approach</a></li>
+    <li><a href="#execution">Execution</a></li>
+    <li><a href="#impact">Impact</a></li>
+  </ul>
+  <a href="/#project-grid" class="nav-back">← Back to Project Grid</a>
+</nav>
+
+<!-- ══════════════════════════════════════════
+     HERO
+══════════════════════════════════════════ -->
+<section class="hero">
+  <div class="hero-bg"></div>
+
+  <!-- Spade SVG decorative background -->
+  <svg class="hero-spade" viewBox="0 0 217 235" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M108.457 234.573C168.356 234.573 216.914 186.021 216.914 126.13C216.914 66.238 168.356 17.6863 108.457 17.6863C48.5579 17.6863 0 66.238 0 126.13C0 186.021 48.5579 234.573 108.457 234.573Z" fill="white"/>
+    <path d="M145.679 0C138.207 5.6 99.4 35 88.2 43.4C77 53.7 32.2 81.7 30.3 104.1C28.4 126.5 36.8 133 46.2 141.5C55.5 149.9 66.7 143.3 73.3 153.6C78.9 167.6 68.6 173.2 63.9 173.2L47.1 169.4V172.2C90.9 200 104.7 204.1C111.6 202.2 120 197.5C115.1 192.6 89.5 176.1 102.2 167.6C106.9 171.4 127.4 188.2C134.9 191.9 148 191 155.5 191C166.7 183.5 169.5 176 163.9 133.1C157.3 82.6 145.7 0Z" fill="white"/>
+  </svg>
+
+  <div class="hero-inner container">
+    <p class="hero-eyebrow">Case Study · 2023–2024</p>
+    <h1 class="hero-title">POKER<br><span class="gold">SCHOOL</span></h1>
+    <p class="hero-subtitle">POKERBROS PLATFORM</p>
+    <p class="hero-desc">
+      Building the complete visual identity of a global poker platform
+      from brand system and product UI to content, media, and physical environments.
+    </p>
+    <div class="hero-tags">
+      <span class="tag tag-gold">Head of Design</span>
+      <span class="tag tag-purple">Brand Identity</span>
+      <span class="tag tag-purple">UI/UX</span>
+      <span class="tag tag-purple">Design System</span>
+      <span class="tag tag-purple">Web App</span>
+      <span class="tag tag-red">Creative Direction</span>
+    </div>
+    <div class="hero-scroll">
+      <div class="hero-scroll-line"></div>
+      Scroll to explore
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════
+     CONTEXT
+══════════════════════════════════════════ -->
+<section class="section" id="context">
+  <div class="container">
+    <p class="section-label">01, Context</p>
+    <h2>A GLOBAL PLATFORM.<br>ONE VISUAL VOICE.</h2>
+    <p>
+      PokerBros is a social poker platform with millions of players across dozens of markets.
+      The product exists not in a single context, but across an entire ecosystem of touchpoints:
+      native mobile app, web platform, content operation, podcast programming,
+      live events, and branded physical environments.
+    </p>
+    <p>
+      The visual identity needed to carry meaning and consistency without relying on language,
+      hold across radically different formats and scales simultaneously,
+      and feel native to each medium while remaining unmistakably the same brand.
+    </p>
+
+    <div class="pull-quote">
+      "Not just a brand.<br>A scalable visual ecosystem."
+    </div>
+
+    <div class="stat-grid">
+      <div class="stat-card">
+        <div class="stat-n">6+</div>
+        <div class="stat-l">Platforms & channels</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-n">24</div>
+        <div class="stat-l">Pages in the logobook</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-n">5</div>
+        <div class="stat-l">Colours in the official palette</div>
+      </div>
+    </div>
+
+    <!-- Colour Palette -->
+    <h3>Official Brand Palette</h3>
+    <div class="palette">
+      <div class="swatch">
+        <div class="swatch-color" style="background:#141533"></div>
+        <div class="swatch-info"><div class="swatch-name">Deep Navy</div><div class="swatch-hex">#141533</div></div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-color" style="background:#42105E"></div>
+        <div class="swatch-info"><div class="swatch-name">Royal Purple</div><div class="swatch-hex">#42105E</div></div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-color" style="background:#E14545"></div>
+        <div class="swatch-info"><div class="swatch-name">Blaze Red</div><div class="swatch-hex">#E14545</div></div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-color" style="background:#FED201"></div>
+        <div class="swatch-info"><div class="swatch-name">Gold</div><div class="swatch-hex">#FED201</div></div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-color" style="background:#EFAF55"></div>
+        <div class="swatch-info"><div class="swatch-name">Amber</div><div class="swatch-hex">#EFAF55</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════
+     ROLE
+══════════════════════════════════════════ -->
+<section class="section" id="role">
+  <div class="container">
+    <p class="section-label">02, My Role</p>
+    <h2>HEAD OF DESIGN.<br><span style="color:var(--gold)">FULL SCOPE.</span></h2>
+    <p>
+      My role was not to execute someone else's creative vision. It was to build one.
+      As Head of Design, I owned the entire visual dimension of the organisation
+      from initial conception through ongoing evolution.
+    </p>
+
+    <div class="feature-grid">
+      <div class="feature-card">
+        <div class="feature-num">01</div>
+        <div class="feature-title">Creative Direction</div>
+        <p class="feature-desc">Setting and maintaining the visual direction across all channels, formats, and contexts. Every output, product, content, physical, was a design decision I owned.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-num">02</div>
+        <div class="feature-title">Brand Identity</div>
+        <p class="feature-desc">Building the complete visual system: logo and all variants, colour palette, typography, illustration direction, iconography, and usage rules.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-num">03</div>
+        <div class="feature-title">Product Design</div>
+        <p class="feature-desc">Leading the UI system for app and web, balancing information density, interaction clarity, and brand personality in a complex digital product.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-num">04</div>
+        <div class="feature-title">Systems Thinking</div>
+        <p class="feature-desc">Building design systems with enough logic to hold consistency at scale, across platforms, teams, and contexts that couldn't all be anticipated at the start.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-num">05</div>
+        <div class="feature-title">Content & Media</div>
+        <p class="feature-desc">Art directing the content operation: podcast artwork, social templates, editorial formats, each designed for its medium, all coherent as a family.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-num">06</div>
+        <div class="feature-title">Physical & Events</div>
+        <p class="feature-desc">Extending the identity into merch, venue environments, branded equipment, and event materials, proving the system worked beyond the screen.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════
+     DESIGN APPROACH
+══════════════════════════════════════════ -->
+<section class="section" id="approach">
+  <div class="container">
+    <p class="section-label">03, Design Approach</p>
+    <h2>THE STRATEGY<br><span style="color:var(--gold)">BEHIND THE SYSTEM.</span></h2>
+    <p>
+      Every decision was guided by a small set of strategic principles
+      applied consistently across every format, scale, and context the brand occupied.
+    </p>
+
+    <div class="principles">
+      <div class="principle">
+        <div class="principle-label">Recognition before aesthetics</div>
+        <p class="principle-text">In a fragmented media environment, the first job of a visual identity is to be recognisable, not just attractive. Every decision was made with one question: will this read as PokerBros, immediately, at any scale, in any context?</p>
+      </div>
+      <div class="principle">
+        <div class="principle-label">Clarity under density</div>
+        <p class="principle-text">Poker, as a game and as a culture, is dense with information. The design system needed to impose clarity, to make hierarchy legible, navigation fast, and friction low, without sacrificing visual personality.</p>
+      </div>
+      <div class="principle">
+        <div class="principle-label">Bold, not aggressive</div>
+        <p class="principle-text">The category defaults to visual aggression. PokerBros was built to be bold and confident without being confrontational, warmth and energy over dominance. That distinction shaped every colour, typographic, and illustration choice.</p>
+      </div>
+      <div class="principle">
+        <div class="principle-label">Consistency as structure</div>
+        <p class="principle-text">Consistency wasn't enforced by rules that said everything must look the same. It was achieved by building a system with enough internal logic that coherent decisions emerged naturally, even in contexts the original guidelines didn't anticipate.</p>
+      </div>
+      <div class="principle">
+        <div class="principle-label">Flexibility within structure</div>
+        <p class="principle-text">A rigid identity breaks under pressure. Clear rules where consistency is non-negotiable (colour, typography, logo usage), genuine expressive range where variety is appropriate (illustration, content formats, motion).</p>
+      </div>
+      <div class="principle">
+        <div class="principle-label">Brand as product</div>
+        <p class="principle-text">Brand and product were never treated as separate domains. The app UI was not a separate visual system from the brand identity, it was an extension of it. Every product interaction reinforced brand recognition.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════
+     EXECUTION
+══════════════════════════════════════════ -->
+<section class="section" id="execution">
+  <div class="container">
+    <p class="section-label">04, Execution</p>
+    <h2>WHAT WAS<br><span style="color:var(--gold)">BUILT.</span></h2>
+    <p>
+      The work covered every context the brand occupied
+      each with its own formal logic, all part of the same system.
+    </p>
+
+    <div class="execution-block">
+      <div class="execution-tag">Brand System</div>
+      <div class="execution-title">Identity & Logobook</div>
+      <p class="execution-desc">The full visual identity: primary mark and all approved variants (stacked, horizontal, icon-only, line-only), a five-colour palette with clearly defined usage rules, a typographic system anchored in Impact for display and Helvetica Neue for body, a 3D illustration direction with custom characters, and a comprehensive brand guidelines document codifying every decision, not just what, but why.</p>
+    </div>
+
+    <div class="execution-block">
+      <div class="execution-tag">Product</div>
+      <div class="execution-title">App & Web UI System</div>
+      <p class="execution-desc">A UI system built to support a complex, information-dense poker experience while remaining visually coherent with the brand. Component logic and brand personality were never in tension, each reinforced the other. The web extended this into a broader editorial context with different layouts and content types while maintaining full visual continuity.</p>
+    </div>
+
+    <div class="execution-block">
+      <div class="execution-tag">Content</div>
+      <div class="execution-title">Podcast, Editorial & Social</div>
+      <p class="execution-desc">Each content format received its own formal treatment, thumbnail systems, cover art, episode artwork, social templates, designed for its medium and optimised for its distribution context. The social visual system enabled high-frequency content production without degrading brand quality, with format-specific rules for feed, story, carousel, and reels.</p>
+    </div>
+
+    <div class="execution-block">
+      <div class="execution-tag">Physical</div>
+      <div class="execution-title">Merch, Events & Venue</div>
+      <p class="execution-desc">Physical applications tested the identity's structural integrity, how it performs without digital rendering, at scale, on materials, and in three dimensions. Merchandise, poker chips, table felt, venue signage, and event materials each had specific rules derived from the same underlying system.</p>
+    </div>
+
+    <h3 style="margin-top:3rem">Platforms covered</h3>
+    <div class="platform-grid">
+      <div class="platform-card"><div class="platform-icon">📱</div><div class="platform-name">Mobile App</div></div>
+      <div class="platform-card"><div class="platform-icon">🌐</div><div class="platform-name">Web</div></div>
+      <div class="platform-card"><div class="platform-icon">🎙</div><div class="platform-name">Podcast</div></div>
+      <div class="platform-card"><div class="platform-icon">📸</div><div class="platform-name">Instagram</div></div>
+      <div class="platform-card"><div class="platform-icon">👕</div><div class="platform-name">Merch</div></div>
+      <div class="platform-card"><div class="platform-icon">🏠</div><div class="platform-name">Venue</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════
+     IMPACT
+══════════════════════════════════════════ -->
+<section class="section" id="impact">
+  <div class="container">
+    <p class="section-label">05, Impact</p>
+    <h2>A SYSTEM THAT<br><span style="color:var(--gold)">HOLDS AT SCALE.</span></h2>
+
+    <div class="pull-quote">
+      "The most meaningful measure is not a metric<br>it is a structural quality."
+    </div>
+
+    <p>
+      PokerBros now has a visual language that can be applied by different people,
+      in different contexts, at different scales, and still feel like the same brand.
+      That is what a design system is supposed to do, and it is harder to achieve than it looks.
+    </p>
+    <p>
+      The brand is more legible, more consistent, and better equipped to scale than it was before.
+      The systems built here will outlast any single campaign or content cycle.
+    </p>
+
+    <div class="feature-grid" style="margin-top:2.5rem">
+      <div class="feature-card">
+        <div class="feature-title">Global recognition</div>
+        <p class="feature-desc">A visual fingerprint that cannot be confused with a competitor, readable in any format, at any scale, in any market.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-title">Cross-platform cohesion</div>
+        <p class="feature-desc">Full visual consistency across app, web, content, media, and physical environments, without fragmenting.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-title">Scalable infrastructure</div>
+        <p class="feature-desc">A documented system that enables others to produce on-brand work without degrading quality, even at high frequency.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-title">Brand as product</div>
+        <p class="feature-desc">The product UI reinforces brand recognition in every interaction, brand and product are the same visual world.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════
+     MOTION FRAMES
+══════════════════════════════════════════ -->
+<section class="section">
+  <div class="container">
+    <p class="section-label">06, Motion Frames</p>
+    <h2>THE STORY<br><span style="color:var(--gold)">IN 15 BEATS.</span></h2>
+    <p style="margin-bottom:2rem">Frame sequence for video case / motion design presentation.</p>
+
+    <div class="frames">
+      <div class="frame"><span class="frame-n">01</span><span class="frame-text">One platform. A global audience. A single visual voice.</span></div>
+      <div class="frame"><span class="frame-n">02</span><span class="frame-text">This is not a branding project.</span></div>
+      <div class="frame"><span class="frame-n">03</span><span class="frame-text">This is what design leadership looks like.</span></div>
+      <div class="frame"><span class="frame-n">04</span><span class="frame-text">Head of Design. Complete creative ownership.</span></div>
+      <div class="frame"><span class="frame-n">05</span><span class="frame-text">Brand. Product. Content. Media. Physical.</span></div>
+      <div class="frame"><span class="frame-n">06</span><span class="frame-text">Not designed once, built to last.</span></div>
+      <div class="frame"><span class="frame-n">07</span><span class="frame-text">Every touchpoint. One system.</span></div>
+      <div class="frame"><span class="frame-n">08</span><span class="frame-text">Recognition at any scale. Clarity at any density.</span></div>
+      <div class="frame"><span class="frame-n">09</span><span class="frame-text">A visual language with enough logic to hold without supervision.</span></div>
+      <div class="frame"><span class="frame-n">10</span><span class="frame-text">App UI. Web. Podcast. Merch. Venue. Feed.</span></div>
+      <div class="frame"><span class="frame-n">11</span><span class="frame-text">The brand doesn't fragment. It flexes.</span></div>
+      <div class="frame"><span class="frame-n">12</span><span class="frame-text">Consistency is structural. It was built in.</span></div>
+      <div class="frame"><span class="frame-n">13</span><span class="frame-text">PokerBros. A global poker platform.</span></div>
+      <div class="frame"><span class="frame-n">14</span><span class="frame-text">Designed, entirely, by one person with full creative authority.</span></div>
+      <div class="frame"><span class="frame-n">15</span><span class="frame-text">This is the work.</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════
+     CLOSING
+══════════════════════════════════════════ -->
+<section class="closing">
+  <div class="container">
+    <p class="section-label" style="justify-content:center; margin-bottom:3rem">
+      <span style="flex:unset">07, Closing</span>
+    </p>
+    <div class="closing-statement">
+      I didn't design <span class="gold">for</span> PokerBros.<br>
+      I built the visual infrastructure<br>
+      that PokerBros <span class="gold">runs on.</span>
+    </div>
+    <div class="cta-row">
+      <a href="https://www.pokerbros.net" target="_blank" rel="noopener" class="btn btn-primary">Visit the live site ↗</a>
+      <a href="/#project-grid" class="btn btn-ghost">← Back to Project Grid</a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">P♠KER <span><b>B</b>ROS</span></div>
+  <div class="footer-note">Case Study · Head of Design · 2023–2024</div>
+</footer>
+
+<script>
+  // ── SCROLL PROGRESS ──────────────────────────────
+  const bar = document.getElementById('progress-bar');
+  const nav = document.getElementById('nav');
+
+  window.addEventListener('scroll', () => {
+    const scrolled = window.scrollY;
+    const total    = document.body.scrollHeight - window.innerHeight;
+    bar.style.width = (scrolled / total * 100) + '%';
+    nav.classList.toggle('scrolled', scrolled > 60);
+  });
+
+  // ── INTERSECTION OBSERVER ────────────────────────
+  const sections = document.querySelectorAll('.section');
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+        obs.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.08 });
+
+  sections.forEach(s => obs.observe(s));
+
+  // ── STAGGER FEATURE CARDS ────────────────────────
+  const cardObs = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        const cards = e.target.querySelectorAll(
+          '.feature-card, .stat-card, .swatch, .platform-card, .frame, .execution-block, .principle'
+        );
+        cards.forEach((c, i) => {
+          c.style.opacity = '0';
+          c.style.transform = 'translateY(16px)';
+          c.style.transition = `opacity .5s ${i * 0.06}s, transform .5s ${i * 0.06}s`;
+          setTimeout(() => {
+            c.style.opacity = '1';
+            c.style.transform = 'translateY(0)';
+          }, 80 + i * 60);
+        });
+        cardObs.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.1 });
+
+  sections.forEach(s => cardObs.observe(s));
+
+  // ── SMOOTH NAV LINKS ─────────────────────────────
+  document.querySelectorAll('a[href^="#"]').forEach(a => {
+    a.addEventListener('click', e => {
+      const target = document.querySelector(a.getAttribute('href'));
+      if (target) {
+        e.preventDefault();
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    });
+  });
+</script>
+
+</body>
+</html>

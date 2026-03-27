@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Casa do Urso: Case Study</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{
+      --sand:#e8dddd;--sand2:#f0e8e2;--sand3:#f7f2ee;--warm:#c9a882;--brown:#6b3f2a;--forest:#3a5c3a;--navy:#032E4D;
+      --border:rgba(107,63,42,.15);--body:#4a3a32;--muted:rgba(74,58,50,.72);
+      --y:#F5BF42;--pk:#F9746E;--bl:#4497C3;--ca:#CD995B;
+    }
+    @font-face{
+      font-family:"Dolpino";
+      src:url("https://db.onlinewebfonts.com/t/eb24225f7e3878afacc92b4efe6ca38e.eot");
+      src:url("https://db.onlinewebfonts.com/t/eb24225f7e3878afacc92b4efe6ca38e.eot?#iefix") format("embedded-opentype"),
+        url("https://db.onlinewebfonts.com/t/eb24225f7e3878afacc92b4efe6ca38e.woff2") format("woff2"),
+        url("https://db.onlinewebfonts.com/t/eb24225f7e3878afacc92b4efe6ca38e.woff") format("woff"),
+        url("https://db.onlinewebfonts.com/t/eb24225f7e3878afacc92b4efe6ca38e.ttf") format("truetype");
+      font-weight:400;
+      font-style:normal;
+      font-display:swap;
+    }
+    html{scroll-behavior:smooth;font-size:15px}
+    body{font-family:"Poppins",system-ui,sans-serif;background:var(--sand);color:var(--body);overflow-x:hidden;line-height:1.75;min-height:100vh}
+    .mono{font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace}
+    #pb{position:fixed;top:0;left:0;height:3px;width:0%;background:var(--navy);z-index:999;transition:width .12s}
+    .strip{height:6px;display:flex;width:100%}
+    .strip span{flex:1}
+    .strip span:nth-child(1){background:var(--y)}
+    .strip span:nth-child(2){background:var(--pk)}
+    .strip span:nth-child(3){background:var(--bl)}
+    .strip span:nth-child(4){background:var(--ca)}
+    nav{position:fixed;top:6px;left:0;right:0;z-index:500;padding:.75rem 1.5rem;display:flex;align-items:center;justify-content:space-between;background:rgba(232,221,221,.94);backdrop-filter:blur(12px);border-bottom:1px solid var(--border)}
+    .nav-logo{font-family:"Dolpino","Poppins",Georgia,serif;font-size:15px;font-weight:400;letter-spacing:.12em;color:var(--brown);text-decoration:none;text-transform:uppercase}
+    .nav-logo-img{display:block;height:18px;width:auto}
+    .nav-links{display:flex;gap:1rem;flex-wrap:wrap;list-style:none;justify-content:flex-end}
+    .nav-links a{font-size:13px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);text-decoration:none}
+    .nav-links a:hover,.nav-links a.active{color:var(--navy)}
+    .nav-back{font-size:13px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);text-decoration:none}
+    .nav-back:hover{color:var(--brown)}
+    .hero{min-height:100vh;display:grid;grid-template-columns:1fr 1fr;border-bottom:1px solid var(--border)}
+    .hero-left{display:flex;flex-direction:column;justify-content:flex-end;padding:7rem 2rem 4rem;background:var(--sand2)}
+    .hero-eyebrow{font-size:13px;font-weight:700;letter-spacing:.28em;text-transform:uppercase;color:var(--forest);margin-bottom:1rem}
+    .hero-title{font-family:"Dolpino","Poppins",Georgia,serif;font-size:clamp(2rem,5vw,3.2rem);font-weight:400;line-height:1.05;color:var(--brown);letter-spacing:.02em}
+    .hero-rule{width:48px;height:2px;background:var(--warm);margin:1.25rem 0}
+    .hero-desc{font-size:14px;max-width:28rem;color:var(--body)}
+    .hero-tags{display:flex;flex-wrap:wrap;gap:6px;margin:1.25rem 0 2rem}
+    .tag{font-size:13px;font-weight:700;padding:4px 10px;letter-spacing:.12em;text-transform:uppercase;border:1px solid var(--border);color:var(--muted);border-radius:4px;background:rgba(255,255,255,.35)}
+    .tag-h{border-color:var(--navy);color:var(--navy)}
+    .hero-scroll{font-size:13px;letter-spacing:.22em;text-transform:uppercase;color:var(--muted)}
+    .hero-right{position:relative;background:var(--sand3);min-height:50vh}
+    .hero-right video,.hero-right img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+    .container{max-width:920px;margin:0 auto;padding:0 1.5rem}
+    .section{padding:5rem 0;border-bottom:1px solid var(--border);opacity:0;transform:translateY(20px);transition:opacity .65s,transform .65s;scroll-margin-top:110px}
+    .section.visible{opacity:1;transform:translateY(0)}
+    .sec-label{font-size:13px;font-weight:700;letter-spacing:.28em;text-transform:uppercase;color:var(--muted);margin-bottom:1rem;display:flex;align-items:center;gap:10px}
+    .sec-label::after{content:'';flex:1;height:1px;background:var(--border)}
+    h2{font-family:"Dolpino","Poppins",Georgia,serif;font-size:clamp(1.75rem,4vw,2.75rem);font-weight:400;color:var(--brown);line-height:1.1;margin-bottom:1rem}
+    h3{font-family:"Dolpino","Poppins",Georgia,serif;font-size:1.25rem;color:var(--brown);margin:2rem 0 .75rem}
+    .body-text{font-size:14px;white-space:pre-line;color:var(--body)}
+    .pull-quote{border-left:3px solid var(--warm);padding:.75rem 0 .75rem 1rem;margin:1.5rem 0;font-family:"Dolpino","Poppins",Georgia,serif;font-size:clamp(1.05rem,2.5vw,1.35rem);font-style:italic;color:var(--brown);line-height:1.35}
+    .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin:1.5rem 0}
+    @media(max-width:768px){.hero{grid-template-columns:1fr}.grid-2{grid-template-columns:1fr}}
+    .media-round{border-radius:10px;overflow:hidden;border:1px solid var(--border);background:var(--sand2)}
+    .media-round img,.media-round video{width:100%;height:100%;object-fit:cover;display:block;min-height:200px}
+    .tato-left{min-height:220px;border-radius:12px;border:1px solid var(--border);display:flex;align-items:center;justify-content:center;padding:0;overflow:hidden;position:relative;background-color:rgba(245,191,66,.2);background-image:radial-gradient(circle,rgba(3,46,77,.12) 1px,transparent 1px);background-size:10px 10px}
+    .tato-left canvas{position:absolute;inset:0;width:100%;height:100%;display:block}
+    .tato-left video{display:none}
+    .swatch-grid{display:flex;flex-wrap:wrap;justify-content:center;gap:2rem;padding:1.5rem;background:var(--sand2);border:1px solid var(--border);border-radius:10px;margin:1rem 0}
+    .sw-item{text-align:center;max-width:100px}
+    .sw-ico{width:64px;height:64px;margin:0 auto .5rem}
+    .sw-label{font-size:13px;font-weight:700;color:var(--brown)}
+    .sw-sub{font-size:13px;color:var(--muted)}
+    .sw-note{text-align:center;font-size:13px;color:var(--muted);border-top:1px solid var(--border);padding-top:1rem;margin-top:1rem}
+    .colors-row{display:flex;flex-wrap:wrap;justify-content:center;gap:1.25rem;padding:1rem}
+    .cb{display:flex;flex-direction:column;align-items:center;gap:.5rem}
+    .cb div{width:72px;height:72px;border-radius:16px;border:1px solid var(--border)}
+    .process-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem;align-items:stretch}
+    @media(max-width:768px){.process-grid{grid-template-columns:1fr}}
+    .process-card{border:1px solid var(--border);border-radius:12px;padding:1.1rem;background:rgba(255,255,255,.32);height:100%}
+    .process-card h3{margin-top:0}
+    .process-card .swatch-grid{margin:.75rem 0 0;background:transparent;border:none;padding:0}
+    .process-card .sw-note{margin-top:.9rem}
+    .process-card .colors-row{padding:.5rem 0 0}
+    .process-card .pillars{margin-top:1rem}
+    .process-card.spatial-map .colors-row,
+    .process-card.spatial-map .pillars{
+      display:grid;
+      grid-template-columns:repeat(2,minmax(0,1fr));
+      gap:.85rem;
+      align-items:start;
+      justify-items:center;
+    }
+    @media(min-width:640px){
+      .process-card.spatial-map .colors-row,
+      .process-card.spatial-map .pillars{
+        grid-template-columns:repeat(4,minmax(0,1fr));
+      }
+    }
+    .process-card.spatial-map .colors-row{margin-top:.25rem}
+    .process-card.spatial-map .pillars{margin-top:.65rem}
+    /* Fill the drawer content area (not the viewport). */
+    .process-hero{width:calc(100% + 3rem);margin-left:-1.5rem;transform:none;max-width:none}
+    @media(max-width:768px){.process-hero{width:calc(100% + 2rem);margin-left:-1rem}}
+    .pillars{display:grid;grid-template-columns:repeat(2,1fr);gap:.75rem;margin-top:1rem}
+    @media(min-width:640px){.pillars{grid-template-columns:repeat(4,1fr)}}
+    .pillar{text-align:center}
+    .pillar img{height:56px;width:auto;object-fit:contain}
+    .pillar span{display:block;margin-top:.35rem;font-size:13px;font-weight:700;letter-spacing:.12em;text-transform:uppercase}
+    .slider{position:relative;overflow:hidden;border-radius:10px;border:1px solid var(--border);background:#000}
+    .slider-track{display:flex;transition:transform .5s cubic-bezier(.22,1,.36,1)}
+    .slider-slide{min-width:100%;aspect-ratio:16/9}
+    .slider-slide video,.slider-slide img{width:100%;height:100%;object-fit:cover;display:block}
+    .iframe-box{position:relative;aspect-ratio:4/3;width:100%;max-width:100%;border-radius:10px;overflow:hidden;border:1px solid var(--border);background:var(--sand2)}
+    .iframe-box iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+    .deliv-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:1.5rem}
+    @media(max-width:640px){.deliv-grid{grid-template-columns:1fr}}
+    .deliv-card{border:1px solid var(--border);border-radius:10px;padding:1rem;background:rgba(255,255,255,.35)}
+    .deliv-card h4{font-size:13px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);margin-bottom:.5rem}
+    .deliv-card p{font-size:13px;color:var(--body);line-height:1.55}
+    .closing{padding:5rem 1.5rem;text-align:center;background:var(--sand2);border-top:1px solid var(--border)}
+    .bear{font-size:3rem;animation:float 4s ease-in-out infinite}
+    @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+    .closing h2{margin-bottom:.5rem}
+    .cta-row{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:1.5rem}
+    .btn{font-family:inherit;font-size:13px;font-weight:700;padding:12px 24px;letter-spacing:.18em;text-transform:uppercase;text-decoration:none;border-radius:6px;display:inline-block;transition:transform .2s}
+    .btn-p{background:var(--brown);color:#fff;border:2px solid var(--brown)}
+    .btn-p:hover{transform:translateY(-2px)}
+    .btn-g{background:transparent;color:var(--brown);border:2px solid var(--border)}
+    footer{padding:1.5rem;border-top:1px solid var(--border);display:flex;justify-content:space-between;flex-wrap:wrap;gap:1rem;font-size:13px;color:var(--muted)}
+    .logo-header-wrap{max-width:320px;margin:1rem 0}
+    /* Avoid repeating the big logo inside the drawer overview. */
+    #overview #casa-logo-svg{display:none}
+    #overview #casa-logo-svg + p{display:none}
+    @keyframes gridDrawLoop{0%,100%{stroke-dashoffset:var(--grid-len,300)}50%{stroke-dashoffset:0}}
+    .casa-svg svg{display:block;width:100%;height:auto}
+  </style>
+</head>
+<body>
+<div id="pb"></div>
+<div class="strip" aria-hidden="true"><span></span><span></span><span></span><span></span></div>
+<nav id="nav">
+  <a href="#overview" class="nav-logo" aria-label="Casa do Urso">
+    <img src="/logo_horizontal.svg" alt="Casa do Urso" class="nav-logo-img"/>
+  </a>
+  <ul class="nav-links">
+    <li><a href="#overview">Overview</a></li>
+    <li><a href="#challenge">Challenge</a></li>
+    <li><a href="#tato">Tato</a></li>
+    <li><a href="#process">Process</a></li>
+    <li><a href="#outcome">Outcome</a></li>
+    <li><a href="#deliverables">Deliverables</a></li>
+  </ul>
+  <a href="/#project-grid" class="nav-back">← Project Grid</a>
+</nav>
+<section class="hero">
+  <div class="hero-left">
+    <p class="hero-eyebrow mono">Neurodevelopment · Brand · Space · Digital</p>
+    <h1 class="hero-title">A sensory-driven system for care</h1>
+    <div class="hero-rule"></div>
+    <p class="hero-desc">Tactile interface language, warm identity, and controlled rhythm. The same narrative used in the live project drawer.</p>
+    <div class="hero-tags mono">
+      <span class="tag tag-h">vibe coder</span>
+      <span class="tag">interface system</span>
+      <span class="tag">BRAND / DIGITAL</span>
+      <span class="tag">design system</span>
+    </div>
+    <p class="hero-scroll mono">Scroll</p>
+  </div>
+  <div class="hero-right">
+    <video
+      src="/case/Comp%201.mp4"
+      autoplay
+      muted
+      loop
+      playsinline
+      preload="metadata"
+      poster="/casadourso-cover.png"
+    ></video>
+  </div>
+</section>
+
+<section class="section" id="overview">
+  <div class="container">
+    <p class="sec-label mono">01 · Overview</p>
+    
+<div class="logo-header-wrap casa-svg" id="casa-logo-svg">
+  <div style="aspect-ratio:443/303;max-width:320px;overflow:visible">
+    <svg
+          viewBox="0 0 443 303"
+          class="h-full w-full"
+          style="overflow:visible"
+        ><path fill="#032E4D" d="M62.9099 32.7842C62.4798 32.5691 61.9421 32.3541 61.2969 32.139C60.6516 31.8164 59.3612 31.3862 57.4255 30.8485C55.4898 30.2033 53.5541 29.7731 51.6184 29.5581C49.7903 29.2355 47.5857 29.1817 45.0048 29.3968C42.5314 29.6118 40.1656 30.2033 37.9073 31.1711C35.7565 32.0315 33.552 33.537 31.2937 35.6878C29.1429 37.731 27.261 40.3657 25.6479 43.5918C23.067 49.1838 21.5614 54.7758 21.1313 60.3678C20.8087 65.8523 21.3464 70.6377 22.7444 74.7242C24.2499 78.8107 25.9705 82.3056 27.9062 85.2092C29.9494 88.1127 32.1002 90.2635 34.3585 91.6615C42.5314 97.1459 51.2958 96.2319 60.6516 88.9193C61.4044 88.3816 62.426 87.9514 63.7165 87.6288C65.1145 87.1986 66.5662 86.9836 68.0718 86.9836C69.6849 86.9836 71.1366 87.5213 72.4271 88.5966C73.7175 89.672 74.5241 91.2851 74.8467 93.4359C75.9221 99.2429 73.1798 104.566 66.62 109.405C60.0602 114.245 51.6184 116.664 41.2947 116.664C35.9178 116.664 30.756 115.374 25.8092 112.793C20.97 110.104 16.6147 106.34 12.7433 101.501C8.87191 96.5545 5.80707 90.3173 3.54877 82.7896C1.29046 75.1543 0.107538 66.7664 0 57.6256C0 51.6034 0.806538 45.8501 2.41961 40.3657C4.03269 34.7737 6.18345 29.8807 8.87191 25.6867C11.5604 21.4927 14.6252 17.8364 18.0664 14.7178C21.6152 11.4916 25.3253 9.01824 29.1967 7.29763C33.068 5.46948 36.8857 4.44787 40.6495 4.23278C49.2526 3.58756 56.1888 4.44787 61.4582 6.81371C66.8351 9.17955 70.5989 12.4057 72.7497 16.4922C73.7175 18.4279 74.309 20.5249 74.5241 22.7832C74.7392 24.9339 74.5241 26.9234 73.8789 28.7515C73.2336 30.4722 71.9432 31.7626 70.0075 32.6229C68.0718 33.4832 65.7059 33.537 62.9099 32.7842Z" /><path fill="#032E4D" d="M156.334 111.825C156.657 113.116 156.388 114.245 155.528 115.213C154.668 116.18 153.592 116.664 152.302 116.664H139.074C138.107 116.664 137.246 116.342 136.494 115.696C135.741 115.051 135.257 114.245 135.042 113.277C134.504 110.373 133.805 107.47 132.945 104.566C132.192 102.415 131.385 100.318 130.525 98.2752C129.88 96.8772 128.805 96.0707 127.299 95.8556C123.965 95.3179 120.578 95.0491 117.137 95.0491C113.911 95.1566 110.684 95.4255 107.458 95.8556C106.168 96.0707 105.2 96.7697 104.555 97.9526C103.049 100.426 101.866 103.061 101.006 105.857C100.146 108.33 99.5004 110.803 99.0702 113.277C98.8551 114.245 98.3712 115.051 97.6185 115.696C96.8657 116.342 96.0054 116.664 95.0375 116.664H82.2942C81.0038 116.664 79.9284 116.234 79.0681 115.374C78.3153 114.406 77.9927 113.277 78.1002 111.986C82.1867 81.6605 89.6068 48.2161 100.361 11.6531C101.006 9.39476 102.243 7.62037 104.071 6.32991C105.899 4.93191 107.942 4.23291 110.2 4.23291H123.75C126.009 4.23291 128.052 4.87814 129.88 6.1686C131.708 7.45906 132.945 9.17967 133.59 11.3304C140.472 32.408 148.054 65.9062 156.334 111.825ZM124.557 71.8208C126.062 71.6057 127.245 70.9067 128.106 69.7238C128.966 68.4333 129.235 67.0353 128.912 65.5298C128.482 63.379 127.837 60.8519 126.976 57.9483C125.256 52.2488 123.266 48.0548 121.008 45.3663C120.04 44.1834 118.804 43.592 117.298 43.592C115.792 43.4844 114.502 43.9683 113.427 45.0437C109.125 49.1302 106.437 56.0664 105.361 65.8524C105.254 67.2504 105.576 68.5409 106.329 69.7238C107.189 70.7992 108.319 71.4982 109.717 71.8208C111.545 72.1434 113.427 72.3585 115.362 72.466C118.481 72.5735 121.546 72.3585 124.557 71.8208Z" /><path fill="#032E4D" d="M161.341 98.4363C160.91 97.4685 160.695 96.2318 160.695 94.7262C160.695 93.1132 160.857 91.4463 161.179 89.7257C161.609 88.0051 162.47 86.5533 163.76 85.3704C165.158 84.0799 166.879 83.4347 168.922 83.4347C171.073 83.3272 172.847 83.7036 174.245 84.5639C175.643 85.4242 176.557 86.392 176.987 87.4674C177.525 88.4352 178.063 89.7257 178.6 91.3388C179.138 92.8443 179.568 93.8659 179.891 94.4036C182.687 99.0278 186.935 101.179 192.634 100.856C198.441 100.426 202.689 97.8986 205.378 93.2745C206.56 91.4463 207.098 89.6182 206.991 87.79C206.991 85.9619 206.614 84.4563 205.861 83.2734C205.109 81.9829 204.033 80.8 202.635 79.7246C201.345 78.5417 200.108 77.6276 198.925 76.9824C197.85 76.3372 196.721 75.7457 195.538 75.208C195.108 75.1005 194.462 74.8316 193.602 74.4015C190.268 73.0035 187.687 71.8743 185.859 71.014C184.031 70.0462 181.558 68.5406 178.439 66.4974C175.428 64.4542 173.008 62.411 171.18 60.3677C169.352 58.217 167.524 55.3672 165.696 51.8184C163.975 48.2697 162.685 44.3445 161.824 40.043C160.534 33.9133 160.588 28.16 161.986 22.7831C163.384 17.4062 165.696 12.9433 168.922 9.39455C172.148 5.84579 176.181 3.26487 181.02 1.65179C185.859 -0.0688233 191.021 -0.44521 196.506 0.522636C201.667 1.49048 206.399 3.3724 210.701 6.1684C215.11 8.85686 218.497 11.9217 220.863 15.3629C223.336 18.8042 225.165 22.2454 226.347 25.6866C227.638 29.0203 228.229 31.9238 228.122 34.3972C227.692 39.1289 226.025 42.5701 223.121 44.7209C220.218 46.7641 216.938 46.9792 213.282 45.3661C211.991 44.8284 210.916 44.1294 210.055 43.2691C209.195 42.4088 208.496 41.3872 207.958 40.2043C207.421 39.0214 206.991 37.946 206.668 36.9781C206.345 35.9028 205.969 34.5585 205.539 32.9455C205.109 31.3324 204.679 30.0419 204.248 29.0741C203.496 26.8158 201.721 25.2565 198.925 24.3962C196.237 23.5359 193.495 23.9122 190.699 25.5253C188.01 27.0308 186.397 29.7193 185.859 33.5907C185.429 36.6018 185.752 39.4515 186.827 42.14C188.01 44.8284 189.838 47.3018 192.312 49.5601C194.785 51.8184 197.097 53.7541 199.248 55.3672C201.506 56.8727 204.141 58.4858 207.152 60.2064C208.335 60.8517 210.324 61.8195 213.12 63.11C216.024 64.4004 218.175 65.5296 219.573 66.4974C221.078 67.4653 222.799 68.8095 224.734 70.5301C226.778 72.2507 228.337 74.4015 229.412 76.9824C230.488 79.4558 231.24 82.4131 231.671 85.8543C232.854 94.6725 229.574 102.093 221.831 108.115C214.196 114.029 204.302 117.04 192.15 117.148C187.204 117.148 182.848 116.664 179.084 115.696C175.321 114.621 172.256 113.062 169.89 111.018C167.632 108.975 165.857 107.039 164.567 105.211C163.384 103.276 162.308 101.017 161.341 98.4363Z" /><path fill="#032E4D" d="M313.704 111.825C314.026 113.116 313.757 114.245 312.897 115.213C312.037 116.18 310.961 116.664 309.671 116.664H296.444C295.476 116.664 294.615 116.342 293.863 115.696C293.11 115.051 292.626 114.245 292.411 113.277C291.873 110.373 291.174 107.47 290.314 104.566C289.561 102.415 288.755 100.318 287.894 98.2752C287.249 96.8772 286.174 96.0707 284.668 95.8556C281.334 95.3179 277.947 95.0491 274.506 95.0491C271.28 95.1566 268.054 95.4255 264.827 95.8556C263.537 96.0707 262.569 96.7697 261.924 97.9526C260.418 100.426 259.235 103.061 258.375 105.857C257.515 108.33 256.87 110.803 256.439 113.277C256.224 114.245 255.74 115.051 254.988 115.696C254.235 116.342 253.375 116.664 252.407 116.664H239.663C238.373 116.664 237.298 116.234 236.437 115.374C235.684 114.406 235.362 113.277 235.469 111.986C239.556 81.6605 246.976 48.2161 257.73 11.6531C258.375 9.39476 259.612 7.62037 261.44 6.32991C263.268 4.93191 265.311 4.23291 267.57 4.23291H281.119C283.378 4.23291 285.421 4.87814 287.249 6.1686C289.077 7.45906 290.314 9.17967 290.959 11.3304C297.842 32.408 305.423 65.9062 313.704 111.825ZM281.926 71.8208C283.431 71.6057 284.614 70.9067 285.475 69.7238C286.335 68.4333 286.604 67.0353 286.281 65.5298C285.851 63.379 285.206 60.8519 284.346 57.9483C282.625 52.2488 280.636 48.0548 278.377 45.3663C277.409 44.1834 276.173 43.592 274.667 43.592C273.162 43.4844 271.871 43.9683 270.796 45.0437C266.494 49.1302 263.806 56.0664 262.73 65.8524C262.623 67.2504 262.945 68.5409 263.698 69.7238C264.559 70.7992 265.688 71.4982 267.086 71.8208C268.914 72.1434 270.796 72.3585 272.731 72.466C275.85 72.5735 278.915 72.3585 281.926 71.8208Z" /><path fill="#032E4D" d="M380.987 27.542C385.153 80.9461 381.57 108.398 370.239 109.898C363.824 110.814 357.576 110.231 351.494 108.148C345.412 105.982 340.455 102.899 336.622 98.9002C332.79 94.9011 330.624 90.6521 330.124 86.1532C329.541 81.6543 329.999 77.5302 331.499 73.7811C332.998 69.9487 334.998 66.8244 337.497 64.4083C340.08 61.9922 343.121 59.8677 346.62 58.0348C350.119 56.1186 353.243 54.7023 355.993 53.7858C358.825 52.8694 361.616 52.1612 364.366 51.6613C364.782 51.578 364.991 51.3697 364.991 51.0365L365.99 28.4168C365.99 26.9172 366.532 25.6258 367.615 24.5427C368.781 23.4597 370.114 22.9181 371.614 22.9181H375.863C377.196 22.8348 378.321 23.2514 379.237 24.1678C380.237 25.0843 380.82 26.209 380.987 27.542ZM362.866 84.5286C362.949 83.1122 362.949 81.6543 362.866 80.1546C362.866 79.1548 362.783 78.1551 362.616 77.1553C362.45 75.6557 361.7 74.5309 360.367 73.7811C359.117 72.948 357.784 72.823 356.368 73.4062C354.785 74.0727 353.285 74.7809 351.869 75.5307C350.702 76.1139 349.536 76.7804 348.37 77.5302C346.87 78.4467 346.12 79.7797 346.12 81.5293C346.203 83.2789 346.995 84.5702 348.495 85.4034C349.744 86.0699 350.994 86.6531 352.244 87.153C353.91 87.8195 355.576 88.361 357.242 88.7776C358.659 89.1108 359.908 88.8609 360.992 88.0277C362.158 87.1113 362.783 85.9449 362.866 84.5286Z" /><path fill="#032E4D" d="M412.1 30.1667C428.929 29.5002 437.344 44.205 437.344 74.2813C437.344 80.1965 436.553 85.5286 434.97 90.2775C433.387 95.0264 431.345 98.7338 428.846 101.4C426.347 104.066 423.764 106.107 421.098 107.523C418.432 108.856 415.849 109.523 413.35 109.523C411.85 109.523 410.434 109.44 409.101 109.273C407.768 109.023 406.268 108.606 404.602 108.023C402.936 107.357 401.394 106.482 399.978 105.399C398.645 104.233 397.27 102.65 395.854 100.65C394.521 98.6505 393.354 96.3177 392.355 93.6517C391.438 90.9023 390.647 87.5281 389.98 83.5291C389.397 79.4467 389.064 74.8645 388.98 69.7823C388.98 69.2824 389.022 68.5743 389.105 67.6578C389.189 66.6581 389.397 64.8252 389.73 62.1591C390.064 59.4931 390.522 56.9104 391.105 54.411C391.688 51.9116 392.563 49.1622 393.729 46.1629C394.979 43.1636 396.354 40.5809 397.853 38.4147C399.436 36.1653 401.436 34.2491 403.852 32.6661C406.351 31.0831 409.101 30.25 412.1 30.1667ZM422.847 71.032C423.181 66.2832 422.722 61.8675 421.473 57.7852C420.223 53.6195 418.14 51.2034 415.224 50.5369C413.391 50.2036 411.725 50.3702 410.225 51.0368C408.809 51.7033 407.684 52.828 406.851 54.411C406.101 55.9106 405.435 57.4103 404.852 58.9099C404.352 60.4095 403.977 62.1175 403.727 64.0337C403.56 65.9499 403.435 67.2829 403.352 68.0327C403.352 68.6992 403.352 69.3658 403.352 70.0323C403.352 71.8652 403.435 73.6564 403.602 75.406C403.769 77.0723 404.102 79.0718 404.602 81.4046C405.185 83.7374 406.101 85.6119 407.351 87.0283C408.684 88.4446 410.309 89.1944 412.225 89.2777C414.225 89.2777 415.891 88.8195 417.224 87.903C418.64 86.9866 419.682 85.6119 420.348 83.779C421.098 81.8628 421.639 79.9466 421.973 78.0304C422.389 76.1142 422.681 73.7814 422.847 71.032Z" /><path fill="#4099DB" d="M368.995 142.657C367.969 135.399 361.737 129.809 354.193 129.809C345.932 129.817 339.24 136.508 339.24 144.762C339.24 151.71 343.978 157.549 350.406 159.232L368.995 142.657Z" /><path fill="#4099DB" d="M407.781 142.657C408.807 135.399 415.038 129.809 422.582 129.809C430.843 129.817 437.535 136.508 437.535 144.762C437.535 151.71 432.797 157.549 426.37 159.232L407.781 142.657Z" /><path fill="#F9746E" d="M13.7266 137.108H19.4065C23.0354 137.108 26.0332 138.449 28.3998 141.131C30.9242 143.656 32.0287 146.732 31.7131 150.361C25.7176 224.201 31.5553 261.436 49.2263 262.067C53.6441 262.698 57.4307 261.199 60.5863 257.57C63.8996 253.942 66.3451 248.735 67.9229 241.951C69.6584 235.008 70.9206 227.672 71.7095 219.941C72.6562 212.21 73.1295 203.69 73.1295 194.381C73.1295 184.914 72.9717 176.789 72.6562 170.004C72.4984 163.22 72.1829 156.436 71.7095 149.651C71.394 146.022 72.4984 142.867 75.0228 140.185C77.705 137.502 80.8606 136.24 84.4894 136.398C86.6983 136.556 88.355 136.635 89.4594 136.635C92.7727 136.792 95.5338 138.055 97.7427 140.421C100.109 142.63 101.372 145.391 101.529 148.705C101.687 157.224 101.766 169.61 101.766 185.861C101.924 202.112 102.003 213.551 102.003 220.177C102.476 243.844 102.555 267.589 102.239 291.414C102.239 294.254 101.135 296.778 98.926 298.987C96.8749 301.038 94.3505 302.063 91.3527 302.063H81.4128C78.415 302.063 75.8117 301.038 73.6028 298.987C71.5518 296.778 70.5262 294.175 70.5262 291.177V280.527C70.5262 279.58 70.1318 279.028 69.3429 278.87C68.554 278.713 68.0018 278.949 67.6862 279.58C65.9507 282.42 64.0574 285.102 62.0063 287.627C60.1129 289.994 57.5885 292.439 54.433 294.964C51.2774 297.488 47.4119 299.302 42.8364 300.407C38.4186 301.511 33.7642 301.669 28.8731 300.88C25.4021 300.249 22.2465 299.066 19.4065 297.33C16.7243 295.595 14.3577 293.386 12.3066 290.704C10.4133 288.021 8.75661 285.26 7.33662 282.42C5.91663 279.58 4.7333 276.267 3.78664 272.48C2.99776 268.694 2.28776 265.301 1.65666 262.304C1.18333 259.306 0.788883 255.914 0.47333 252.127C0.315553 248.183 0.157776 245.185 0 243.134C0 240.925 0 238.401 0 235.561C0.157776 232.563 0.236665 230.985 0.236665 230.827C-0.236665 202.585 0.157776 175.211 1.41999 148.705C1.57777 145.391 2.83998 142.63 5.20663 140.421C7.57328 138.212 10.4133 137.108 13.7266 137.108Z" /><path fill="#F5BF42" d="M179.376 232.011L215.349 275.794C216.927 277.687 217.558 279.817 217.242 282.184C217.084 284.55 216.059 286.444 214.166 287.864C213.219 288.653 211.878 289.757 210.142 291.177C208.407 292.597 206.908 293.78 205.646 294.727C204.541 295.674 203.595 296.305 202.806 296.62C199.492 298.356 196.258 298.435 193.102 296.857C189.947 295.279 187.186 293.07 184.819 290.23C180.717 285.024 172.118 273.112 159.023 254.494C157.918 252.758 156.34 252.206 154.289 252.837C152.396 253.468 151.449 254.888 151.449 257.097C151.449 266.406 151.37 278.16 151.213 292.36C151.213 295.042 150.266 297.33 148.373 299.224C146.479 301.117 144.192 302.064 141.509 302.064H131.569C129.203 302.064 127.073 301.275 125.179 299.697C123.444 297.961 122.497 295.831 122.339 293.307C120.604 269.798 119.815 222.702 119.973 152.018C119.973 147.6 121.551 143.892 124.706 140.895C128.019 137.739 131.885 136.24 136.303 136.398C156.498 136.871 173.301 140.895 186.712 148.468C200.281 155.883 207.066 164.877 207.066 175.448C207.066 180.97 206.04 186.571 203.989 192.251C202.096 197.931 199.492 203.059 196.179 207.634C193.023 212.052 190.183 215.681 187.659 218.521C185.135 221.203 182.61 223.727 180.086 226.094C178.035 227.83 177.798 229.802 179.376 232.011ZM169.199 196.511C172.355 194.933 173.775 192.409 173.459 188.938C173.301 185.309 171.566 182.863 168.253 181.601L164.703 180.418C161.863 179.313 159.023 178.367 156.183 177.578C153.658 176.789 151.292 177.104 149.083 178.524C147.032 179.944 145.848 181.917 145.533 184.441C145.375 185.861 145.296 187.36 145.296 188.938C145.138 191.147 145.217 193.276 145.533 195.328C145.69 198.01 146.953 200.061 149.319 201.481C151.686 202.901 154.132 203.138 156.656 202.191C159.496 201.086 162.336 199.903 165.176 198.641C166.596 198.01 167.937 197.3 169.199 196.511Z" /><path fill="#5BC7AA" d="M224.609 274.61C223.978 273.19 223.662 271.376 223.662 269.167C223.662 266.801 223.899 264.355 224.372 261.831C225.003 259.306 226.265 257.176 228.159 255.441C230.21 253.547 232.734 252.601 235.732 252.601C238.888 252.443 241.491 252.995 243.542 254.257C245.593 255.519 246.934 256.939 247.565 258.517C248.354 259.937 249.143 261.831 249.932 264.197C250.721 266.406 251.352 267.905 251.825 268.694C255.927 275.478 262.16 278.634 270.522 278.16C279.042 277.529 285.274 273.822 289.218 267.037C290.954 264.355 291.743 261.673 291.585 258.991C291.585 256.308 291.033 254.1 289.928 252.364C288.824 250.471 287.246 248.735 285.195 247.157C283.302 245.422 281.487 244.081 279.752 243.134C278.174 242.187 276.517 241.32 274.782 240.531C274.151 240.373 273.204 239.979 271.942 239.347C267.051 237.296 263.264 235.64 260.582 234.377C257.9 232.957 254.271 230.749 249.695 227.751C245.278 224.753 241.728 221.755 239.045 218.758C236.363 215.602 233.681 211.421 230.999 206.214C228.474 201.008 226.581 195.249 225.319 188.938C223.425 179.944 223.504 171.503 225.555 163.615C227.607 155.726 230.999 149.178 235.732 143.971C240.465 138.765 246.382 134.978 253.482 132.611C260.582 130.087 268.155 129.535 276.202 130.955C283.775 132.375 290.717 135.136 297.028 139.238C303.497 143.182 308.467 147.679 311.938 152.728C315.567 157.777 318.249 162.826 319.985 167.875C321.878 172.766 322.746 177.026 322.588 180.654C321.957 187.597 319.511 192.645 315.251 195.801C310.992 198.799 306.179 199.114 300.815 196.748C298.922 195.959 297.344 194.933 296.082 193.671C294.819 192.409 293.794 190.91 293.005 189.174C292.216 187.439 291.585 185.861 291.112 184.441C290.638 182.863 290.086 180.891 289.455 178.524C288.824 176.158 288.193 174.264 287.562 172.845C286.457 169.531 283.854 167.243 279.752 165.981C275.807 164.719 271.784 165.271 267.682 167.638C263.737 169.847 261.371 173.791 260.582 179.471C259.951 183.889 260.424 188.07 262.002 192.014C263.737 195.959 266.42 199.588 270.048 202.901C273.677 206.214 277.07 209.054 280.225 211.421C283.538 213.63 287.404 215.996 291.822 218.521C293.557 219.468 296.476 220.888 300.578 222.781C304.838 224.674 307.994 226.331 310.045 227.751C312.254 229.171 314.778 231.143 317.618 233.667C320.616 236.192 322.904 239.347 324.481 243.134C326.059 246.763 327.164 251.102 327.795 256.151C329.53 269.088 324.718 279.975 313.358 288.81C302.156 297.488 287.641 301.906 269.812 302.064C262.554 302.064 256.164 301.354 250.642 299.934C245.12 298.356 240.623 296.068 237.152 293.07C233.839 290.073 231.235 287.233 229.342 284.55C227.607 281.71 226.029 278.397 224.609 274.61Z" /><path fill="#4497C3" d="M442.941 222.781C442.941 223.885 442.941 225.384 442.941 227.277C443.098 229.171 442.941 232.879 442.467 238.401C442.152 243.923 441.521 249.208 440.574 254.257C439.627 259.148 437.892 264.671 435.367 270.824C432.843 276.977 429.766 282.263 426.137 286.68C422.509 290.94 417.539 294.569 411.228 297.567C404.917 300.565 397.738 302.064 389.691 302.064C384.327 302.064 379.436 301.511 375.018 300.407C370.6 299.303 365.946 297.094 361.055 293.78C356.321 290.309 352.219 285.813 348.748 280.29C345.435 274.61 342.595 266.879 340.228 257.097C338.019 247.315 336.757 235.876 336.441 222.781C336.441 219.468 336.52 215.918 336.678 212.131C336.836 208.344 337.309 203.453 338.098 197.458C338.887 191.462 339.913 185.782 341.175 180.418C342.595 175.053 344.646 169.531 347.328 163.851C350.01 158.171 353.166 153.359 356.795 149.415C360.423 145.312 365.078 142.157 370.758 139.948C376.438 137.581 382.828 136.635 389.928 137.108C393.399 137.266 396.475 137.66 399.158 138.291C401.84 138.765 404.916 139.79 408.388 141.368C412.016 142.788 415.093 144.681 417.618 147.048C420.3 149.415 423.061 152.807 425.901 157.225C428.899 161.485 431.423 166.533 433.474 172.371C435.525 178.051 437.34 185.23 438.917 193.908C440.653 202.428 441.994 212.052 442.941 222.781ZM409.571 222.307C409.729 219.31 409.571 216.075 409.098 212.604C408.782 209.133 407.993 205.425 406.731 201.481C405.626 197.537 403.497 194.302 400.341 191.778C397.343 189.096 393.557 187.754 388.981 187.754C386.141 187.754 383.617 188.386 381.408 189.648C379.199 190.91 377.384 192.567 375.964 194.618C374.702 196.511 373.598 198.641 372.651 201.008C371.705 203.374 371.073 205.741 370.758 208.108C370.442 210.474 370.127 212.683 369.811 214.734C369.653 216.628 369.653 218.205 369.811 219.468V221.124C369.811 221.913 369.811 223.017 369.811 224.437C369.811 225.857 370.127 228.303 370.758 231.774C371.389 235.087 372.257 238.085 373.361 240.767C374.623 243.45 376.596 245.895 379.278 248.104C381.96 250.155 385.194 251.181 388.981 251.181C401.288 251.181 408.151 241.556 409.571 222.307Z" /><rect data-grid-line x="0.5" y="0.5" width="442" height="302" fill="none" stroke="#111" stroke-width="0.55" /><line data-grid-line x1="-12" y1="0" x2="322" y2="0" stroke="#111" stroke-width="0.5" /><line data-grid-line x1="-12" y1="117" x2="322" y2="117" stroke="#111" stroke-width="0.5" /><line data-grid-line x1="-12" y1="136.6" x2="453" y2="136.6" stroke="#111" stroke-width="0.5" /><line data-grid-line x1="-12" y1="302" x2="453" y2="302" stroke="#111" stroke-width="0.5" /><line data-grid-line x1="0" y1="-10" x2="0" y2="126" stroke="#111" stroke-width="0.35" stroke-dasharray="2 3" /><line data-grid-line x1="78" y1="-10" x2="78" y2="126" stroke="#111" stroke-width="0.35" stroke-dasharray="2 3" /><line data-grid-line x1="157" y1="-10" x2="157" y2="126" stroke="#111" stroke-width="0.35" stroke-dasharray="2 3" /><line data-grid-line x1="236" y1="-10" x2="236" y2="126" stroke="#111" stroke-width="0.35" stroke-dasharray="2 3" /><line data-grid-line x1="315" y1="-10" x2="315" y2="126" stroke="#111" stroke-width="0.35" stroke-dasharray="2 3" /></svg>
+  </div>
+  <p class="mono" style="margin-top:1rem;font-size:13px;letter-spacing:.22em;text-transform:uppercase;color:var(--brown)"><span style="color:#032E4D">Casa do</span> Urso® Grid System</p>
+</div>
+
+    <p class="body-text" style="margin-top:1.5rem">Casa do Urso was designed as more than a brand. It is a sensory-driven system that translates neurodevelopment principles into a cohesive visual and spatial language.
+
+The project integrates branding, environment, and interface design to create a safe, structured, and emotionally supportive experience for neurodivergent children and their families.
+
+Inspired by therapeutic approaches such as Snoezelen, the system balances stimulation and calm through controlled color, rhythm, and modular composition.</p>
+    <div class="media-round" style="margin-top:2rem;aspect-ratio:16/9;min-height:240px">
+      <video src="/casadourso-scene-2.mp4" autoplay muted loop playsinline poster="/casadourso-cover.png"></video>
+    </div>
+    <p style="margin-top:.8rem;font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);text-align:center;font-family:'Poppins',system-ui,sans-serif">Activation → Calm</p>
+    <div style="margin:1.1rem 0 0;width:100%;opacity:.9"><img src="/icones.svg" alt="" style="width:100%;height:auto;display:block"/></div>
+  </div>
+</section>
+
+<section class="section" id="challenge">
+  <div class="container">
+    <p class="sec-label mono">02 · Challenge</p>
+    <div class="grid-2">
+      <div class="media-round"><img src="/capa-so-evolucao.png" alt="Só Evolução, DJ Tato feat. Tio Anderson"/></div>
+      <div class="media-round"><video src="/anderson%20e%20tato.mp4" autoplay muted loop playsinline></video></div>
+    </div>
+    <blockquote class="pull-quote">Tato transforms the brand from something seen into something felt and trusted.</blockquote>
+    <p class="body-text">Most therapy spaces and brands in this context either lack identity or overwhelm users with visual noise.
+
+The challenge was to design a system that supports emotional regulation, communicates clearly across age groups, creates a sense of safety and familiarity, and bridges clinical structure with warmth and accessibility.
+
+All of this had to stay consistent across physical and digital touchpoints.
+
+A key part of the project was creating Tato, the bear. He was designed not only as a mascot, but as an emotional anchor within the system.
+
+In many clinics, environments can feel impersonal or overstimulating. Tato was created as a comfort object: a familiar presence across spaces, a guide for interaction and communication, and a symbolic extension of safety and care.
+
+He sits between character and tool, helping children navigate emotions, transitions, and routines through recognition and attachment.
+
+Tato transforms the brand from something people see into something they feel and trust.</p>
+    <div class="media-round" style="margin-top:1.25rem;min-height:260px">
+      <img src="/CASA_DO_URSO/kit-boas-vindas.png" alt="Casa do Urso welcome kit" />
+    </div>
+  </div>
+</section>
+
+<section class="section" id="tato">
+  <div class="container">
+    <p class="sec-label mono">03 · Tato</p>
+    <div class="grid-2">
+      <div class="tato-left" aria-label="Tato, Casa do Urso (green screen)">
+        <canvas id="tato-chroma-canvas"></canvas>
+        <!-- Replace this src with your MP4 (ideal: keep it in public/ so iframe can load it). -->
+        <video
+          id="tato-chroma-video"
+          src="/urso_falando%27.mp4"
+          muted
+          loop
+          playsinline
+          preload="auto"
+        ></video>
+      </div>
+      <div>
+        <h2 style="font-size:1.75rem">Tato</h2>
+        <p class="body-text" style="margin-bottom:1rem">The bear is not just a mascot. He is an emotional anchor, a comfort object that helps children navigate emotions, transitions, and routines through recognition and attachment.</p>
+        <ul class="body-text" style="padding-left:1.25rem">
+          <li>Familiar presence across physical and digital spaces</li>
+          <li>Guide for interaction and communication</li>
+          <li>Symbolic extension of safety and care</li>
+          <li>Exists between character and tool, felt and trusted</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="process">
+  <div class="container">
+    <p class="sec-label mono">04 · Process</p>
+    <p class="body-text mono" style="font-size:13px;letter-spacing:.06em;margin-bottom:2rem">The design process was built around translating psychological and sensory principles into tangible design decisions.</p>
+
+    <div class="process-card">
+      <h3>Color System</h3>
+      <p class="body-text" style="margin-bottom:.5rem">Inspired by neurodiversity and emotional signaling, the palette balances softness and contrast, allowing controlled stimulation without overload.</p>
+      <div class="swatch-grid">
+        <div class="sw-item"><svg class="sw-ico" viewBox="0 0 64 64"><circle cx="32" cy="32" r="28" fill="#f5c042"/></svg><div class="sw-label">Asterisk</div><div class="sw-sub mono">School</div></div>
+        <div class="sw-item"><svg class="sw-ico" viewBox="0 0 64 64"><circle cx="32" cy="32" r="28" fill="#f97472"/></svg><div class="sw-label">Heart</div><div class="sw-sub mono">Clinic</div></div>
+        <div class="sw-item"><svg class="sw-ico" viewBox="0 0 64 64"><circle cx="32" cy="32" r="28" fill="#44a0c4"/></svg><div class="sw-label">House</div><div class="sw-sub mono">Family</div></div>
+        <div class="sw-item"><svg class="sw-ico" viewBox="0 0 64 64"><circle cx="32" cy="32" r="28" fill="#cd9459"/></svg><div class="sw-label">Bear</div><div class="sw-sub mono">Methodology</div></div>
+        <p class="sw-note" style="width:100%;flex-basis:100%">The colored blocks reference building toys, reinforcing the connection with the children's universe.</p>
+      </div>
+    </div>
+    <div class="media-round process-hero" style="margin:1.15rem 0 1.4rem;height:420px;border-radius:0"><img src="/Fotos%20da%20clinica/_DSCcorredor.png" alt="Clinic corridor"/></div>
+    <div class="process-card spatial-map">
+      <h3>Spatial Thinking</h3>
+      <p class="body-text" style="margin-bottom:.75rem">These grafismos were painted on the clinic walls, symbolizing emotions and the four pillars of development.</p>
+      <p class="body-text" style="margin-bottom:1rem">The 4 pillars together form the foundation of care. Each pillar connects to the others, because development is integral. Casa do Urso accompanies each dimension with care and evidence.</p>
+      <div class="colors-row">
+        <div class="cb"><div style="background:#F9746E"></div><span class="mono" style="font-size:13px;font-weight:700">Candy</span></div>
+        <div class="cb"><div style="background:#5BC7AA"></div><span class="mono" style="font-size:13px;font-weight:700">Mint</span></div>
+        <div class="cb"><div style="background:#4497C3"></div><span class="mono" style="font-size:13px;font-weight:700">Sky Blue</span></div>
+        <div class="cb"><div style="background:#F5BF42"></div><span class="mono" style="font-size:13px;font-weight:700">Yellow</span></div>
+      </div>
+      <div class="pillars">
+        <div class="pillar"><img src="/grafismo-emocional.png" alt=""/><span class="mono" style="color:#F9746E">Emotional</span></div>
+        <div class="pillar"><img src="/grafismo-social.png" alt=""/><span class="mono" style="color:#5BC7AA">Social</span></div>
+        <div class="pillar"><img src="/grafismo-comunicacao.png" alt=""/><span class="mono" style="color:#4497C3">Communication</span></div>
+        <div class="pillar"><img src="/grafismo-autonomia.png" alt=""/><span class="mono" style="color:#F5BF42">Autonomy</span></div>
+      </div>
+    </div>
+
+    <h3>Interaction Language</h3>
+    <p class="body-text">Interfaces follow a tactile logic, using clear hierarchy, spacing, and rhythm to reduce cognitive friction.</p>
+
+    <h3>Sensory Design</h3>
+    <p class="body-text" style="margin-bottom:.75rem">References from Snoezelen environments informed the balance between activation and calm, guiding lighting, composition, and visual density.</p>
+    <div class="slider" id="sensory-slider">
+      <div class="slider-track" id="sensory-track">
+        <div class="slider-slide"><video src="/Fotos%20e%20videos%20clinica/IMG_1738.MOV" muted loop playsinline data-slide-video></video></div>
+        <div class="slider-slide"><img src="/Fotos%20da%20clinica/_DSC3876-ALTA.JPG" alt=""/></div>
+        <div class="slider-slide"><img src="/Fotos%20da%20clinica/_DSC3854-ALTA.JPG" alt=""/></div>
+      </div>
+    </div>
+
+    <h3>System Thinking</h3>
+    <p class="body-text" style="margin-bottom:.75rem">Rather than isolated assets, the project was built as a flexible system that adapts across physical spaces, communication materials, and digital interfaces.</p>
+    <div class="iframe-box"><iframe src="/grovia-cards.html" title="Grovia cards" sandbox="allow-scripts allow-same-origin"></iframe></div>
+  </div>
+</section>
+
+<section class="section" id="outcome">
+  <div class="container">
+    <p class="sec-label mono">05 · Outcome</p>
+    <div class="iframe-box" style="margin-bottom:1.5rem"><iframe src="/casa-urso-counter.html" title="Casa do Urso counter" sandbox="allow-scripts allow-same-origin"></iframe></div>
+    <p class="body-text">The result is a cohesive and scalable system that aligns brand, space, and interaction into a unified experience.
+
+Casa do Urso becomes not just a clinic, but a recognizable and comforting environment where design actively supports development, communication, and emotional well-being.
+
+The project establishes a foundation for future expansion, maintaining consistency while allowing flexibility across new applications.</p>
+    <div class="media-round" style="margin-top:1.5rem;min-height:320px">
+      <video src="/webcasadourso.mp4" autoplay muted loop playsinline></video>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="deliverables">
+  <div class="container">
+    <p class="sec-label mono">06 · Deliverables</p>
+    <p class="body-text" style="margin-bottom:.5rem">Scope of what shipped as a unified system: naming, identity, character, space, and emotional tools.</p>
+    <div class="deliv-grid"><div class="deliv-card"><h4 class="mono">Naming</h4><p>Brand naming and verbal identity aligned with care and neurodevelopment.</p></div><div class="deliv-card"><h4 class="mono">Visual Identity</h4><p>Colour system, grafismos, and modular composition across touchpoints.</p></div><div class="deliv-card"><h4 class="mono">Tato</h4><p>Mascot and emotional anchor focused on character, application, and recognition.</p></div><div class="deliv-card"><h4 class="mono">Environmental Design</h4><p>Clinic walls, spatial rhythm, and sensory balance inspired by Snoezelen references.</p></div><div class="deliv-card"><h4 class="mono">Inclusive Signage</h4><p>Wayfinding and communication that supports diverse ages and needs.</p></div><div class="deliv-card"><h4 class="mono">Emocionário</h4><p>Tools for naming and navigating emotions within the therapeutic journey.</p></div></div>
+  </div>
+</section>
+
+<section class="section" id="clinic-video">
+  <div class="container">
+    <p class="sec-label mono">07 · Clinic Video</p>
+    <div class="media-round" style="min-height:320px">
+      <video
+        src="/CASA_DO_URSO/1-CASA%20DO%20URSO%2011-08-25.mp4"
+        controls
+        autoplay
+        muted
+        loop
+        playsinline
+      ></video>
+    </div>
+  </div>
+</section>
+
+<section class="closing">
+  <div class="bear" aria-hidden="true">🐻</div>
+  <img
+    src="/logo_horizontal.svg"
+    alt="Casa do Urso"
+    style="margin:1rem auto .5rem;max-width:420px;width:100%;height:auto;display:block"
+  />
+  <p style="color:var(--muted);font-size:13px;margin-top:.5rem">Design that supports development, communication, and emotional well-being.</p>
+  <div class="cta-row">
+    <a href="/#project-grid" class="btn btn-p">← Back to Project Grid</a>
+  </div>
+</section>
+<footer>
+  <span class="mono">Casa do Urso Case Study</span>
+  <span>Brand · Space · Digital · 2019</span>
+</footer>
+
+<script>
+(function(){
+  var pb=document.getElementById("pb"), nav=document.getElementById("nav");
+  window.addEventListener("scroll",function(){
+    var sc=document.documentElement.scrollHeight-window.innerHeight;
+    pb.style.width=((sc<=0?1:window.scrollY/sc)*100)+"%";
+    nav.classList.toggle("scrolled",window.scrollY>40);
+  });
+  document.querySelectorAll('a[href^="#"]').forEach(function(a){
+    a.addEventListener("click",function(e){
+      var id=a.getAttribute("href");
+      if(id.length>1){var t=document.querySelector(id);if(t){e.preventDefault();t.scrollIntoView({behavior:"smooth"});}}
+    });
+  });
+  var obs=new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if(e.isIntersecting)e.target.classList.add("visible");
+    });
+  },{threshold:.08});
+  document.querySelectorAll(".section").forEach(function(s){obs.observe(s);});
+  function initGrid(){
+    var root=document.getElementById("casa-logo-svg");
+    if(!root)return;
+    function getLen(el){
+      if(typeof el.getTotalLength==="function")try{return el.getTotalLength();}catch(x){}
+      if(el.tagName&&el.tagName.toLowerCase()==="rect"){
+        var w=parseFloat(el.getAttribute("width")||"0"),h=parseFloat(el.getAttribute("height")||"0");
+        return 2*(w+h);
+      }
+      return 300;
+    }
+    root.querySelectorAll("[data-grid-line]").forEach(function(el,i){
+      var len=getLen(el);
+      el.style.setProperty("--grid-len",String(len));
+      var dash=el.getAttribute("stroke-dasharray")||"";
+      var isDashed=dash.indexOf(" ")>=0;
+      if(!isDashed)el.setAttribute("stroke-dasharray",String(len));
+      el.style.strokeDashoffset=String(isDashed?len:len);
+      el.style.opacity="1";
+      el.style.animation="gridDrawLoop 2s cubic-bezier(0.4,0,0.2,1) "+(i*0.03)+"s infinite";
+      el.style.animationFillMode="both";
+    });
+  }
+  initGrid();
+  var track=document.getElementById("sensory-track");
+  var slides=track?track.querySelectorAll(".slider-slide"):null;
+  var idx=0;
+  function playSlide(i){
+    if(!slides)return;
+    slides.forEach(function(s,si){
+      var v=s.querySelector("video");
+      if(v){if(si===i){v.play().catch(function(){});}else{v.pause();}}
+    });
+    track.style.transform="translateX(-"+(i*100)+"%)";
+  }
+  if(slides&&slides.length){
+    playSlide(0);
+    setInterval(function(){idx=(idx+1)%slides.length;playSlide(idx);},5000);
+  }
+  function initTatoChroma(){
+    var video=document.getElementById("tato-chroma-video");
+    var canvas=document.getElementById("tato-chroma-canvas");
+    if(!video||!canvas)return;
+    var ctx=canvas.getContext("2d",{alpha:true,willReadFrequently:true});
+    if(!ctx)return;
+
+    var off=document.createElement("canvas");
+    var offCtx=off.getContext("2d",{willReadFrequently:true});
+    if(!offCtx)return;
+
+    var scale=0.55; // lower = faster chroma key
+    // Chroma key tuned for "dirty" green backgrounds.
+    // - minGreen: lower value captures more greens
+    // - diffStart/diffEnd: controls feathering of the alpha (edges fade out smoothly)
+    // More conservative thresholds so the bear doesn't get keyed out.
+    var minGreen=80;
+    var diffStart=18;
+    var diffEnd=48;
+
+    function resize(){
+      var rect=canvas.getBoundingClientRect();
+      var w=Math.max(1,Math.round(rect.width));
+      var h=Math.max(1,Math.round(rect.height));
+      if(canvas.width!==w)canvas.width=w;
+      if(canvas.height!==h)canvas.height=h;
+      off.width=Math.max(1,Math.round(w*scale));
+      off.height=Math.max(1,Math.round(h*scale));
+    }
+
+    function processFrame(){
+      if(video.readyState>=2){
+        resize();
+
+        var vw=video.videoWidth||off.width;
+        var vh=video.videoHeight||off.height;
+        var dw=off.width;
+        var dh=off.height;
+        var s=Math.max(dw/vw,dh/vh); // "cover"
+        var sw=dw/s, sh=dh/s;
+        var sx=(vw-sw)/2, sy=(vh-sh)/2;
+
+        offCtx.clearRect(0,0,off.width,off.height);
+        offCtx.drawImage(video,sx,sy,sw,sh,0,0,dw,dh);
+
+        var img=offCtx.getImageData(0,0,dw,dh);
+        var d=img.data;
+        for(var i=0;i<d.length;i+=4){
+          var r=d[i], g=d[i+1], b=d[i+2];
+          // Dirty-yellow keying:
+          // - Use g-b dominance (yellow/green screens have low B).
+          // - Also require g not too far below r (filters out skin highlights more often).
+          var gb=g-b; // green/yellow dominance over blue
+          if(g>minGreen && gb>diffStart && g>r*0.95){
+            // Feather based on how "screen-like" the pixel is.
+            var t=(gb-diffStart)/(diffEnd-diffStart); // 0..1
+            if(t<0)t=0;
+            if(t>1)t=1;
+            d[i+3]=Math.round(255*(1-t));
+          }
+        }
+        offCtx.putImageData(img,0,0);
+
+        ctx.clearRect(0,0,canvas.width,canvas.height);
+        ctx.drawImage(off,0,0,canvas.width,canvas.height);
+      }
+      requestAnimationFrame(processFrame);
+    }
+
+    video.play().catch(function(){});
+    if(video.readyState>=2) requestAnimationFrame(processFrame);
+    else video.addEventListener("loadedmetadata",function(){requestAnimationFrame(processFrame);},{once:true});
+    window.addEventListener("resize",resize,{passive:true});
+  }
+
+  initTatoChroma();
+  var secIds=["overview","challenge","tato","process","outcome","deliverables"];
+  function spy(){
+    var y=window.scrollY+120;
+    secIds.forEach(function(id){
+      var el=document.getElementById(id);
+      if(!el)return;
+      var top=el.offsetTop, bot=top+el.offsetHeight;
+      if(y>=top&&y<bot){
+        document.querySelectorAll(".nav-links a").forEach(function(a){
+          a.classList.toggle("active",a.getAttribute("href")==="#"+id);
+        });
+      }
+    });
+  }
+  window.addEventListener("scroll",spy,{passive:true});spy();
+})();
+</script>
+</body></html>

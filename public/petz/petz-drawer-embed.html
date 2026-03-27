@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Petz + Ogilvy, Case Study</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --black: #050608;
+      --dark: #0b0f17;
+      --panel: #101522;
+      --border: rgba(255, 255, 255, 0.12);
+      --text: #d8e2f1;
+      --muted: #8a95a7;
+      --blue: #1058A8;
+      --yellow: #F8D800;
+      --yellow-dim: rgba(248, 216, 0, 0.16);
+      --white: #ffffff;
+    }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: var(--yellow);
+      color: #0b1020;
+      line-height: 1.68;
+      overflow-x: hidden;
+    }
+    .dr { min-height: 100vh; background: var(--yellow); }
+
+    .dr-hero {
+      min-height: 60vh;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      position: relative;
+      overflow: hidden;
+      border-bottom: 3px solid var(--blue);
+    }
+    .hero-left {
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 2rem;
+      background: linear-gradient(180deg, #070a12 0%, #06080d 100%);
+      border-right: 1px solid var(--border);
+    }
+    .hero-right { position: relative; overflow: hidden; background: #020305; }
+    .hero-right img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+      filter: contrast(1.02) saturate(1.03);
+    }
+    .hero-right-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to right, rgba(5, 6, 8, 0.7) 0%, transparent 52%);
+    }
+    .hero-stamp {
+      position: absolute;
+      top: 1.4rem;
+      right: 1.4rem;
+      z-index: 2;
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      background: rgba(16, 88, 168, 0.24);
+      color: #d9ebff;
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      padding: 8px 10px;
+      font-weight: 700;
+    }
+    .hero-eyebrow {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--yellow);
+      margin-bottom: 1rem;
+    }
+    .hero-logo {
+      width: min(520px, 95%);
+      height: auto;
+      object-fit: contain;
+      object-position: left;
+      margin-bottom: .85rem;
+    }
+    .hero-rule { width: 52px; height: 3px; background: var(--yellow); margin: 1rem 0; }
+    .hero-desc {
+      font-size: 14px;
+      color: #c1cde0;
+      max-width: 430px;
+      line-height: 1.78;
+      margin-bottom: 1rem;
+    }
+    .hero-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+    .tag {
+      font-size: 10px;
+      font-weight: 700;
+      padding: 3px 10px;
+      letter-spacing: 1.4px;
+      text-transform: uppercase;
+    }
+    .tag-outline { border: 1px solid var(--border); color: var(--muted); }
+    .tag-blue { border: 1px solid var(--blue); color: #8fc2ff; background: rgba(16, 88, 168, 0.18); }
+    .tag-yellow { border: 1px solid var(--yellow); color: #ffe55b; background: var(--yellow-dim); }
+
+    .marquee-strip {
+      background: var(--blue);
+      padding: .5rem 0;
+      overflow: hidden;
+      border-top: 1px solid rgba(255, 255, 255, .12);
+      border-bottom: 1px solid rgba(255, 255, 255, .12);
+    }
+    .marquee-track { display: flex; gap: 0; white-space: nowrap; animation: marqueeScroll 24s linear infinite; }
+    .marquee-item {
+      font-size: 12px;
+      letter-spacing: 2.5px;
+      color: #e9f3ff;
+      padding: 0 1.2rem;
+      flex-shrink: 0;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+    .marquee-dot { color: rgba(233, 243, 255, 0.55); }
+    @keyframes marqueeScroll { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+    .sec {
+      padding: 1.75rem 2rem;
+      border-bottom: 1px solid rgba(16, 88, 168, 0.28);
+      background: var(--yellow);
+    }
+    .sec-label {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 5px;
+      text-transform: uppercase;
+      color: #2b4d80;
+      margin-bottom: 1.25rem;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .sec-label::after { content: ""; flex: 1; height: 1px; background: rgba(16, 88, 168, 0.28); }
+    .sec h2 {
+      font-size: clamp(32px, 5vw, 52px);
+      letter-spacing: 2px;
+      color: #0b1020;
+      line-height: .95;
+      margin-bottom: 1.2rem;
+      text-transform: uppercase;
+      font-weight: 800;
+    }
+    .sec h2 .blue { color: var(--blue); }
+    .sec h2 .yellow { color: var(--yellow); }
+    .sec p { font-size: 14px; color: #1c2c45; line-height: 1.8; margin-bottom: .95rem; }
+    .pull-quote {
+      font-size: 18px;
+      color: #18263a;
+      line-height: 1.45;
+      padding: 1.2rem 0 1.2rem 1.2rem;
+      border-left: 4px solid var(--yellow);
+      margin: 1.5rem 0;
+      background: rgba(16, 88, 168, 0.12);
+    }
+    .stat-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1px;
+      background: var(--border);
+      border: 1px solid var(--border);
+      margin: 1.3rem 0;
+    }
+    .stat-card { background: var(--blue); padding: 1.2rem .9rem; text-align: center; }
+    .stat-n { font-size: 38px; color: #ffffff; line-height: 1; font-weight: 800; }
+    .stat-l { font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: #ffffff; margin-top: .35rem; }
+
+    .img-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin: 1.4rem 0; }
+    .img-full { margin: 1.4rem 0; border: 1px solid var(--border); overflow: hidden; }
+    .img-grid-2 img, .img-full img { width: 100%; height: auto; display: block; }
+    .video-embed {
+      position: relative;
+      margin: 1.4rem 0;
+      border: 1px solid var(--border);
+      overflow: hidden;
+      background: #000;
+      aspect-ratio: 16 / 9;
+    }
+    .video-embed iframe {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      border: 0;
+      display: block;
+    }
+    .img-caption {
+      font-size: 10px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-top: .55rem;
+      text-align: center;
+    }
+
+    .steps {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1px;
+      background: var(--border);
+      border: 1px solid var(--border);
+      margin: 1.5rem 0;
+    }
+    .step { background: var(--blue); padding: 1rem; }
+    .step-n { font-size: 24px; line-height: 1; color: #ffffff; font-weight: 800; }
+    .step-title {
+      margin-top: .45rem;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      color: #ffffff;
+      font-weight: 700;
+    }
+    .step p { font-size: 13px; margin-top: .5rem; margin-bottom: 0; color: #ffffff; line-height: 1.65; }
+
+    .deliverables {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1px;
+      background: var(--border);
+      border: 1px solid var(--border);
+      margin: 1.5rem 0;
+    }
+    .deliv-item { background: var(--blue); padding: 1rem; }
+    .deliv-n { font-size: 30px; color: rgba(255, 255, 255, 0.45); line-height: 1; font-weight: 800; margin-bottom: .25rem; }
+    .deliv-title { font-size: 12px; font-weight: 700; color: #ffffff; letter-spacing: 1px; text-transform: uppercase; margin-bottom: .3rem; }
+    .deliv-desc { font-size: 12px; color: #ffffff; line-height: 1.55; margin: 0; }
+
+    .closing {
+      padding: 2.4rem 2rem;
+      text-align: center;
+      background: var(--yellow);
+      border-top: 1px solid rgba(16, 88, 168, 0.28);
+    }
+    .closing-title {
+      font-size: clamp(28px, 5vw, 46px);
+      letter-spacing: 3px;
+      color: #0b1020;
+      line-height: .95;
+      margin-bottom: .75rem;
+      text-transform: uppercase;
+      font-weight: 800;
+    }
+    .closing-title .blue { color: var(--blue); }
+    .closing-title .yellow { color: var(--yellow); }
+    .closing-sub { font-size: 15px; color: #1f3150; margin-bottom: 1.3rem; }
+    .cta-row { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; }
+    .btn {
+      font-size: 11px;
+      font-weight: 700;
+      padding: 10px 18px;
+      text-decoration: none;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      transition: all .2s;
+      display: inline-block;
+    }
+    .btn-primary { background: var(--blue); color: #fff; border: 2px solid var(--blue); }
+    .btn-primary:hover { background: #1e66b7; border-color: #1e66b7; }
+    .btn-secondary { background: transparent; color: var(--yellow); border: 2px solid var(--yellow); }
+    .btn-secondary:hover { background: rgba(248, 216, 0, 0.12); }
+
+    @media (max-width: 860px) {
+      .dr-hero { grid-template-columns: 1fr; }
+      .hero-right { min-height: 42vw; }
+      .hero-left { padding: 1.5rem; }
+      .img-grid-2, .steps, .deliverables, .stat-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+<div class="dr">
+  <section class="dr-hero" id="overview" data-drawer-section="overview">
+    <div class="hero-left">
+      <p class="hero-eyebrow">Case Study · Advertising · 2020</p>
+      <img src="/petz/petz-logo-blue.png" alt="Petz logo" class="hero-logo">
+      <div class="hero-rule"></div>
+      <p class="hero-desc">
+        A collaborative campaign for Dia do SRD with Petz + Ogilvy Brasil.
+        The audience submitted unique traits of their pets, then selected stories were turned into
+        illustrated videos for Instagram Stories and Facebook.
+      </p>
+      <div class="hero-tags">
+        <span class="tag tag-yellow">Illustration</span>
+        <span class="tag tag-blue">Social Campaign</span>
+        <span class="tag tag-outline">UGC Storytelling</span>
+      </div>
+    </div>
+    <div class="hero-right">
+      <img src="/petz/petz-header.png" alt="Petz + Ogilvy Dia do SRD">
+      <div class="hero-right-overlay"></div>
+      <div class="hero-stamp">Petz × Ogilvy</div>
+    </div>
+  </section>
+
+  <div class="marquee-strip" data-drawer-section="overview">
+    <div class="marquee-track">
+      <span class="marquee-item">Dia do SRD <span class="marquee-dot">◆</span></span>
+      <span class="marquee-item">Collaborative content <span class="marquee-dot">◆</span></span>
+      <span class="marquee-item">Instagram Stories + Facebook <span class="marquee-dot">◆</span></span>
+      <span class="marquee-item">Petz + Ogilvy Brasil <span class="marquee-dot">◆</span></span>
+      <span class="marquee-item">Dia do SRD <span class="marquee-dot">◆</span></span>
+      <span class="marquee-item">Collaborative content <span class="marquee-dot">◆</span></span>
+    </div>
+  </div>
+
+  <section class="sec" data-drawer-section="overview">
+    <div class="stat-grid">
+      <div class="stat-card"><div class="stat-n">2020</div><div class="stat-l">Published</div></div>
+      <div class="stat-card"><div class="stat-n">15s</div><div class="stat-l">Story length</div></div>
+      <div class="stat-card"><div class="stat-n">9</div><div class="stat-l">Behance appreciations</div></div>
+    </div>
+  </section>
+
+  <section class="sec" id="problem" data-drawer-section="problem">
+    <p class="sec-label">01, Concept</p>
+    <h2>HISTORIAS <span class="yellow">REAIS</span><br><span class="blue">ILUSTRADAS</span><br>PARA SOCIAL</h2>
+    <p>
+      Atraves de um conteudo colaborativo, convidamos os usuarios a contar as caracteristicas fisicas
+      e pessoais que tornam seus animais SRD unicos.
+    </p>
+    <p>
+      A partir dessas respostas, selecionamos alguns perfis para transformar em ilustracoes e videos
+      curtos, mantendo autenticidade e linguagem visual consistente para Petz.
+    </p>
+    <div class="pull-quote">
+      "A partir das respostas, vamos escolher alguns desses animais para serem ilustrados em videos
+      de ate 15 segundos e postados no Instagram via Stories e Facebook."
+    </div>
+    <div class="video-embed" aria-label="Petz + Ogilvy Dia do SRD video">
+      <iframe
+        src="https://player.vimeo.com/video/444446911?autoplay=1&loop=1&muted=1&autopause=0&background=1&title=0&byline=0&portrait=0"
+        allow="autoplay; fullscreen; picture-in-picture"
+        allowfullscreen
+        title="Petz + Ogilvy - Dia do SRD"
+      ></iframe>
+    </div>
+  </section>
+
+  <section class="sec" id="process" data-drawer-section="process">
+    <p class="sec-label">02, Process</p>
+    <h2>COLLECT · CURATE · <span class="yellow">ILLUSTRATE</span></h2>
+    <p>
+      The creative pipeline followed three stages: collect stories, curate selected animals,
+      and illustrate each one with an expressive style built for social consumption.
+    </p>
+    <div class="img-full">
+      <img src="/petz/petz-ilustracoes.png" alt="Digital illustrations">
+    </div>
+    <p class="img-caption">Digital illustrations created from user-submitted pet profiles</p>
+    <div class="steps">
+      <article class="step">
+        <div class="step-n">01</div>
+        <div class="step-title">Collect traits</div>
+        <p>User submissions captured physical and personality details of SRD pets.</p>
+      </article>
+      <article class="step">
+        <div class="step-n">02</div>
+        <div class="step-title">Curate stories</div>
+        <p>The team selected animals with diverse narratives and visual character.</p>
+      </article>
+      <article class="step">
+        <div class="step-n">03</div>
+        <div class="step-title">Illustrate + publish</div>
+        <p>Final assets were produced as short illustrated videos for social channels.</p>
+      </article>
+    </div>
+  </section>
+
+  <section class="sec" id="outcome" data-drawer-section="outcome">
+    <p class="sec-label">03, Deliverables</p>
+    <h2>WHAT WAS <span class="blue">DELIVERED</span></h2>
+    <p>Campaign storytelling system based on audience participation and illustration output.</p>
+    <div class="deliverables">
+      <div class="deliv-item"><div class="deliv-n">01</div><div class="deliv-title">Campaign concept</div><p class="deliv-desc">Dia do SRD collaborative idea and publishing structure.</p></div>
+      <div class="deliv-item"><div class="deliv-n">02</div><div class="deliv-title">Illustrated pets</div><p class="deliv-desc">Digital character illustrations based on real submissions.</p></div>
+      <div class="deliv-item"><div class="deliv-n">03</div><div class="deliv-title">Story videos</div><p class="deliv-desc">Short videos (up to 15s) tailored for social behavior.</p></div>
+      <div class="deliv-item"><div class="deliv-n">04</div><div class="deliv-title">Social rollout</div><p class="deliv-desc">Instagram Stories and Facebook publication assets.</p></div>
+    </div>
+  </section>
+
+  <section class="closing" data-drawer-section="outcome">
+    <div class="closing-title">PETZ + <span class="blue">OGILVY</span><br><span class="yellow">DIA DO SRD</span></div>
+    <p class="closing-sub">Collaborative storytelling transformed into illustrated campaign media.</p>
+    <div class="cta-row">
+      <a href="/#project-grid" class="btn btn-secondary">← Back to Project Grid</a>
+      <a href="https://www.behance.net/gallery/101849861/Petz-Ogilvy-Dia-do-SRD" target="_blank" rel="noopener" class="btn btn-primary">View on Behance ↗</a>
+      <a href="https://vimeo.com/444446911?fl=pl&fe=vl" target="_blank" rel="noopener" class="btn btn-secondary">Watch on Vimeo ↗</a>
+    </div>
+  </section>
+</div>
+
+<script>
+(function() {
+  var sections = document.querySelectorAll("[data-drawer-section]");
+  var sectionMap = {};
+  sections.forEach(function(s) {
+    var id = s.getAttribute("data-drawer-section");
+    if (id && !sectionMap[id]) sectionMap[id] = [];
+    if (id) sectionMap[id].push(s);
+  });
+  var ordered = ["overview", "problem", "process", "outcome"];
+  function findActiveSection() {
+    var vh = window.innerHeight;
+    var best = "overview";
+    var bestRatio = -1;
+    ordered.forEach(function(id) {
+      var els = sectionMap[id] || [];
+      for (var i = 0; i < els.length; i++) {
+        var rect = els[i].getBoundingClientRect();
+        var visible = Math.min(rect.bottom, vh) - Math.max(rect.top, 0);
+        var ratio = visible / Math.min(rect.height, vh);
+        if (ratio > 0.2 && ratio > bestRatio) { bestRatio = ratio; best = id; }
+      }
+    });
+    return best;
+  }
+  var lastActive = "overview";
+  function check() {
+    var active = findActiveSection();
+    if (active !== lastActive) {
+      lastActive = active;
+      if (window.parent !== window) window.parent.postMessage({ type: "petz-section", section: active }, "*");
+    }
+  }
+  window.addEventListener("scroll", function() { requestAnimationFrame(check); }, { passive: true });
+  window.addEventListener("message", function(e) {
+    if (e.data && e.data.type === "petz-scroll" && e.data.section) {
+      var el = document.getElementById(e.data.section) || document.querySelector('[data-drawer-section="' + e.data.section + '"]');
+      if (!el && e.data.section === "overview") el = document.querySelector(".dr-hero");
+      if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+  });
+  check();
+})();
+</script>
+</body>
+</html>

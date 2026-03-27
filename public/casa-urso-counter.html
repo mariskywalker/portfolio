@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Casa do Urso, Counter</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  @font-face{
+    font-family:"Dolpino";
+    src:url("https://db.onlinewebfonts.com/t/eb24225f7e3878afacc92b4efe6ca38e.eot");
+    src:url("https://db.onlinewebfonts.com/t/eb24225f7e3878afacc92b4efe6ca38e.eot?#iefix") format("embedded-opentype"),
+      url("https://db.onlinewebfonts.com/t/eb24225f7e3878afacc92b4efe6ca38e.woff2") format("woff2"),
+      url("https://db.onlinewebfonts.com/t/eb24225f7e3878afacc92b4efe6ca38e.woff") format("woff"),
+      url("https://db.onlinewebfonts.com/t/eb24225f7e3878afacc92b4efe6ca38e.ttf") format("truetype");
+    font-weight:400;
+    font-style:normal;
+    font-display:swap;
+  }
+
+  body {
+    font-family: 'Poppins', sans-serif;
+    background: linear-gradient(135deg, #e8e0d8 0%, #ddd5cc 30%, #cfd8dc 70%, #d4cfe0 100%);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+
+  .blob-pink {
+    position: fixed;
+    width: 260px; height: 160px;
+    background: rgba(230, 110, 90, .45);
+    border-radius: 50%;
+    bottom: 40px; left: -40px;
+    filter: blur(50px);
+    pointer-events: none;
+  }
+  .blob-blue {
+    position: fixed;
+    width: 280px; height: 200px;
+    background: rgba(175, 185, 228, .38);
+    border-radius: 50%;
+    top: 20px; right: -20px;
+    filter: blur(55px);
+    pointer-events: none;
+  }
+
+  .card {
+    width: 420px;
+    background: rgba(255, 255, 255, .62);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    border: 1px solid rgba(255, 255, 255, .9);
+    border-radius: 24px;
+    padding: 40px 40px 36px;
+    box-shadow: 0 8px 40px rgba(0,0,0,.10), 0 1px 0 rgba(255,255,255,.8) inset;
+    position: relative;
+    z-index: 2;
+    text-align: center;
+  }
+
+  .bear-badge {
+    width: 56px; height: 56px;
+    background: rgba(255, 255, 255, .8);
+    border: 1px solid rgba(255, 255, 255, .95);
+    border-radius: 16px;
+    display: flex; align-items: center; justify-content: center;
+    margin: 0 auto 24px;
+    box-shadow: 0 4px 16px rgba(0,0,0,.08);
+  }
+
+  .pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(93, 193, 152, .18);
+    border: 1px solid rgba(93, 193, 152, .35);
+    border-radius: 100px;
+    padding: 5px 12px;
+    font-size: 12px;
+    font-weight: 600;
+    color: #2a8a62;
+    margin-bottom: 20px;
+  }
+  .pill-dot { width: 7px; height: 7px; border-radius: 50%; background: #5DC198; }
+
+  .counter-row {
+    display: flex;
+    align-items: baseline;
+    justify-content: center;
+    gap: 4px;
+    margin-bottom: 10px;
+  }
+  .counter-num {
+    font-family: "Dolpino","Poppins",system-ui,sans-serif;
+    font-size: 72px;
+    font-weight: 800;
+    color: #111;
+    letter-spacing: -3px;
+    line-height: 1;
+    font-variant-numeric: tabular-nums;
+  }
+  .counter-plus {
+    font-family: "Dolpino","Poppins",system-ui,sans-serif;
+    font-size: 40px;
+    font-weight: 700;
+    color: #111;
+  }
+
+  .counter-label {
+    font-size: 15px;
+    color: #555;
+    line-height: 1.5;
+    margin-bottom: 28px;
+  }
+  .counter-label strong { font-weight: 600; color: #111; }
+
+  .divider { height: 1px; background: rgba(0,0,0,.07); margin-bottom: 24px; }
+
+  .stats-row { display: flex; justify-content: center; }
+  .stat {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    flex: 1;
+    padding: 0 8px;
+  }
+  .stat + .stat { border-left: 1px solid rgba(0,0,0,.07); }
+  .stat-val {
+    font-size: 20px;
+    font-weight: 700;
+    color: #111;
+    letter-spacing: -.5px;
+    font-variant-numeric: tabular-nums;
+  }
+  .stat-label { font-size: 11px; color: #888; line-height: 1.4; text-align: center; }
+
+  /* Floating icons */
+  .icon-asterisk {
+    position: absolute;
+    top: -40px; left: -36px;
+    width: 120px; height: 120px;
+    filter: drop-shadow(0 10px 22px rgba(245,191,66,.38));
+    pointer-events: none;
+    z-index: 10;
+    transition: transform .5s cubic-bezier(.34,1.56,.64,1), filter .4s;
+  }
+  .card:hover .icon-asterisk {
+    transform: translateY(-10px) rotate(15deg) scale(1.08);
+    filter: drop-shadow(0 18px 36px rgba(245,191,66,.6));
+  }
+
+  .icon-heart {
+    position: absolute;
+    bottom: -28px; right: -32px;
+    width: 120px; height: 100px;
+    filter: drop-shadow(0 8px 20px rgba(249,116,110,.4));
+    pointer-events: none;
+    z-index: 10;
+    transition: transform .5s cubic-bezier(.34,1.56,.64,1), filter .4s;
+  }
+  .card:hover .icon-heart {
+    transform: translateY(-10px) rotate(-10deg) scale(1.08);
+    filter: drop-shadow(0 16px 32px rgba(249,116,110,.6));
+  }
+</style>
+</head>
+<body>
+
+<div class="blob-pink"></div>
+<div class="blob-blue"></div>
+
+<div class="card">
+
+  <!-- Asterisk 3D -->
+  <div class="icon-asterisk">
+    <svg viewBox="80 770 570 390" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <filter id="fa0" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="28.95"/></filter>
+        <filter id="fa1" x="-5%"  y="-5%"  width="110%" height="110%"><feGaussianBlur stdDeviation="2"/></filter>
+        <filter id="fa2" x="-8%"  y="-8%"  width="116%" height="116%"><feGaussianBlur stdDeviation="4.45"/></filter>
+        <linearGradient id="lga0" x1="175" y1="841" x2="368" y2="1178" gradientUnits="userSpaceOnUse">
+          <stop stop-color="white" stop-opacity="0.11"/>
+          <stop offset="1" stop-color="#FCB346" stop-opacity="0"/>
+        </linearGradient>
+        <linearGradient id="lga1" x1="151" y1="829" x2="251" y2="1147" gradientUnits="userSpaceOnUse">
+          <stop stop-color="#FFE5A7"/>
+          <stop offset="1" stop-color="#FAA839"/>
+        </linearGradient>
+      </defs>
+      <path filter="url(#fa0)" d="M588 917L431 941L473 851C476 846 470 841 461 840L398 830C389 828 380 831 378 836L336 927L221 861C215 857 204 857 198 861L151 888C145 891 145 897 151 901L266 967L109 991C100 993 95 998 98 1003L115 1040C117 1045 126 1048 135 1047L291 1022L249 1113C247 1118 252 1123 261 1124L325 1134C333 1135 342 1132 345 1127L387 1037L501 1103C508 1107 518 1107 525 1103L571 1076C578 1072 578 1066 571 1063L457 997L613 972C622 971 627 966 625 961L608 924C605 919 596 916 588 917Z" fill="#F5BF42"/>
+      <path filter="url(#fa2)" d="M588 898L472 916C454 919 437 909 442 899L473 832C476 827 470 822 461 821L398 811C389 809 380 812 378 817L347 884C342 894 319 898 306 890L221 842C215 838 204 838 198 842L151 869C145 872 145 878 151 882L236 931C249 938 243 952 225 954L109 972C100 974 95 979 98 984L115 1021C117 1026 126 1029 135 1028L250 1010C268 1007 285 1016 280 1027L249 1094C247 1099 252 1104 261 1105L325 1115C333 1116 342 1113 345 1108L376 1042C381 1031 403 1028 417 1035L501 1084C508 1088 518 1088 525 1084L571 1057C578 1053 578 1047 571 1044L487 995C473 987 480 974 498 971L613 953C622 952 627 947 625 942L608 905C605 900 596 897 588 898Z" fill="#E19836"/>
+      <path filter="url(#fa1)" d="M588 910L472 928C454 931 437 921 442 911L473 844C476 839 470 834 461 833L398 823C389 821 380 824 378 829L347 896C342 907 319 910 306 902L221 854C215 850 204 850 198 854L151 881C145 884 145 890 151 894L236 943C249 950 243 964 225 966L109 984C100 986 95 991 98 996L115 1033C117 1038 126 1041 135 1040L250 1022C268 1019 285 1028 280 1039L249 1106C247 1111 252 1116 261 1117L325 1127C333 1128 342 1125 345 1120L376 1054C381 1043 403 1040 417 1047L501 1096C508 1100 518 1100 525 1096L571 1069C578 1065 578 1059 571 1056L487 1007C473 999 480 986 498 983L613 965C622 964 627 959 625 954L608 917C605 912 596 909 588 910Z" fill="#FCB346"/>
+      <path d="M196 826C203 822 216 822 223 826L308 875C319 882 339 879 344 870L375 803C377 797 388 793 399 795L462 805C473 806 479 813 476 819L445 885C441 894 456 903 471 900L587 883C597 881 608 884 611 890L628 927C631 933 624 940 614 941L499 959C483 961 477 973 489 980L573 1028C581 1033 581 1040 573 1044L527 1071C519 1076 507 1076 499 1071L415 1023C403 1016 383 1019 379 1028L348 1095C345 1101 334 1104 324 1103L260 1093C250 1091 243 1085 246 1079L277 1013C281 1003 267 995 251 997L136 1015C125 1017 114 1013 112 1007L95 970C92 964 98 958 108 957L224 939C240 936 245 925 233 918L149 869C141 865 141 858 149 853L196 826Z" fill="white" fill-opacity="0.43"/>
+      <path d="M196 826C203 822 216 822 223 826L308 875C319 882 339 879 344 870L375 803C377 797 388 793 399 795L462 805C473 806 479 813 476 819L445 885C441 894 456 903 471 900L587 883C597 881 608 884 611 890L628 927C631 933 624 940 614 941L499 959C483 961 477 973 489 980L573 1028C581 1033 581 1040 573 1044L527 1071C519 1076 507 1076 499 1071L415 1023C403 1016 383 1019 379 1028L348 1095C345 1101 334 1104 324 1103L260 1093C250 1091 243 1085 246 1079L277 1013C281 1003 267 995 251 997L136 1015C125 1017 114 1013 112 1007L95 970C92 964 98 958 108 957L224 939C240 936 245 925 233 918L149 869C141 865 141 858 149 853L196 826Z" fill="url(#lga0)" stroke="url(#lga1)" stroke-width="5"/>
+    </svg>
+  </div>
+
+  <!-- Heart 3D -->
+  <div class="icon-heart">
+    <svg viewBox="510 545 480 310" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <filter id="fh3" x="-10%" y="-10%" width="120%" height="120%"><feGaussianBlur stdDeviation="4.16"/></filter>
+        <linearGradient id="lgh3" x1="663" y1="644" x2="808" y2="896" gradientUnits="userSpaceOnUse">
+          <stop stop-color="white" stop-opacity="0.2"/>
+          <stop offset="1" stop-color="#FF7F78"/>
+        </linearGradient>
+        <linearGradient id="lgh4" x1="558" y1="679" x2="645" y2="944" gradientUnits="userSpaceOnUse">
+          <stop stop-color="#F9B4AE"/>
+          <stop offset="1" stop-color="#F9746E"/>
+        </linearGradient>
+      </defs>
+      <path filter="url(#fh3)" d="M819 582C754 585 706 622 707 664L707 680L681 680C615 679 557 709 551 750C545 798 605 838 679 839L934 841C950 841 964 833 963 822L960 662C959 616 895 578 819 582Z" fill="#F9746E"/>
+      <path d="M701 653C700 614 748 579 815 576L817 576C895 572 961 608 962 652L965 800C965 810 951 818 933 819H933L676 817C600 816 538 778 545 733C550 694 611 665 678 666H679C691 666 701 660 701 653Z" fill="white" fill-opacity="0.1"/>
+      <path d="M701 653C700 614 748 579 815 576L817 576C895 572 961 608 962 652L965 800C965 810 951 818 933 819H933L676 817C600 816 538 778 545 733C550 694 611 665 678 666H679C691 666 701 660 701 653Z" fill="url(#lgh3)" stroke="url(#lgh4)" stroke-width="5"/>
+    </svg>
+  </div>
+
+  <!-- Bear badge -->
+  <div class="bear-badge">
+    <svg width="32" height="32" viewBox="0 0 472 359" xmlns="http://www.w3.org/2000/svg">
+      <path fill="#cd9459" d="M166.7 85.9C164.1 67.2 148 52.8 128.5 52.8C107.2 52.8 90 70.1 90 91.4C90 109.3 102.2 124.3 118.8 128.7Z"/>
+      <path fill="#111"    d="M152.4 88.2C150.7 76.5 140.8 67.6 128.7 67.6C115.5 67.6 104.8 78.3 104.8 91.5C104.8 102.6 112.4 112 122.7 114.6Z"/>
+      <path fill="#cd9459" d="M305.3 85.9C307.9 67.2 324 52.8 343.5 52.8C364.8 52.8 382 70.1 382 91.4C382 109.3 369.8 124.3 353.2 128.7Z"/>
+      <path fill="#111"    d="M320.8 86.6C322.4 75 332.4 66.1 344.4 66.1C357.6 66.1 368.3 76.8 368.3 90C368.3 101.1 360.7 110.4 350.5 113.1Z"/>
+      <path fill="#cd9459" d="M235.7 306.2C267.5 306.2 329.5 305.2 361.4 262.2C373.6 245.8 381.4 223.2 381.4 192.2C381.4 80 299.9 52.8 235.7 52.8C171.5 52.8 90 78.5 90 192.2C90 222.5 97.4 244.7 109.1 261.1C140.8 305.2 203.6 306.2 235.7 306.2Z"/>
+      <path fill="#111"    d="M236.6 211.3C252.2 210.2 268.8 194.7 268.8 181.2C268.8 167.6 255.1 161.5 235 161.5H234.5C214.4 161.5 200.7 167.1 200.7 181.2C200.7 195.2 217.3 210.2 232.9 211.3Z"/>
+      <path fill="#111"    d="M172.5 164.7C180.2 164.7 186.5 157.6 186.5 148.8C186.5 140 180.2 132.9 172.5 132.9C164.7 132.9 158.4 140 158.4 148.8C158.4 157.6 164.7 164.7 172.5 164.7Z"/>
+      <path fill="#111"    d="M296.5 164.7C304.3 164.7 310.6 157.6 310.6 148.8C310.6 140 304.3 132.9 296.5 132.9C288.8 132.9 282.5 140 282.5 148.8C282.5 157.6 288.8 164.7 296.5 164.7Z"/>
+    </svg>
+  </div>
+
+  <div class="pill">
+    <div class="pill-dot"></div>
+    In less than 1 year
+  </div>
+
+  <div class="counter-row">
+    <div class="counter-num" id="counter">0</div>
+    <div class="counter-plus">+</div>
+  </div>
+  <p class="counter-label"><strong>families</strong> reached out to our clinic</p>
+
+  <div class="divider"></div>
+
+  <div class="stats-row">
+    <div class="stat">
+      <span class="stat-val" id="s-followers">0</span>
+      <span class="stat-label">Instagram<br>followers</span>
+    </div>
+    <div class="stat">
+      <span class="stat-val" id="s-views">0</span>
+      <span class="stat-label">video views<br>on Instagram</span>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  function easeOutExpo(t) {
+    return t === 1 ? 1 : 1 - Math.pow(2, -10 * t);
+  }
+
+  function animateCount(el, target, duration, format) {
+    const start = performance.now();
+    function step(now) {
+      const p = Math.min((now - start) / duration, 1);
+      const v = easeOutExpo(p) * target;
+      el.textContent = format(v);
+      if (p < 1) requestAnimationFrame(step);
+    }
+    requestAnimationFrame(step);
+  }
+
+  const observer = new IntersectionObserver((entries) => {
+    if (entries[0].isIntersecting) {
+      animateCount(document.getElementById('counter'),     1200, 2200, v => Math.round(v).toLocaleString('en-US'));
+      animateCount(document.getElementById('s-followers'), 6161, 1800, v => Math.round(v).toLocaleString('en-US'));
+      animateCount(document.getElementById('s-views'),      2.5, 2000, v => v.toFixed(1) + 'M');
+      observer.disconnect();
+    }
+  }, { threshold: 0.4 });
+
+  observer.observe(document.getElementById('counter'));
+</script>
+
+</body>
+</html>

@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Comics, Case Study</title>
+  <style>
+    /* Comics Brand, Bahn Pro (display) + Montserrat (body), per Brand Book */
+    @font-face {
+      font-family: 'Bahn Pro';
+      src: url('./Comicas/Fontes/drive-download-20250627T091312Z-1-001/BahnPro_Light.otf') format('opentype');
+      font-weight: 300; font-style: normal;
+    }
+    @font-face {
+      font-family: 'Bahn Pro';
+      src: url('./Comicas/Fontes/drive-download-20250627T091312Z-1-001/BahnPro_Regular.otf') format('opentype');
+      font-weight: 400; font-style: normal;
+    }
+    @font-face {
+      font-family: 'Montserrat';
+      src: url('./Comicas/Fontes/drive-download-20250627T091244Z-1-001/Montserrat-Regular.ttf') format('truetype');
+      font-weight: 400; font-style: normal;
+    }
+    @font-face {
+      font-family: 'Montserrat';
+      src: url('./Comicas/Fontes/drive-download-20250627T091244Z-1-001/Montserrat-Medium.ttf') format('truetype');
+      font-weight: 500; font-style: normal;
+    }
+    @font-face {
+      font-family: 'Montserrat';
+      src: url('./Comicas/Fontes/drive-download-20250627T091244Z-1-001/Montserrat-SemiBold.ttf') format('truetype');
+      font-weight: 600; font-style: normal;
+    }
+    @font-face {
+      font-family: 'Montserrat';
+      src: url('./Comicas/Fontes/drive-download-20250627T091244Z-1-001/Montserrat-LightItalic.ttf') format('truetype');
+      font-weight: 300; font-style: italic;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      /* Palette from Layer_1.svg / cores.svg */
+      --black: #010101; --dark: #0a0a08; --surface: #1a1a17; --card: #1f1f1c;
+      --border: #2e2e29; --red: #C8202A; --red-dim: rgba(200,32,42,.15);
+      --cream: #E7D5C4; --body: #a09a8e; --muted: #5a5650; --white: #ffffff;
+      --mid-grey: #494A4A; --deep-charcoal: #2C231C;
+    }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Montserrat', sans-serif; background: var(--black); color: var(--body); line-height: 1.7; overflow-x: hidden; }
+    .dr { max-width: 100%; min-height: 100vh; }
+
+    .dr-hero {
+      min-height: 60vh;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      position: relative;
+      overflow: hidden;
+      border-bottom: 3px solid var(--red);
+    }
+    .hero-left {
+      display: flex; flex-direction: column; justify-content: flex-end;
+      padding: 2rem 2rem;
+      background: var(--black);
+      border-right: 1px solid var(--border);
+    }
+    .hero-right {
+      position: relative; overflow: hidden;
+    }
+    .hero-right img,
+    .hero-right video {
+      width: 100%; height: 100%;
+      object-fit: cover; object-position: center top;
+      filter: brightness(.7) contrast(1.1);
+    }
+    .hero-right-overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(to right, var(--black) 0%, transparent 50%);
+    }
+    .hero-stamp {
+      position: absolute; top: 1.5rem; right: 1.5rem;
+      z-index: 2;
+    }
+    .hero-stamp img {
+      height: 140px;
+      width: auto;
+      display: block;
+      filter: drop-shadow(0 2px 8px rgba(0,0,0,.5));
+    }
+    .hero-eyebrow { font-size: 10px; font-weight: 700; letter-spacing: 4px; text-transform: uppercase; color: var(--red); margin-bottom: 1rem; }
+    .hero-title {
+      font-family: 'Bahn Pro', sans-serif;
+      font-size: clamp(48px, 8vw, 80px);
+      line-height: .85; letter-spacing: 4px;
+      color: var(--white); margin-bottom: .5rem;
+    }
+    .hero-title-outline { -webkit-text-stroke: 2px var(--white); color: transparent; }
+    .hero-logo { height: 420px; width: auto; object-fit: contain; object-position: left; margin-bottom: .5rem; filter: brightness(0) invert(1); opacity: .95; }
+    .hero-rule { width: 48px; height: 3px; background: var(--red); margin: 1rem 0; }
+    .hero-desc { font-size: 14px; color: var(--body); max-width: 380px; line-height: 1.75; margin-bottom: 1rem; }
+    .hero-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+    .tag { font-size: 10px; font-weight: 700; padding: 3px 10px; letter-spacing: 1.5px; text-transform: uppercase; }
+    .tag-outline { border: 1px solid var(--border); color: var(--muted); }
+    .tag-red { border: 1px solid var(--red); color: var(--red); background: var(--red-dim); }
+    .tag-white { border: 1px solid rgba(255,255,255,.3); color: var(--white); }
+
+    .marquee-strip {
+      background: var(--red); padding: .5rem 0;
+      overflow: hidden;
+      border-top: 1px solid rgba(255,255,255,.1);
+      border-bottom: 1px solid rgba(255,255,255,.1);
+    }
+    .marquee-track { display: flex; gap: 0; white-space: nowrap; animation: marqueeScroll 22s linear infinite; }
+    .marquee-item { font-family: 'Bahn Pro', sans-serif; font-size: 14px; letter-spacing: 3px; color: var(--white); padding: 0 1.5rem; flex-shrink: 0; }
+    .marquee-dot { color: rgba(255,255,255,.4); }
+    @keyframes marqueeScroll { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+    .sec { padding: 1.75rem 2rem; border-bottom: 1px solid var(--border); }
+    .sec-label { font-size: 10px; font-weight: 700; letter-spacing: 5px; text-transform: uppercase; color: var(--muted); margin-bottom: 1.25rem; display: flex; align-items: center; gap: 12px; }
+    .sec-label::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+    .sec h2 { font-family: 'Bahn Pro', sans-serif; font-size: clamp(32px, 5vw, 52px); letter-spacing: 3px; color: var(--white); line-height: .95; margin-bottom: 1.25rem; }
+    .sec h2 .red { color: var(--red); }
+    .sec h2 .outline { -webkit-text-stroke: 1px var(--white); color: transparent; }
+    .sec h3 { font-family: 'Bahn Pro', sans-serif; font-size: 18px; letter-spacing: 2px; color: var(--white); margin-bottom: .5rem; margin-top: 1.5rem; }
+    .sec h3:first-child { margin-top: 0; }
+    .moodboard-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem; margin: 2rem 0; }
+    .moodboard-card { background: var(--card); border: 1px solid var(--border); overflow: hidden; display: flex; flex-direction: column; }
+    .moodboard-card-img { width: 100%; min-height: 280px; height: 320px; object-fit: cover; object-position: center; display: block; }
+    .moodboard-inner-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      grid-auto-rows: minmax(100px, 1fr);
+      gap: 3px;
+      padding: 3px;
+      background: var(--black);
+      min-height: 280px;
+      height: 320px;
+    }
+    .moodboard-inner-grid img {
+      width: 100%; height: 100%;
+      object-fit: cover; object-position: center;
+      display: block;
+    }
+    .moodboard-card-body { padding: 1.25rem; flex: 1; }
+    .moodboard-card h3 { margin: 0 0 .35rem; font-size: 16px; }
+    .moodboard-tag { font-size: 11px; font-style: italic; color: var(--red); margin: 0 0 .6rem; letter-spacing: 0.5px; }
+    .moodboard-card p { font-size: 13px; line-height: 1.65; margin: 0; color: var(--body); }
+    .moodboard-svg { width: 100%; height: auto; display: block; }
+    .moodboard-card-full { grid-column: 1 / -1; }
+    .sec p { font-size: 14px; color: var(--body); line-height: 1.8; margin-bottom: 1rem; }
+    .sec strong { color: var(--cream); font-weight: 600; }
+    .pull-quote { font-family: 'Montserrat', sans-serif; font-size: clamp(18px, 2.5vw, 24px); font-weight: 300; color: var(--cream); line-height: 1.4; padding: 1.5rem 0 1.5rem 1.5rem; border-left: 4px solid var(--red); margin: 2rem 0; font-style: italic; }
+    .stat-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--border); border: 1px solid var(--border); margin: 1.5rem 0; }
+    .stat-card { background: var(--card); padding: 1.25rem 1rem; text-align: center; }
+    .stat-n { font-family: 'Bahn Pro', sans-serif; font-size: 40px; color: var(--red); letter-spacing: 2px; line-height: 1; }
+    .stat-l { font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); margin-top: .3rem; }
+    .img-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 4px; margin: 1.5rem 0; }
+    .img-grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px; margin: 1.5rem 0; }
+    .img-full { margin: 1.5rem 0; }
+    .img-grid-2 img, .img-grid-3 img, .img-full img { width: 100%; height: auto; display: block; filter: brightness(.95); }
+    .img-caption { font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); margin-top: .5rem; text-align: center; }
+    .palette { display: flex; gap: 0; margin: 1.5rem 0; border: 1px solid var(--border); flex-wrap: wrap; }
+    .palette-layer1 {
+      display: grid; grid-template-columns: repeat(5, 1fr);
+      margin: 1.5rem 0; border: 1px solid var(--border);
+      background: #010101; overflow: hidden;
+    }
+    .palette-layer1-col {
+      position: relative; display: flex; flex-direction: column; align-items: center;
+      border-right: 1px solid rgba(255,255,255,.08);
+    }
+    .palette-layer1-col:last-child { border-right: none; }
+    .palette-layer1-bar {
+      width: 100%; min-height: 160px;
+      background: linear-gradient(to bottom, var(--palette-from, #010101) 0%, #C2C2C2 100%);
+    }
+    .palette-layer1-circle-wrap {
+      padding: 1.5rem 0 1rem;
+      display: flex; flex-direction: column; align-items: center; gap: .75rem;
+    }
+    .palette-layer1-circle {
+      width: 64px; height: 64px; border-radius: 50%;
+      border: 2px solid #5C5C5C; flex-shrink: 0;
+      background: var(--swatch-fill, #010101);
+    }
+    .palette-layer1-label {
+      font-size: 10px; font-weight: 700; letter-spacing: 2px;
+      text-transform: uppercase; color: var(--swatch-label, #a09a8e);
+    }
+    .palette-svg-wrap { margin: 1.5rem 0; border: 1px solid var(--border); overflow: hidden; }
+    .palette-svg { width: 100%; height: auto; display: block; }
+    .swatch { flex: 1; min-width: 80px; }
+    .sw-c { height: 56px; }
+    .sw-i { background: var(--card); padding: 8px 10px; border-top: 1px solid var(--border); }
+    .sw-name { font-size: 10px; font-weight: 700; color: var(--cream); }
+    .sw-hex { font-size: 9px; color: var(--muted); font-family: monospace; }
+    .principles { display: flex; flex-direction: column; }
+    .principle { display: grid; grid-template-columns: 1fr; gap: .5rem; padding: 1.25rem 0; border-bottom: 1px solid var(--border); }
+    .principle:last-child { border-bottom: none; }
+    .principle-label { font-family: 'Bahn Pro', sans-serif; font-size: 16px; letter-spacing: 1px; color: var(--red); }
+    .principle-text { font-size: 13px; color: var(--body); line-height: 1.7; margin: 0; }
+    .deliverables { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: var(--border); border: 1px solid var(--border); margin: 1.5rem 0; }
+    .deliv-item { background: var(--card); padding: 1rem; }
+    .deliv-n { font-family: 'Bahn Pro', sans-serif; font-size: 32px; color: rgba(200,32,42,.2); line-height: 1; margin-bottom: .2rem; }
+    .deliv-title { font-size: 12px; font-weight: 700; color: var(--cream); letter-spacing: 1px; text-transform: uppercase; margin-bottom: .3rem; }
+    .deliv-desc { font-size: 12px; color: var(--muted); line-height: 1.5; margin: 0; }
+    .closing { padding: 2.5rem 2rem; text-align: center; background: var(--dark); border-top: 1px solid var(--border); }
+    .closing-title { font-family: 'Bahn Pro', sans-serif; font-size: clamp(28px, 5vw, 48px); letter-spacing: 4px; color: var(--white); line-height: .95; margin-bottom: .75rem; }
+    .closing-title .red { color: var(--red); }
+    .closing-sub { font-family: 'Montserrat', sans-serif; font-size: 15px; font-weight: 300; color: var(--body); margin-bottom: 1.5rem; font-style: italic; }
+    .btn { font-family: 'Montserrat', sans-serif; font-size: 11px; font-weight: 700; padding: 10px 24px; cursor: pointer; text-decoration: none; letter-spacing: 2px; text-transform: uppercase; transition: all .2s; display: inline-block; margin: 0 4px; }
+    .btn-primary { background: var(--red); color: #fff; border: 2px solid var(--red); }
+    .btn-primary:hover { background: #e8323c; border-color: #e8323c; }
+    .cta-row { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; }
+
+    /* ── comics-blocks design (from comics-blocks.html) ─── */
+    .guidelines-page {
+      background: var(--cream); color: #111; position: relative; overflow: hidden;
+      margin: 1.5rem 0; border: 1px solid var(--border);
+    }
+    .guidelines-page::after {
+      content: ''; position: absolute; top: 0; right: 0;
+      width: 72px; height: 100%;
+      background: repeating-linear-gradient(-45deg, transparent, transparent 5px, rgba(0,0,0,.09) 5px, rgba(0,0,0,.09) 10px);
+      pointer-events: none;
+    }
+    .gl-inner { padding: 2rem 2.5rem; }
+    .gl-header { display: flex; align-items: flex-start; justify-content: space-between; border-bottom: 2px solid #111; padding-bottom: 1rem; margin-bottom: 1.5rem; }
+    .gl-logo-stamp { font-family: 'Bahn Pro', sans-serif; font-size: 18px; letter-spacing: 4px; color: #111; border: 3px solid #111; padding: 6px 12px 4px; display: inline-flex; align-items: center; line-height: 1; }
+    .gl-header-right { text-align: right; font-size: 9px; letter-spacing: 2px; text-transform: uppercase; color: #999; line-height: 2; }
+    .gl-section-label { font-size: 9px; font-weight: 700; letter-spacing: 4px; text-transform: uppercase; color: #999; margin-bottom: .5rem; margin-top: 1.5rem; }
+    .gl-section-label:first-child { margin-top: 0; }
+    .gl-big-title { font-family: 'Bahn Pro', sans-serif; font-size: clamp(24px, 4vw, 42px); letter-spacing: 3px; color: #111; line-height: 1; margin-bottom: 1rem; }
+    .gl-rule { height: 1px; background: #ddd; margin: 1.25rem 0; }
+    .gl-logos { display: flex; align-items: flex-start; gap: 1.5rem; flex-wrap: wrap; margin: .75rem 0; }
+    .gl-logo-item { display: flex; flex-direction: column; gap: .35rem; }
+    .gl-logo-lbl { font-size: 8px; letter-spacing: 3px; text-transform: uppercase; color: #bbb; }
+    .logo-primary { font-family: 'Bahn Pro', sans-serif; font-size: 28px; letter-spacing: 5px; color: #111; border: 4px solid #111; padding: 6px 14px 4px; display: inline-flex; align-items: center; line-height: 1; }
+    .logo-inverted { font-family: 'Bahn Pro', sans-serif; font-size: 28px; letter-spacing: 5px; color: #fff; background: #111; border: 4px solid #111; padding: 6px 14px 4px; display: inline-flex; align-items: center; line-height: 1; }
+    .logo-red { font-family: 'Bahn Pro', sans-serif; font-size: 28px; letter-spacing: 5px; color: var(--red); border: 4px solid var(--red); padding: 6px 14px 4px; display: inline-flex; align-items: center; line-height: 1; }
+    .logo-vertical { font-family: 'Bahn Pro', sans-serif; font-size: 16px; letter-spacing: 3px; color: #111; border: 3px solid #111; padding: 6px 6px 4px; display: inline-flex; flex-direction: column; align-items: center; line-height: 1.1; writing-mode: vertical-lr; text-orientation: mixed; letter-spacing: 6px; }
+    .gl-palette { display: flex; gap: 0; margin: .5rem 0; border: 1px solid #ddd; }
+    .gl-sw { flex: 1; }
+    .gl-sw-color { height: 40px; }
+    .gl-sw-info { padding: 5px 6px; border-top: 1px solid #e8e8e0; }
+    .gl-sw-name { font-size: 10px; font-weight: 700; color: #222; line-height: 1.2; }
+    .gl-sw-hex { font-size: 9px; color: #999; font-family: monospace; }
+    .bahn-display { font-family: 'Bahn Pro', sans-serif; font-size: clamp(28px, 5vw, 48px); letter-spacing: 6px; color: #111; line-height: 1; margin: .4rem 0; }
+    .bahn-specimen-row { font-family: 'Bahn Pro', sans-serif; font-size: 18px; letter-spacing: 3px; color: #444; line-height: 1.5; }
+    .specimen-label { font-size: 8px; letter-spacing: 3px; text-transform: uppercase; color: #bbb; margin: .2rem 0 .5rem; }
+
+    .character-wrap { display: grid; grid-template-columns: 1fr 1fr; gap: 0; border: 1px solid var(--border); margin: 1.5rem 0; }
+    .character-visual { background: var(--black); position: relative; overflow: hidden; display: flex; align-items: flex-end; justify-content: center; min-height: 380px; padding: 0 1rem; }
+    .character-visual::before { content: ''; position: absolute; inset: 0; background-image: radial-gradient(circle, rgba(200,32,42,.35) 1.5px, transparent 1.5px); background-size: 14px 14px; pointer-events: none; z-index: 1; }
+    .character-bg-letter { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-family: 'Bahn Pro', sans-serif; font-size: 200px; color: rgba(200,32,42,.12); letter-spacing: -10px; line-height: 1; pointer-events: none; z-index: 0; white-space: nowrap; }
+    .character-img { position: relative; z-index: 2; width: 75%; max-width: 260px; height: auto; display: block; filter: drop-shadow(0 16px 32px rgba(0,0,0,.5)); mix-blend-mode: lighten; }
+    .character-info { background: var(--card); padding: 2rem 1.75rem; display: flex; flex-direction: column; justify-content: center; border-left: 1px solid var(--border); }
+    .char-tag { font-size: 10px; font-weight: 700; letter-spacing: 4px; text-transform: uppercase; color: var(--red); margin-bottom: .5rem; }
+    .char-name { font-family: 'Bahn Pro', sans-serif; font-size: clamp(36px, 6vw, 56px); letter-spacing: 3px; color: var(--white); line-height: .88; margin-bottom: 1rem; }
+    .char-body { font-size: 13px; color: var(--body); line-height: 1.8; margin-bottom: 1rem; }
+    .char-rule { height: 1px; background: var(--border); margin-bottom: 1rem; }
+    .char-powers { list-style: none; display: flex; flex-direction: column; gap: .3rem; }
+    .char-powers li { font-size: 10px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: var(--muted); padding: .5rem .75rem; border: 1px solid var(--border); display: flex; align-items: center; gap: .5rem; }
+    .char-powers li:hover { border-color: var(--red); color: var(--cream); }
+    .char-powers li::before { content: ''; width: 6px; height: 6px; background: var(--red); border-radius: 50%; flex-shrink: 0; }
+
+    .now-showing-wrap { position: relative; overflow: hidden; margin: 1.5rem 0; border: 1px solid var(--border); min-height: 220px; background: var(--dark); }
+    .now-showing-img { width: 100%; max-width: 682px; height: auto; display: block; margin: 0 auto; filter: brightness(.82) contrast(1.05); }
+    .now-showing-overlay { position: absolute; bottom: 0; left: 0; right: 0; background: linear-gradient(to top, rgba(1,1,1,.95) 0%, rgba(1,1,1,.5) 50%, transparent 100%); padding: 2rem 2rem; }
+    .ns-label { font-size: 10px; font-weight: 700; letter-spacing: 5px; text-transform: uppercase; color: var(--red); margin-bottom: .5rem; }
+    .ns-title { font-family: 'Bahn Pro', sans-serif; font-size: clamp(28px, 5vw, 52px); letter-spacing: 4px; color: var(--white); line-height: .9; margin-bottom: .4rem; }
+    .ns-sub { font-family: 'Bahn Pro', sans-serif; font-size: clamp(16px, 2vw, 24px); letter-spacing: 3px; color: var(--red); }
+    .ns-stamp { position: absolute; top: 1rem; right: 1rem; z-index: 2; }
+    .ns-stamp img { height: 100px; width: auto; display: block; filter: drop-shadow(0 2px 8px rgba(0,0,0,.5)); }
+
+    @media (max-width: 768px) {
+      .dr-hero { grid-template-columns: 1fr; }
+      .hero-right { height: 45vw; }
+      .hero-left { padding: 1.5rem; }
+      .img-grid-2, .img-grid-3 { grid-template-columns: 1fr; }
+      .character-wrap { grid-template-columns: 1fr; }
+      .character-visual { min-height: 280px; }
+      .gl-logos { flex-direction: column; }
+      .moodboard-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="dr">
+  <!-- HERO · overview -->
+  <div class="dr-hero" id="overview" data-drawer-section="overview">
+    <div class="hero-left">
+      <p class="hero-eyebrow">Case Study · Brand Identity · 2019</p>
+      <img src="./logo_menu.svg" alt="Comics" class="hero-logo">
+      <div class="hero-rule"></div>
+      <p class="hero-desc">
+        Complete brand identity and architectural concept for Comics
+        a bar and entertainment venue in São Paulo built around the universe
+        of comics, music, and stand-up comedy.
+      </p>
+      <div class="hero-tags">
+        <span class="tag tag-red">Brand Identity</span>
+        <span class="tag tag-white">Architecture</span>
+        <span class="tag tag-outline">Concept Design</span>
+      </div>
+    </div>
+    <div class="hero-right">
+      <video src="./Comics_.mp4" autoplay loop muted playsinline preload="auto" aria-hidden="true"></video>
+      <div class="hero-right-overlay"></div>
+      <div class="hero-stamp">
+        <img src="./n1.svg" alt="Comics Nº1 Menu">
+      </div>
+    </div>
+  </div>
+
+  <div class="marquee-strip">
+    <div class="marquee-track">
+      <span class="marquee-item">BRAND IDENTITY <span class="marquee-dot">◆</span></span>
+      <span class="marquee-item">ARCHITECTURAL CONCEPT <span class="marquee-dot">◆</span></span>
+      <span class="marquee-item">SÃO PAULO · 2019 <span class="marquee-dot">◆</span></span>
+      <span class="marquee-item">BRAND IDENTITY <span class="marquee-dot">◆</span></span>
+      <span class="marquee-item">ARCHITECTURAL CONCEPT <span class="marquee-dot">◆</span></span>
+    </div>
+  </div>
+
+  <!-- stats · part of overview -->
+  <div class="sec" data-drawer-section="overview">
+    <div class="stat-grid">
+      <div class="stat-card"><div class="stat-n">340m²</div><div class="stat-l">Venue area</div></div>
+      <div class="stat-card"><div class="stat-n">12wk</div><div class="stat-l">Project timeline</div></div>
+      <div class="stat-card"><div class="stat-n">8+</div><div class="stat-l">Brand deliverables</div></div>
+    </div>
+  </div>
+
+  <!-- 01 CONCEPT · problem -->
+  <section class="sec" id="concept" data-drawer-section="problem">
+    <p class="sec-label">01, Concept</p>
+    <h2>THE DETAILS<br>THAT <span class="red">GLOW</span><br><span class="outline">IN THE DARK</span></h2>
+    <p>
+      Comics is a bar and entertainment venue in São Paulo built around three cultural pillars:
+      <strong>comics, music, and stand-up comedy</strong>. The concept demanded a brand identity
+      as immersive as the space itself, one that felt lived-in, layered, and unmistakably of its world.
+    </p>
+    <p>
+      The foundational idea was drawn from urban noir: dark, damp alleyways with rusted fire escapes
+      and graffiti-covered brick walls, where secret places protect themselves from curious eyes.
+    </p>
+    <div class="pull-quote">
+      "Dark alleys, neon signs, the smell of rain on concrete
+      where the extraordinary hides behind the ordinary."
+    </div>
+    <div class="moodboard-grid">
+      <div class="moodboard-card">
+        <div class="moodboard-inner-grid">
+          <img src="./moodboard-extracted/moodboard-0.png" alt="">
+          <img src="./moodboard-extracted/moodboard-1.png" alt="">
+          <img src="./moodboard-extracted/moodboard-2.png" alt="">
+          <img src="./moodboard-extracted/moodboard-3.png" alt="">
+          <img src="./moodboard-extracted/moodboard-4.png" alt="">
+          <img src="./moodboard-extracted/moodboard-5.png" alt="">
+          <img src="./moodboard-extracted/moodboard-6.png" alt="">
+          <img src="./moodboard-extracted/moodboard-7.png" alt="">
+        </div>
+        <div class="moodboard-card-body">
+          <h3>Moodboard Conceito</h3>
+          <p class="moodboard-tag">Os detalhes que brilham na escuridão</p>
+          <p>Dark, wet alleys and hidden spots; rusty fire escapes and brick walls with graffiti. A world of details that shine in the darkness.</p>
+        </div>
+      </div>
+      <div class="moodboard-card">
+        <div class="moodboard-inner-grid">
+          <img src="./moodboard-extracted/MOODBOARD2-0.png" alt="">
+          <img src="./moodboard-extracted/MOODBOARD2-1.png" alt="">
+          <img src="./moodboard-extracted/MOODBOARD2-2.png" alt="">
+          <img src="./moodboard-extracted/MOODBOARD2-3.png" alt="">
+          <img src="./moodboard-extracted/MOODBOARD2-4.png" alt="">
+          <img src="./moodboard-extracted/MOODBOARD2-5.png" alt="">
+          <img src="./moodboard-extracted/MOODBOARD2-6.png" alt="">
+        </div>
+        <div class="moodboard-card-body">
+          <h3>Moodboard Conceito Decoração</h3>
+          <p class="moodboard-tag">A decadência elegante</p>
+          <p>Industrial, urban interiors; open, multifunctional spaces. Rough finishes balanced with designed lighting and art.</p>
+        </div>
+      </div>
+      <div class="moodboard-card">
+        <div class="moodboard-inner-grid">
+          <img src="./moodboard-extracted/Mobiliario-0.png" alt="">
+          <img src="./moodboard-extracted/Mobiliario-1.png" alt="">
+          <img src="./moodboard-extracted/Mobiliario-2.png" alt="">
+          <img src="./moodboard-extracted/Mobiliario-3.png" alt="">
+          <img src="./moodboard-extracted/Mobiliario-4.png" alt="">
+          <img src="./moodboard-extracted/Mobiliario-5.png" alt="">
+          <img src="./moodboard-extracted/Mobiliario-6.png" alt="">
+          <img src="./moodboard-extracted/Mobiliario-7.png" alt="">
+        </div>
+        <div class="moodboard-card-body">
+          <h3>Moodboard Mobiliário</h3>
+          <p class="moodboard-tag">Ferro, madeira e veludo</p>
+          <p>Rustic, recycled pieces, metals, oxidized iron. Factory-style elements mixed with classic velvet furniture.</p>
+        </div>
+      </div>
+      <div class="moodboard-card">
+        <div class="moodboard-inner-grid">
+          <img src="./moodboard-extracted/iluminacao-0.png" alt="">
+          <img src="./moodboard-extracted/iluminacao-1.png" alt="">
+          <img src="./moodboard-extracted/iluminacao-2.png" alt="">
+          <img src="./moodboard-extracted/iluminacao-3.png" alt="">
+          <img src="./moodboard-extracted/iluminacao-4.png" alt="">
+          <img src="./moodboard-extracted/iluminacao-5.png" alt="">
+          <img src="./moodboard-extracted/iluminacao-6.png" alt="">
+          <img src="./moodboard-extracted/iluminacao-7.png" alt="">
+        </div>
+        <div class="moodboard-card-body">
+          <h3>Moodboard Iluminação</h3>
+          <p class="moodboard-tag">Cores para o ambiente</p>
+          <p>Comics, music, and comedy in lighting. Lamps from reused materials; multiple colors shaping the scenography.</p>
+        </div>
+      </div>
+      <div class="moodboard-card moodboard-card-full">
+        <div class="moodboard-inner-grid">
+          <img src="./moodboard-extracted/Herois-0.png" alt="">
+          <img src="./moodboard-extracted/Herois-1.png" alt="">
+          <img src="./moodboard-extracted/Herois-2.png" alt="">
+          <img src="./moodboard-extracted/Herois-3.png" alt="">
+          <img src="./moodboard-extracted/Herois-4.png" alt="">
+          <img src="./moodboard-extracted/Herois-5.png" alt="">
+          <img src="./moodboard-extracted/Herois-6.png" alt="">
+          <img src="./moodboard-extracted/Herois-7.png" alt="">
+        </div>
+        <div class="moodboard-card-body">
+          <h3>Moodboard Cenografia</h3>
+          <p class="moodboard-tag">Quadrinhos e música</p>
+          <p>Objects and artifacts from comics and music for scenography. Playful immersion for the audience.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 02 BRAND · process -->
+  <section class="sec" id="brand" data-drawer-section="process">
+    <p class="sec-label">02, Brand System</p>
+    <h2>STRONG<br>MARKS &<br><span class="red">BOLD</span> TYPE</h2>
+    <p>
+      The primary logomark synthesises the Comics identity in a single, compact form:
+      the wordmark enclosed in a thick rectangular frame, referencing comic book title cards,
+      vintage signage, and editorial stamps.
+    </p>
+    <div class="guidelines-page">
+      <div class="gl-inner">
+        <div class="gl-header">
+          <span class="gl-logo-stamp">COMICS</span>
+          <div class="gl-header-right">Brand Guidelines<br>2019</div>
+        </div>
+        <div class="gl-big-title">DESIGN &<br>BRAND GUIDELINES</div>
+        <div class="gl-rule"></div>
+        <div class="gl-section-label">Logo &amp; Trademark</div>
+        <div class="gl-logos">
+          <div class="gl-logo-item"><span class="logo-primary">COMICS</span><span class="gl-logo-lbl">Primary, Black</span></div>
+          <div class="gl-logo-item"><span class="logo-inverted">COMICS</span><span class="gl-logo-lbl">Inverted, White</span></div>
+          <div class="gl-logo-item"><span class="logo-red">COMICS</span><span class="gl-logo-lbl">Colour, Red</span></div>
+          <div class="gl-logo-item"><span class="logo-vertical">CO<br>MI<br>CS</span><span class="gl-logo-lbl">Vertical icon</span></div>
+        </div>
+        <div class="gl-rule"></div>
+        <div class="gl-section-label">Typography</div>
+        <div class="bahn-display">BAHN</div>
+        <div class="specimen-label">Bahn Pro, Display &amp; Headlines</div>
+        <div class="bahn-specimen-row">A B C D E F G H I J K L M N O P Q R S T U V W X Y Z</div>
+        <div class="bahn-specimen-row">0 1 2 3 4 5 6 7 8 9</div>
+      </div>
+    </div>
+    <h3>Official Colour Palette</h3>
+    <div class="palette-layer1">
+      <div class="palette-layer1-col">
+        <div class="palette-layer1-bar" style="--palette-from: #010101;"></div>
+        <div class="palette-layer1-circle-wrap">
+          <div class="palette-layer1-circle" style="--swatch-fill: #010101;"></div>
+          <span class="palette-layer1-label" style="--swatch-label: #a09a8e;">Comics Black</span>
+        </div>
+      </div>
+      <div class="palette-layer1-col">
+        <div class="palette-layer1-bar" style="--palette-from: #494A4A;"></div>
+        <div class="palette-layer1-circle-wrap">
+          <div class="palette-layer1-circle" style="--swatch-fill: #494A4A;"></div>
+          <span class="palette-layer1-label" style="--swatch-label: #E7D5C4;">Mid Grey</span>
+        </div>
+      </div>
+      <div class="palette-layer1-col">
+        <div class="palette-layer1-bar" style="--palette-from: #2C231C;"></div>
+        <div class="palette-layer1-circle-wrap">
+          <div class="palette-layer1-circle" style="--swatch-fill: #2C231C;"></div>
+          <span class="palette-layer1-label" style="--swatch-label: #E7D5C4;">Deep Charcoal</span>
+        </div>
+      </div>
+      <div class="palette-layer1-col">
+        <div class="palette-layer1-bar" style="--palette-from: #E7D5C4;"></div>
+        <div class="palette-layer1-circle-wrap">
+          <div class="palette-layer1-circle" style="--swatch-fill: #E7D5C4;"></div>
+          <span class="palette-layer1-label" style="--swatch-label: #2C231C;">Cream</span>
+        </div>
+      </div>
+      <div class="palette-layer1-col">
+        <div class="palette-layer1-bar" style="--palette-from: #ffffff;"></div>
+        <div class="palette-layer1-circle-wrap">
+          <div class="palette-layer1-circle" style="--swatch-fill: #ffffff;"></div>
+          <span class="palette-layer1-label" style="--swatch-label: #E7D5C4;">Pure White</span>
+        </div>
+      </div>
+    </div>
+    <div class="character-wrap">
+      <div class="character-visual">
+        <div class="character-bg-letter">SR</div>
+        <img class="character-img" src="./sr-comics.png" alt="Sr. Comics" onerror="this.style.display='none'">
+      </div>
+      <div class="character-info">
+        <div class="char-tag">Brand Character · Mascot</div>
+        <div class="char-name">SR.<br>COMICS</div>
+        <p class="char-body">The brand character embodies the soul of the venue, a wise keeper of underground culture, comics, and live performance.</p>
+        <div class="char-rule"></div>
+        <ul class="char-powers">
+          <li>Strong & Direct typography</li>
+          <li>Elegant decay aesthetic</li>
+          <li>Immersive scenography</li>
+          <li>Typography as identity</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- 03 SPACE · process -->
+  <section class="sec" id="space" data-drawer-section="process">
+    <p class="sec-label">03, Space & Architecture</p>
+    <p>
+      The architectural concept translated the brand narrative directly into space.
+      The facade study drew from vintage Broadway marquees, a luminous COMICS sign in red,
+      framed by incandescent bulbs, rusted iron structures, and deliberate imperfection.
+    </p>
+    <p>
+      Inside, three reference worlds converged: gritty urban texture, jazz-era club warmth,
+      and immersive scenography. Iron, wood, and velvet.
+    </p>
+    <div class="now-showing-wrap">
+      <img class="now-showing-img" src="./comics-09-facade1.png" alt="Comics facade, Now Showing" onerror="this.style.display='none'">
+      <div class="ns-stamp">
+        <img src="./n1.svg" alt="Comics Nº1 Menu">
+      </div>
+      <div class="now-showing-overlay">
+        <div class="ns-label">Facade & Signage</div>
+        <div class="ns-title">NOW SHOWING</div>
+        <div class="ns-sub">Broadway-style marquee</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 04 DELIVERABLES · outcome -->
+  <section class="sec" id="deliverables" data-drawer-section="outcome">
+    <p class="sec-label">04, Deliverables</p>
+    <h2>WHAT<br>WAS <span class="red">BUILT</span></h2>
+    <p>A complete brand system from the smallest printed item to an illuminated building facade.</p>
+    <div class="deliverables">
+      <div class="deliv-item"><div class="deliv-n">01</div><div class="deliv-title">Logo & Trademark</div><p class="deliv-desc">Primary mark, icon variant, all usages.</p></div>
+      <div class="deliv-item"><div class="deliv-n">02</div><div class="deliv-title">Brand Manual</div><p class="deliv-desc">Guidelines covering colour, typography, usage rules.</p></div>
+      <div class="deliv-item"><div class="deliv-n">03</div><div class="deliv-title">Cardápio (Menu)</div><p class="deliv-desc">Editorial menu designed as a collectible comic book.</p></div>
+      <div class="deliv-item"><div class="deliv-n">04</div><div class="deliv-title">Full Collateral</div><p class="deliv-desc">Glassware, shaker, coasters, stationery.</p></div>
+      <div class="deliv-item"><div class="deliv-n">05</div><div class="deliv-title">Signage System</div><p class="deliv-desc">Interior and exterior signage, Broadway-style marquee.</p></div>
+      <div class="deliv-item"><div class="deliv-n">06</div><div class="deliv-title">Architectural Concept</div><p class="deliv-desc">Space planning, material direction, lighting concept.</p></div>
+    </div>
+  </section>
+
+  <!-- CLOSING · outcome -->
+  <section class="closing" data-drawer-section="outcome">
+    <div class="closing-title">THE DETAILS<br>THAT <span class="red">GLOW</span><br>IN THE DARK</div>
+    <p class="closing-sub">A complete brand identity built for a world, not just a venue.</p>
+    <div class="cta-row">
+      <a href="https://www.behance.net/gallery/147540237/COMICS-Complete-Brand-Identity" target="_blank" rel="noopener" class="btn btn-primary">View on Behance ↗</a>
+    </div>
+  </section>
+</div>
+
+<script>
+(function() {
+  var sections = document.querySelectorAll('[data-drawer-section]');
+  var sectionMap = {};
+  sections.forEach(function(s) {
+    var id = s.getAttribute('data-drawer-section');
+    if (id && !sectionMap[id]) sectionMap[id] = [];
+    if (id) sectionMap[id].push(s);
+  });
+  var ordered = ['overview','problem','process','outcome'];
+  function findActiveSection() {
+    var vh = window.innerHeight;
+    var best = 'overview';
+    var bestRatio = -1;
+    ordered.forEach(function(id) {
+      var els = sectionMap[id] || [];
+      for (var i = 0; i < els.length; i++) {
+        var rect = els[i].getBoundingClientRect();
+        var visible = Math.min(rect.bottom, vh) - Math.max(rect.top, 0);
+        var ratio = visible / Math.min(rect.height, vh);
+        if (ratio > 0.2 && ratio > bestRatio) { bestRatio = ratio; best = id; }
+      }
+    });
+    return best;
+  }
+  var lastActive = 'overview';
+  function check() {
+    var active = findActiveSection();
+    if (active !== lastActive) {
+      lastActive = active;
+      if (window.parent !== window) window.parent.postMessage({ type: 'comics-section', section: active }, '*');
+    }
+  }
+  window.addEventListener('scroll', function() { requestAnimationFrame(check); }, { passive: true });
+  window.addEventListener('message', function(e) {
+    if (e.data && e.data.type === 'comics-scroll' && e.data.section) {
+      var el = document.getElementById(e.data.section) || document.querySelector('[data-drawer-section="' + e.data.section + '"]');
+      if (!el && e.data.section === 'overview') el = document.querySelector('.dr-hero');
+      if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  });
+  check();
+})();
+</script>
+
+</body>
+</html>

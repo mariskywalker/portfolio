@@ -1,0 +1,12 @@
+  const activeDrawerCopy =
+    selectedProjectId === "casa"
+      ? casaDoUrsoContent
+      : selectedProjectId === "heinz"
+        ? heinzContent
+        : selectedProjectId === "pokerbros"
+          ? pokerbrosContent
+          : selectedProjectId === "comics"
+            ? comicsContent
+            : selectedProjectId === "trident"
+              ? tridentContent
+              : null;

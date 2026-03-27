@@ -1,0 +1,6 @@
+  const casaFields: Field[] = [
+    { k: "ROLE", v: "vibe coder" },
+    { k: "SCOPE", v: "interface system" },
+    { k: "CATEGORY", v: "BRAND / DIGITAL" },
+    { k: "DELIVERABLES", v: "design system" },
+  ];

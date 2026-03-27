@@ -1,0 +1,12 @@
+      {
+        id: "casa",
+        name: "Casa do Urso",
+        client: "Casa do Urso",
+        year: "—",
+        description:
+          "A portfolio case study for Casa do Urso, focused on a tactile interface system and branded interaction language. Built to translate a warm identity into a controlled UI rhythm, with modular panels and high-contrast typography.",
+        fields: casaFields,
+        active: true,
+        iconSrc: "/casadourso-cover.png",
+        videoSrc: "/casadourso-scene-2.mp4",
+      },

@@ -1,0 +1,1400 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Comics, Case Study</title>
+  <style>
+    /* Comics Brand, Bahn Pro (display) + Montserrat (body), per Brand Book */
+    @font-face {
+      font-family: 'Bahn Pro';
+      src: url('./Comicas/Fontes/drive-download-20250627T091312Z-1-001/BahnPro_Light.otf') format('opentype');
+      font-weight: 300; font-style: normal;
+    }
+    @font-face {
+      font-family: 'Bahn Pro';
+      src: url('./Comicas/Fontes/drive-download-20250627T091312Z-1-001/BahnPro_Regular.otf') format('opentype');
+      font-weight: 400; font-style: normal;
+    }
+    @font-face {
+      font-family: 'Montserrat';
+      src: url('./Comicas/Fontes/drive-download-20250627T091244Z-1-001/Montserrat-Regular.ttf') format('truetype');
+      font-weight: 400; font-style: normal;
+    }
+    @font-face {
+      font-family: 'Montserrat';
+      src: url('./Comicas/Fontes/drive-download-20250627T091244Z-1-001/Montserrat-Medium.ttf') format('truetype');
+      font-weight: 500; font-style: normal;
+    }
+    @font-face {
+      font-family: 'Montserrat';
+      src: url('./Comicas/Fontes/drive-download-20250627T091244Z-1-001/Montserrat-SemiBold.ttf') format('truetype');
+      font-weight: 600; font-style: normal;
+    }
+    @font-face {
+      font-family: 'Montserrat';
+      src: url('./Comicas/Fontes/drive-download-20250627T091244Z-1-001/Montserrat-LightItalic.ttf') format('truetype');
+      font-weight: 300; font-style: italic;
+    }
+    /* ── RESET ─────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      /* Palette from Layer_1.svg / cores.svg / Brand Book */
+      --black:   #010101;
+      --dark:    #0a0a08;
+      --surface: #1a1a17;
+      --card:    #1f1f1c;
+      --border:  #2e2e29;
+      --red:     #C8202A;
+      --red-dim: rgba(200,32,42,.15);
+      --cream:   #E7D5C4;
+      --body:    #a09a8e;
+      --muted:   #5a5650;
+      --white:   #ffffff;
+      --mid-grey: #494A4A;
+      --deep-charcoal: #2C231C;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Montserrat', sans-serif;
+      background: var(--black);
+      color: var(--body);
+      line-height: 1.7;
+      overflow-x: hidden;
+    }
+
+    ::selection { background: var(--red); color: #fff; }
+
+    /* ── NOISE TEXTURE OVERLAY ─────────────────────────── */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 1000;
+      opacity: .5;
+    }
+
+    /* ── PROGRESS BAR ──────────────────────────────────── */
+    #progress-bar {
+      position: fixed; top: 0; left: 0;
+      height: 3px; width: 0%;
+      background: var(--red);
+      z-index: 999;
+      transition: width .1s linear;
+    }
+
+    /* ── NAV ───────────────────────────────────────────── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0;
+      z-index: 500;
+      padding: 1rem 2rem;
+      display: flex; align-items: center; justify-content: space-between;
+      background: rgba(1,1,1,.95);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid transparent;
+      transition: border-color .3s;
+    }
+    nav.scrolled { border-color: var(--border); }
+
+    .nav-logo {
+      font-family: 'Bahn Pro', sans-serif;
+      font-size: 22px;
+      letter-spacing: 4px;
+      color: var(--white);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .nav-logo-box {
+      border: 2px solid var(--white);
+      padding: 1px 8px;
+      font-size: 18px;
+      letter-spacing: 3px;
+      line-height: 1.2;
+    }
+
+    .nav-links {
+      display: flex; gap: 2rem; list-style: none;
+    }
+    .nav-links a {
+      font-size: 11px; font-weight: 600;
+      letter-spacing: 3px; text-transform: uppercase;
+      color: var(--muted); text-decoration: none;
+      transition: color .2s;
+    }
+    .nav-links a:hover { color: var(--red); }
+
+    .nav-back {
+      font-size: 11px; font-weight: 600;
+      letter-spacing: 2px; text-transform: uppercase;
+      color: var(--muted); text-decoration: none;
+      transition: color .2s;
+    }
+    .nav-back:hover { color: var(--white); }
+
+    /* ── HERO ──────────────────────────────────────────── */
+    .hero {
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-left {
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 8rem 3rem 5rem;
+      position: relative;
+      z-index: 1;
+      background: var(--black);
+      border-right: 1px solid var(--border);
+    }
+
+    .hero-right {
+      position: relative;
+      overflow: hidden;
+    }
+    .hero-right img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center top;
+      filter: brightness(.7) contrast(1.1);
+      transition: filter .4s;
+    }
+    .hero-right:hover img { filter: brightness(.85) contrast(1.1); }
+    .hero-right-overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(to right, var(--black) 0%, transparent 40%);
+    }
+
+    /* stamp badge */
+    .hero-stamp {
+      position: absolute;
+      top: 2rem; right: 2rem;
+      z-index: 2;
+    }
+    .hero-stamp img {
+      height: 140px;
+      width: auto;
+      display: block;
+      filter: drop-shadow(0 2px 8px rgba(0,0,0,.5));
+    }
+
+    .hero-eyebrow {
+      font-size: 10px; font-weight: 700;
+      letter-spacing: 5px; text-transform: uppercase;
+      color: var(--red); margin-bottom: 1.25rem;
+      opacity: 0; animation: fadeUp .7s .2s forwards;
+    }
+
+    .hero-title {
+      font-family: 'Bahn Pro', sans-serif;
+      font-size: clamp(80px, 12vw, 160px);
+      line-height: .85;
+      letter-spacing: 4px;
+      color: var(--white);
+      margin-bottom: .5rem;
+      opacity: 0; animation: fadeUp .8s .35s forwards;
+    }
+    .hero-title-outline {
+      -webkit-text-stroke: 2px var(--white);
+      color: transparent;
+    }
+
+    .hero-rule {
+      width: 60px; height: 3px;
+      background: var(--red);
+      margin: 1.5rem 0;
+      opacity: 0; animation: expandRule .8s .5s forwards;
+      transform-origin: left;
+      transform: scaleX(0);
+    }
+    @keyframes expandRule { to { transform: scaleX(1); opacity: 1; } }
+
+    .hero-desc {
+      font-size: 15px; color: var(--body);
+      max-width: 420px; line-height: 1.8;
+      margin-bottom: 2rem;
+      opacity: 0; animation: fadeUp .8s .65s forwards;
+    }
+
+    .hero-tags {
+      display: flex; flex-wrap: wrap; gap: 8px;
+      margin-bottom: 2.5rem;
+      opacity: 0; animation: fadeUp .8s .8s forwards;
+    }
+    .tag {
+      font-size: 10px; font-weight: 700;
+      padding: 4px 12px; letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+    .tag-outline { border: 1px solid var(--border); color: var(--muted); }
+    .tag-red { border: 1px solid var(--red); color: var(--red); background: var(--red-dim); }
+    .tag-white { border: 1px solid rgba(255,255,255,.3); color: var(--white); }
+
+    .hero-scroll {
+      display: flex; align-items: center; gap: 10px;
+      font-size: 10px; letter-spacing: 3px;
+      text-transform: uppercase; color: var(--muted);
+      opacity: 0; animation: fadeUp .8s 1s forwards;
+    }
+    .hero-scroll-line {
+      width: 36px; height: 1px;
+      background: var(--muted);
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ── MARQUEE STRIP ─────────────────────────────────── */
+    .marquee-strip {
+      background: var(--red);
+      padding: .7rem 0;
+      overflow: hidden;
+      border-top: 1px solid rgba(255,255,255,.1);
+      border-bottom: 1px solid rgba(255,255,255,.1);
+    }
+    .marquee-track {
+      display: flex;
+      gap: 0;
+      white-space: nowrap;
+      animation: marqueeScroll 22s linear infinite;
+    }
+    .marquee-item {
+      font-family: 'Bahn Pro', sans-serif;
+      font-size: 16px;
+      letter-spacing: 4px;
+      color: var(--white);
+      padding: 0 2rem;
+      flex-shrink: 0;
+    }
+    .marquee-dot { color: rgba(255,255,255,.4); }
+    @keyframes marqueeScroll {
+      from { transform: translateX(0); }
+      to   { transform: translateX(-50%); }
+    }
+
+    /* ── LAYOUT ────────────────────────────────────────── */
+    .container { max-width: 960px; margin: 0 auto; padding: 0 2rem; }
+
+    /* ── SECTION BASE ──────────────────────────────────── */
+    .section {
+      padding: 7rem 0;
+      border-bottom: 1px solid var(--border);
+      opacity: 0; transform: translateY(28px);
+      transition: opacity .7s, transform .7s;
+    }
+    .section.visible { opacity: 1; transform: translateY(0); }
+
+    .section-label {
+      font-size: 10px; font-weight: 700;
+      letter-spacing: 5px; text-transform: uppercase;
+      color: var(--muted); margin-bottom: 1.5rem;
+      display: flex; align-items: center; gap: 12px;
+    }
+    .section-label::after {
+      content: ''; flex: 1; height: 1px;
+      background: var(--border);
+    }
+
+    h2 {
+      font-family: 'Bahn Pro', sans-serif;
+      font-size: clamp(40px, 6vw, 72px);
+      letter-spacing: 3px;
+      color: var(--white);
+      line-height: .9;
+      margin-bottom: 1.75rem;
+    }
+    h2 .red { color: var(--red); }
+    h2 .outline {
+      -webkit-text-stroke: 1px var(--white);
+      color: transparent;
+    }
+
+    h3 {
+      font-family: 'Bahn Pro', sans-serif;
+      font-size: 22px; letter-spacing: 2px;
+      color: var(--white); margin-bottom: .6rem;
+      margin-top: 2.5rem;
+    }
+    h3:first-child { margin-top: 0; }
+
+    p {
+      font-size: 15px; color: var(--body);
+      line-height: 1.85; margin-bottom: 1.2rem;
+    }
+    strong { color: var(--cream); font-weight: 600; }
+
+    /* ── PULL QUOTE ────────────────────────────────────── */
+    .pull-quote {
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 300;
+      font-size: clamp(20px, 3vw, 30px);
+      color: var(--cream);
+      line-height: 1.4;
+      padding: 2rem 0 2rem 2.5rem;
+      border-left: 4px solid var(--red);
+      margin: 3.5rem 0;
+      font-style: italic;
+    }
+
+    /* ── BEHANCE IMAGE GRID ────────────────────────────── */
+    .img-grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4px;
+      margin: 2.5rem 0;
+    }
+    .img-grid-3 {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 4px;
+      margin: 2.5rem 0;
+    }
+    .img-full { margin: 2.5rem 0; }
+
+    .img-grid-2 img,
+    .img-grid-2 video,
+    .img-grid-3 img,
+    .img-full img {
+      width: 100%; height: auto;
+      display: block;
+      filter: brightness(.95);
+      transition: filter .3s, transform .3s;
+    }
+    .img-grid-2 img:hover,
+    .img-grid-3 img:hover { filter: brightness(1.05); transform: scale(1.01); }
+    .img-full img:hover { filter: brightness(1.02); }
+
+    .img-caption {
+      font-size: 11px; letter-spacing: 2px;
+      text-transform: uppercase; color: var(--muted);
+      margin-top: .6rem; text-align: center;
+    }
+
+    /* ── STAT GRID ─────────────────────────────────────── */
+    .stat-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1px;
+      background: var(--border);
+      border: 1px solid var(--border);
+      margin: 2.5rem 0;
+    }
+    .stat-card {
+      background: var(--card);
+      padding: 2rem 1.5rem;
+      text-align: center;
+    }
+    .stat-n {
+      font-family: 'Bahn Pro', sans-serif;
+      font-size: 52px; color: var(--red);
+      letter-spacing: 2px; line-height: 1;
+    }
+    .stat-l {
+      font-size: 11px; letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--muted); margin-top: .4rem;
+      line-height: 1.4;
+    }
+
+    /* ── PALETTE (Layer_1 layout) ───────────────────────── */
+    .palette-layer1 {
+      display: grid; grid-template-columns: repeat(5, 1fr);
+      margin: 2rem 0; border: 1px solid var(--border);
+      background: #010101; overflow: hidden;
+    }
+    .palette-layer1-col {
+      position: relative; display: flex; flex-direction: column; align-items: center;
+      border-right: 1px solid rgba(255,255,255,.08);
+    }
+    .palette-layer1-col:last-child { border-right: none; }
+    .palette-layer1-bar {
+      width: 100%; min-height: 160px;
+      background: linear-gradient(to bottom, var(--palette-from, #010101) 0%, #C2C2C2 100%);
+    }
+    .palette-layer1-circle-wrap {
+      padding: 1.5rem 0 1rem;
+      display: flex; flex-direction: column; align-items: center; gap: .75rem;
+    }
+    .palette-layer1-circle {
+      width: 64px; height: 64px; border-radius: 50%;
+      border: 2px solid #5C5C5C; flex-shrink: 0;
+      background: var(--swatch-fill, #010101);
+    }
+    .palette-layer1-label {
+      font-size: 10px; font-weight: 700; letter-spacing: 2px;
+      text-transform: uppercase; color: var(--swatch-label, #a09a8e);
+    }
+    .palette {
+      display: flex; gap: 0;
+      margin: 2rem 0;
+      border: 1px solid var(--border);
+    }
+    .swatch { flex: 1; }
+    .sw-c { height: 80px; }
+    .sw-i { background: var(--card); padding: 10px 12px; border-top: 1px solid var(--border); }
+    .sw-name { font-size: 11px; font-weight: 700; color: var(--cream); line-height: 1.2; }
+    .sw-hex  { font-size: 10px; color: var(--muted); font-family: monospace; margin-top: 2px; }
+
+    /* ── DELIVERABLES ──────────────────────────────────── */
+    .deliverables {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1px;
+      background: var(--border);
+      border: 1px solid var(--border);
+      margin: 2rem 0;
+    }
+    .deliv-item {
+      background: var(--card);
+      padding: 1.5rem;
+      transition: background .2s;
+    }
+    .deliv-item:hover { background: var(--surface); }
+    .deliv-n {
+      font-family: 'Bahn Pro', sans-serif;
+      font-size: 40px; color: rgba(200,32,42,.2);
+      line-height: 1; margin-bottom: .3rem;
+    }
+    .deliv-title {
+      font-size: 13px; font-weight: 700;
+      color: var(--cream); letter-spacing: 1px;
+      text-transform: uppercase; margin-bottom: .4rem;
+    }
+    .deliv-desc { font-size: 13px; color: var(--muted); line-height: 1.6; margin: 0; }
+
+    /* ── CONCEPT PRINCIPLES ────────────────────────────── */
+    .principles { display: flex; flex-direction: column; }
+    .principle {
+      display: grid;
+      grid-template-columns: 220px 1fr;
+      gap: 2rem; align-items: start;
+      padding: 1.75rem 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .principle:last-child { border-bottom: none; }
+    .principle-label {
+      font-family: 'Bahn Pro', sans-serif;
+      font-size: 18px; letter-spacing: 1px;
+      color: var(--red); line-height: 1.2;
+    }
+    .principle-text {
+      font-size: 14px; color: var(--body);
+      line-height: 1.75; margin: 0;
+    }
+
+    /* ── CLOSING ───────────────────────────────────────── */
+    .closing {
+      padding: 8rem 0 6rem;
+      text-align: center;
+      background: var(--dark);
+      border-top: 1px solid var(--border);
+    }
+    .closing-title {
+      font-family: 'Bahn Pro', sans-serif;
+      font-size: clamp(36px, 7vw, 80px);
+      letter-spacing: 4px;
+      color: var(--white);
+      line-height: .9;
+      margin-bottom: 1rem;
+    }
+    .closing-title .red { color: var(--red); }
+    .closing-sub {
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 300;
+      font-size: 18px; color: var(--body);
+      margin-bottom: 3rem; font-style: italic;
+    }
+
+    .cta-row {
+      display: flex; gap: 12px;
+      justify-content: center; flex-wrap: wrap;
+    }
+    .btn {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 12px; font-weight: 700;
+      padding: 13px 32px; cursor: pointer;
+      text-decoration: none; letter-spacing: 2px;
+      text-transform: uppercase; transition: all .2s;
+      display: inline-block;
+    }
+    .btn-primary { background: var(--red); color: #fff; border: 2px solid var(--red); }
+    .btn-primary:hover { background: #e8323c; border-color: #e8323c; transform: translateY(-2px); }
+    .btn-ghost { background: transparent; color: var(--body); border: 2px solid var(--border); }
+    .btn-ghost:hover { border-color: var(--white); color: var(--white); transform: translateY(-2px); }
+
+    /* ── FOOTER ────────────────────────────────────────── */
+    footer {
+      padding: 2rem;
+      border-top: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .footer-logo {
+      font-family: 'Bahn Pro', sans-serif;
+      font-size: 14px; letter-spacing: 4px; color: var(--white);
+    }
+    .footer-note { font-size: 11px; letter-spacing: 1px; color: var(--muted); }
+
+    /* ── RESPONSIVE ────────────────────────────────────── */
+    @media (max-width: 768px) {
+      .hero { grid-template-columns: 1fr; }
+      .hero-right { height: 50vw; }
+      .hero-left { padding: 6rem 1.5rem 3rem; }
+      .img-grid-2 { grid-template-columns: 1fr; }
+      .img-grid-3 { grid-template-columns: 1fr; }
+      .principle { grid-template-columns: 1fr; gap: .5rem; }
+      .deliverables { grid-template-columns: 1fr; }
+      .palette { flex-wrap: wrap; }
+      .swatch { min-width: calc(50% - 0px); }
+      footer { flex-direction: column; gap: .75rem; text-align: center; }
+      .nav-links { display: none; }
+    }
+
+    /* ── GUIDELINES PAGE (matches drawer) ───────────────── */
+    .guidelines-page {
+      background: var(--cream);
+      color: #111;
+      position: relative;
+      overflow: hidden;
+      margin: 1.5rem 0;
+      border: 1px solid var(--border);
+    }
+    .guidelines-page::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 72px;
+      height: 100%;
+      background: repeating-linear-gradient(
+        -45deg,
+        transparent,
+        transparent 5px,
+        rgba(0,0,0,.09) 5px,
+        rgba(0,0,0,.09) 10px
+      );
+      pointer-events: none;
+    }
+    .gl-inner { padding: 2.5rem 3rem 2.5rem 2.5rem; }
+    .gl-header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      border-bottom: 2px solid #111;
+      padding-bottom: 1.25rem;
+      margin-bottom: 2rem;
+    }
+    .gl-logo-stamp {
+      font-family: 'Bahn Pro', sans-serif;
+      font-size: 21px;
+      letter-spacing: 4px;
+      color: #111;
+      border: 3px solid #111;
+      padding: 6px 14px 4px;
+      display: inline-flex;
+      align-items: center;
+      line-height: 1;
+    }
+    .gl-header-right {
+      text-align: right;
+      font-size: 9px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: #999;
+      line-height: 2;
+    }
+    .gl-section-label {
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      color: #999;
+      margin-bottom: .6rem;
+      margin-top: 2rem;
+    }
+    .gl-section-label:first-child { margin-top: 0; }
+    .gl-big-title {
+      font-family: 'Bahn Pro', sans-serif;
+      font-size: clamp(28px, 4vw, 48px);
+      letter-spacing: 3px;
+      color: #111;
+      line-height: 1;
+      margin-bottom: 1.5rem;
+    }
+    .gl-rule { height: 1px; background: #ddd; margin: 1.75rem 0; }
+    .gl-logos {
+      display: flex;
+      align-items: flex-start;
+      gap: 2.5rem;
+      flex-wrap: wrap;
+      margin: 1rem 0 .5rem;
+    }
+    .gl-logo-item { display: flex; flex-direction: column; gap: .4rem; }
+    .gl-logo-lbl { font-size: 8px; letter-spacing: 3px; text-transform: uppercase; color: #bbb; }
+    .logo-primary {
+      font-family: 'Bahn Pro', sans-serif;
+      font-size: 33px;
+      letter-spacing: 5px;
+      color: #111;
+      border: 4px solid #111;
+      padding: 8px 16px 5px;
+      display: inline-flex;
+      align-items: center;
+      line-height: 1;
+    }
+    .logo-inverted {
+      font-family: 'Bahn Pro', sans-serif;
+      font-size: 33px;
+      letter-spacing: 5px;
+      color: #fff;
+      background: #111;
+      border: 4px solid #111;
+      padding: 8px 16px 5px;
+      display: inline-flex;
+      align-items: center;
+      line-height: 1;
+    }
+    .logo-red {
+      font-family: 'Bahn Pro', sans-serif;
+      font-size: 33px;
+      letter-spacing: 5px;
+      color: var(--red);
+      border: 4px solid var(--red);
+      padding: 8px 16px 5px;
+      display: inline-flex;
+      align-items: center;
+      line-height: 1;
+    }
+    .logo-vertical {
+      font-family: 'Bahn Pro', sans-serif;
+      font-size: 19px;
+      letter-spacing: 3px;
+      color: #111;
+      border: 3px solid #111;
+      padding: 8px 8px 6px;
+      display: inline-flex;
+      flex-direction: column;
+      align-items: center;
+      line-height: 1.1;
+    }
+    .bahn-display {
+      font-family: 'Bahn Pro', sans-serif;
+      font-size: clamp(32px, 6vw, 56px);
+      letter-spacing: 6px;
+      color: #111;
+      line-height: 1;
+      margin: .5rem 0;
+    }
+    .bahn-specimen-row {
+      font-family: 'Bahn Pro', sans-serif;
+      font-size: 20px;
+      letter-spacing: 3px;
+      color: #444;
+      line-height: 1.5;
+    }
+    .specimen-label {
+      font-size: 8px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: #bbb;
+      margin: .25rem 0 .75rem;
+    }
+    @media (max-width: 768px) {
+      .gl-inner { padding: 1.75rem 1.5rem; }
+      .gl-logos { gap: 1rem 1.25rem; }
+      .logo-primary, .logo-inverted, .logo-red { font-size: 28px; letter-spacing: 4px; }
+      .bahn-specimen-row { font-size: 16px; letter-spacing: 2px; word-break: break-word; }
+    }
+
+    /* ── MOBILE: organize in parts (accordion) ─────────── */
+    .desktop-only { display: block; }
+    .mobile-only { display: none; }
+    @media (max-width: 768px) {
+      .desktop-only { display: none !important; }
+      .mobile-only { display: block !important; }
+    }
+    .parts {
+      padding: 2rem 1.25rem 3rem;
+      border-bottom: 1px solid var(--border);
+      background: var(--black);
+    }
+    .parts h2 {
+      font-family: 'Bahn Pro', sans-serif;
+      font-size: 18px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--white);
+      margin-bottom: 1rem;
+    }
+    details.part {
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,0.02);
+      margin: 10px 0;
+    }
+    details.part summary {
+      list-style: none;
+      cursor: pointer;
+      padding: 14px 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      user-select: none;
+    }
+    details.part summary::-webkit-details-marker { display: none; }
+    .part-kicker {
+      font-size: 10px;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+    .part-title {
+      font-family: 'Bahn Pro', sans-serif;
+      font-size: 16px;
+      letter-spacing: 2px;
+      color: var(--white);
+      margin-top: 4px;
+    }
+    .part-chevron {
+      color: var(--muted);
+      font-size: 14px;
+      letter-spacing: 2px;
+      flex-shrink: 0;
+    }
+    details.part[open] .part-chevron { color: var(--white); }
+    .part-body { padding: 0 14px 14px; }
+    .part-body p { font-size: 14px; color: var(--body); line-height: 1.75; margin: 12px 0; }
+    .part-body .img-grid-2 { margin: 1.25rem 0; }
+    .part-body .img-full { margin: 1.25rem 0; }
+    .part-body .img-caption { margin-top: 8px; }
+  </style>
+</head>
+<body>
+
+<div id="progress-bar"></div>
+
+<!-- NAV -->
+<nav id="nav">
+  <a href="#" class="nav-logo">
+    <span class="nav-logo-box">COMICS</span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="#concept">Concept</a></li>
+    <li><a href="#brand">Brand</a></li>
+    <li><a href="#space">Space</a></li>
+    <li><a href="#deliverables">Deliverables</a></li>
+  </ul>
+  <a href="/#project-grid" class="nav-back">← Project Grid</a>
+</nav>
+
+<!-- ══════════════════════════════════════════
+     HERO
+══════════════════════════════════════════ -->
+<section class="hero">
+  <div class="hero-left">
+    <p class="hero-eyebrow">Case Study · Brand Identity · 2019</p>
+    <h1 class="hero-title">
+      CO<br>
+      <span class="hero-title-outline">MI</span><br>
+      CS
+    </h1>
+    <div class="hero-rule"></div>
+    <p class="hero-desc">
+      Complete brand identity and architectural concept for Comics
+      a bar and entertainment venue in São Paulo built around the universe
+      of comics, music, and stand-up comedy.
+    </p>
+    <div class="hero-tags">
+      <span class="tag tag-red">Brand Identity</span>
+      <span class="tag tag-white">Architecture</span>
+      <span class="tag tag-outline">Concept Design</span>
+      <span class="tag tag-outline">Collateral</span>
+    </div>
+    <div class="hero-scroll">
+      <div class="hero-scroll-line"></div>
+      Scroll
+    </div>
+  </div>
+
+  <div class="hero-right">
+    <!-- Cover image from Behance -->
+    <img
+      src="/comics/comics-01-hero.png"
+      alt="Comics brand identity cover"
+      onerror="this.src=''; this.parentElement.style.background='#1a1a17'">
+    <div class="hero-right-overlay"></div>
+
+    <div class="hero-stamp">
+      <img src="/comics/n1.svg" alt="Comics Nº1 Menu">
+    </div>
+  </div>
+</section>
+
+<!-- MARQUEE -->
+<div class="marquee-strip">
+  <div class="marquee-track">
+    <!-- duplicated for infinite loop -->
+    <span class="marquee-item">BRAND IDENTITY <span class="marquee-dot">◆</span></span>
+    <span class="marquee-item">COMPLETE BRAND SYSTEM <span class="marquee-dot">◆</span></span>
+    <span class="marquee-item">ARCHITECTURAL CONCEPT <span class="marquee-dot">◆</span></span>
+    <span class="marquee-item">SÃO PAULO · 2019 <span class="marquee-dot">◆</span></span>
+    <span class="marquee-item">COMICS BAR <span class="marquee-dot">◆</span></span>
+    <span class="marquee-item">LOGO · SIGNAGE · MENU <span class="marquee-dot">◆</span></span>
+    <span class="marquee-item">NOW SHOWING <span class="marquee-dot">◆</span></span>
+    <span class="marquee-item">BRAND IDENTITY <span class="marquee-dot">◆</span></span>
+    <span class="marquee-item">COMPLETE BRAND SYSTEM <span class="marquee-dot">◆</span></span>
+    <span class="marquee-item">ARCHITECTURAL CONCEPT <span class="marquee-dot">◆</span></span>
+    <span class="marquee-item">SÃO PAULO · 2019 <span class="marquee-dot">◆</span></span>
+    <span class="marquee-item">COMICS BAR <span class="marquee-dot">◆</span></span>
+    <span class="marquee-item">LOGO · SIGNAGE · MENU <span class="marquee-dot">◆</span></span>
+    <span class="marquee-item">NOW SHOWING <span class="marquee-dot">◆</span></span>
+  </div>
+</div>
+
+<!-- MOBILE: PARTS / ACCORDION -->
+<section class="mobile-only parts" id="parts">
+  <h2>COMICS — CASE PARTS</h2>
+
+  <details class="part" open>
+    <summary>
+      <div>
+        <div class="part-kicker">PART 01</div>
+        <div class="part-title">Concept</div>
+      </div>
+      <div class="part-chevron">OPEN</div>
+    </summary>
+    <div class="part-body">
+      <p>
+        Comics is a bar and entertainment venue in São Paulo built around three cultural pillars:
+        <strong>comics, music, and stand-up comedy</strong>.
+      </p>
+      <div class="img-grid-3">
+        <div>
+          <img src="/comics/comics-02-moodboard1.png" alt="Moodboard, Concept" onerror="this.style.display='none'">
+          <p class="img-caption">Conceito</p>
+        </div>
+        <div>
+          <img src="/comics/comics-03-moodboard2.png" alt="Moodboard, Decoration" onerror="this.style.display='none'">
+          <p class="img-caption">Decoração</p>
+        </div>
+        <div>
+          <img src="/comics/comics-moodboard-mobiliario.png" alt="Moodboard, Furniture" onerror="this.style.display='none'">
+          <p class="img-caption">Mobiliário</p>
+        </div>
+        <div>
+          <img src="/comics/comics-moodboard-iluminacao.png" alt="Moodboard, Lighting" onerror="this.style.display='none'">
+          <p class="img-caption">Iluminação</p>
+        </div>
+        <div>
+          <img src="/comics/comics-moodboard-cenografia.png" alt="Moodboard, Scenography" onerror="this.style.display='none'">
+          <p class="img-caption">Cenografia</p>
+        </div>
+      </div>
+    </div>
+  </details>
+
+  <details class="part">
+    <summary>
+      <div>
+        <div class="part-kicker">PART 02</div>
+        <div class="part-title">Brand System</div>
+      </div>
+      <div class="part-chevron">OPEN</div>
+    </summary>
+    <div class="part-body">
+      <p>
+        The primary logomark encloses the wordmark in a thick rectangular frame, referencing comic title cards,
+        vintage signage, and editorial stamps.
+      </p>
+      <div class="guidelines-page">
+        <div class="gl-inner">
+          <div class="gl-header">
+            <span class="gl-logo-stamp">COMICS</span>
+            <div class="gl-header-right">Brand Guidelines<br>2019</div>
+          </div>
+          <div class="gl-big-title">DESIGN &amp;<br>BRAND GUIDELINES</div>
+          <div class="gl-rule"></div>
+          <div class="gl-section-label">Logo &amp; Trademark</div>
+          <div class="gl-logos">
+            <div class="gl-logo-item"><span class="logo-primary">COMICS</span><span class="gl-logo-lbl">Primary, Black</span></div>
+            <div class="gl-logo-item"><span class="logo-inverted">COMICS</span><span class="gl-logo-lbl">Inverted, White</span></div>
+            <div class="gl-logo-item"><span class="logo-red">COMICS</span><span class="gl-logo-lbl">Colour, Red</span></div>
+            <div class="gl-logo-item"><span class="logo-vertical">CO<br>MI<br>CS</span><span class="gl-logo-lbl">Vertical icon</span></div>
+          </div>
+          <div class="gl-rule"></div>
+          <div class="gl-section-label">Typography</div>
+          <div class="bahn-display">BAHN</div>
+          <div class="specimen-label">Bahn Pro, Display &amp; Headlines</div>
+          <div class="bahn-specimen-row">A B C D E F G H I J K L M N O P Q R S T U V W X Y Z</div>
+          <div class="bahn-specimen-row">0 1 2 3 4 5 6 7 8 9</div>
+        </div>
+      </div>
+      <div class="img-full">
+        <img src="/comics/comics-08-guidelines.png" alt="Comics brand guidelines" onerror="this.style.display='none'">
+        <p class="img-caption">Brand Guidelines</p>
+      </div>
+    </div>
+  </details>
+
+  <details class="part">
+    <summary>
+      <div>
+        <div class="part-kicker">PART 03</div>
+        <div class="part-title">Space &amp; Architecture</div>
+      </div>
+      <div class="part-chevron">OPEN</div>
+    </summary>
+    <div class="part-body">
+      <p>
+        The architectural concept translated the brand narrative into space: Broadway-style marquee signage,
+        rusted iron structures, and deliberate imperfection.
+      </p>
+      <div class="img-full">
+        <img src="/comics/comics-09-facade1.png" alt="Comics facade study" onerror="this.style.display='none'">
+        <p class="img-caption">Facade Study, Concept</p>
+      </div>
+    </div>
+  </details>
+
+  <details class="part">
+    <summary>
+      <div>
+        <div class="part-kicker">PART 04</div>
+        <div class="part-title">Deliverables</div>
+      </div>
+      <div class="part-chevron">OPEN</div>
+    </summary>
+    <div class="part-body">
+      <p>A complete brand system designed to hold from the smallest printed item to an illuminated building facade.</p>
+      <div class="img-grid-3">
+        <div><img src="/comics/comics-collateral-01.png" alt="Comics collateral 1" onerror="this.style.display='none'"></div>
+        <div><img src="/comics/comics-collateral-02.png" alt="Comics collateral 2" onerror="this.style.display='none'"></div>
+        <div><img src="/comics/comics-collateral-03.png" alt="Comics collateral 3" onerror="this.style.display='none'"></div>
+      </div>
+      <p class="img-caption">Collateral</p>
+    </div>
+  </details>
+
+  <div class="cta-row" style="margin-top: 14px;">
+    <a href="/#project-grid" class="btn btn-ghost">← Back to Project Grid</a>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════
+     STATS
+══════════════════════════════════════════ -->
+<div class="section desktop-only" id="stats">
+  <div class="container">
+    <div class="stat-grid">
+      <div class="stat-card">
+        <div class="stat-n">340m²</div>
+        <div class="stat-l">Venue area</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-n">12wk</div>
+        <div class="stat-l">Project timeline</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-n">8+</div>
+        <div class="stat-l">Brand deliverables</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     CONCEPT
+══════════════════════════════════════════ -->
+<section class="section desktop-only" id="concept">
+  <div class="container">
+    <p class="section-label">01, Concept</p>
+    <h2>THE DETAILS<br>THAT <span class="red">GLOW</span><br><span class="outline">IN THE DARK</span></h2>
+
+    <p>
+      Comics is a bar and entertainment venue in São Paulo built around three cultural pillars:
+      <strong>comics, music, and stand-up comedy</strong>. The concept demanded a brand identity
+      as immersive as the space itself, one that felt lived-in, layered, and unmistakably of its world.
+    </p>
+    <p>
+      The foundational idea was drawn from urban noir: dark, damp alleyways with rusted fire escapes
+      and graffiti-covered brick walls, where secret places protect themselves from curious eyes.
+      A world of details that glow in the darkness and open passages to an alternative reality.
+    </p>
+
+    <div class="pull-quote">
+      "Dark alleys, neon signs, the smell of rain on concrete
+      where the extraordinary hides behind the ordinary."
+    </div>
+
+    <!-- Moodboards -->
+    <div class="img-grid-3">
+      <div>
+        <img src="/comics/comics-02-moodboard1.png" alt="Moodboard, Concept" onerror="this.style.display='none'">
+        <p class="img-caption">Conceito</p>
+      </div>
+      <div>
+        <img src="/comics/comics-03-moodboard2.png" alt="Moodboard, Decoration" onerror="this.style.display='none'">
+        <p class="img-caption">Decoração</p>
+      </div>
+      <div>
+        <img src="/comics/comics-moodboard-mobiliario.png" alt="Moodboard, Furniture" onerror="this.style.display='none'">
+        <p class="img-caption">Mobiliário</p>
+      </div>
+      <div>
+        <img src="/comics/comics-moodboard-iluminacao.png" alt="Moodboard, Lighting" onerror="this.style.display='none'">
+        <p class="img-caption">Iluminação</p>
+      </div>
+      <div>
+        <img src="/comics/comics-moodboard-cenografia.png" alt="Moodboard, Scenography" onerror="this.style.display='none'">
+        <p class="img-caption">Cenografia</p>
+      </div>
+    </div>
+
+    <h3>Design Principles</h3>
+    <div class="principles">
+      <div class="principle">
+        <div class="principle-label">Strong & Direct</div>
+        <p class="principle-text">The identity was built to be bold without being loud. Inspired by legendary publishing houses and jazz club marks, strong, direct, and instantly memorable. No unnecessary decoration. Every line earns its place.</p>
+      </div>
+      <div class="principle">
+        <div class="principle-label">Elegant Decay</div>
+        <p class="principle-text">Industrial rawness, iron structures, rusted metals, exposed brick, balanced with designed lighting and artistic expression. The unfinished and the refined coexisting, as they do in the best underground venues.</p>
+      </div>
+      <div class="principle">
+        <div class="principle-label">Immersive Scenography</div>
+        <p class="principle-text">The space was conceived as a set, not a room. Every object, fixture, and material choice was an extension of the brand narrative, comics artifacts, repurposed instruments, collectibles that transform the venue into a living world.</p>
+      </div>
+      <div class="principle">
+        <div class="principle-label">Typography as Identity</div>
+        <p class="principle-text">The BAHN typeface, with its thick strokes and deliberate imperfections, became the backbone of the visual language. Its reference to letterpress printing and comic book fonts was intentional, direct, and deeply consistent.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════
+     BRAND SYSTEM
+══════════════════════════════════════════ -->
+<section class="section desktop-only" id="brand">
+  <div class="container">
+    <p class="section-label">02, Brand System</p>
+    <h2>STRONG<br>MARKS &<br><span class="red">BOLD</span> TYPE</h2>
+
+    <p>
+      The primary logomark synthesises the Comics identity in a single, compact form:
+      the wordmark enclosed in a thick rectangular frame, referencing comic book title cards,
+      vintage signage, and editorial stamps simultaneously.
+    </p>
+
+    <div class="guidelines-page">
+      <div class="gl-inner">
+        <div class="gl-header">
+          <span class="gl-logo-stamp">COMICS</span>
+          <div class="gl-header-right">Brand Guidelines<br>2019</div>
+        </div>
+        <div class="gl-big-title">DESIGN &<br>BRAND GUIDELINES</div>
+        <div class="gl-rule"></div>
+        <div class="gl-section-label">Logo &amp; Trademark</div>
+        <div class="gl-logos">
+          <div class="gl-logo-item">
+            <span class="logo-primary">COMICS</span>
+            <span class="gl-logo-lbl">Primary, Black</span>
+          </div>
+          <div class="gl-logo-item">
+            <span class="logo-inverted">COMICS</span>
+            <span class="gl-logo-lbl">Inverted, White</span>
+          </div>
+          <div class="gl-logo-item">
+            <span class="logo-red">COMICS</span>
+            <span class="gl-logo-lbl">Colour, Red</span>
+          </div>
+          <div class="gl-logo-item">
+            <span class="logo-vertical">CO<br>MI<br>CS</span>
+            <span class="gl-logo-lbl">Vertical icon</span>
+          </div>
+        </div>
+        <div class="gl-rule"></div>
+        <div class="gl-section-label">Typography</div>
+        <div class="bahn-display">BAHN</div>
+        <div class="specimen-label">Bahn Pro, Display &amp; Headlines</div>
+        <div class="bahn-specimen-row">A B C D E F G H I J K L M N O P Q R S T U V W X Y Z</div>
+        <div class="bahn-specimen-row">0 1 2 3 4 5 6 7 8 9</div>
+      </div>
+    </div>
+    <p>
+      The chromatic palette was a deliberate choice of restraint: a near-black primary, a pure white,
+      and a single assertive red. Three colours with enough contrast to work anywhere
+      printed on a cocktail napkin, embossed on a shaker, or illuminated on a Broadway-style marquee.
+    </p>
+
+    <!-- Brand identity image -->
+    <div class="img-full">
+      <img src="/comics/comics-04-brand.png"
+           alt="Comics brand identity system"
+           onerror="this.style.display='none'">
+      <p class="img-caption">Brand Identity, Primary Mark & Type System</p>
+    </div>
+
+    <h3>Official Colour Palette</h3>
+    <p class="img-caption" style="text-align:left;margin-bottom:.75rem;">Core palette from brand assets. Comics Red (#C8202A) is the accent used for marquee, rules &amp; CTAs.</p>
+    <div class="palette-layer1">
+      <div class="palette-layer1-col">
+        <div class="palette-layer1-bar" style="--palette-from: #010101;"></div>
+        <div class="palette-layer1-circle-wrap">
+          <div class="palette-layer1-circle" style="--swatch-fill: #010101;"></div>
+          <span class="palette-layer1-label" style="--swatch-label: #a09a8e;">Comics Black</span>
+        </div>
+      </div>
+      <div class="palette-layer1-col">
+        <div class="palette-layer1-bar" style="--palette-from: #494A4A;"></div>
+        <div class="palette-layer1-circle-wrap">
+          <div class="palette-layer1-circle" style="--swatch-fill: #494A4A;"></div>
+          <span class="palette-layer1-label" style="--swatch-label: #E7D5C4;">Mid Grey</span>
+        </div>
+      </div>
+      <div class="palette-layer1-col">
+        <div class="palette-layer1-bar" style="--palette-from: #2C231C;"></div>
+        <div class="palette-layer1-circle-wrap">
+          <div class="palette-layer1-circle" style="--swatch-fill: #2C231C;"></div>
+          <span class="palette-layer1-label" style="--swatch-label: #E7D5C4;">Deep Charcoal</span>
+        </div>
+      </div>
+      <div class="palette-layer1-col">
+        <div class="palette-layer1-bar" style="--palette-from: #E7D5C4;"></div>
+        <div class="palette-layer1-circle-wrap">
+          <div class="palette-layer1-circle" style="--swatch-fill: #E7D5C4;"></div>
+          <span class="palette-layer1-label" style="--swatch-label: #2C231C;">Cream</span>
+        </div>
+      </div>
+      <div class="palette-layer1-col">
+        <div class="palette-layer1-bar" style="--palette-from: #ffffff;"></div>
+        <div class="palette-layer1-circle-wrap">
+          <div class="palette-layer1-circle" style="--swatch-fill: #ffffff;"></div>
+          <span class="palette-layer1-label" style="--swatch-label: #E7D5C4;">Pure White</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Brand applications -->
+    <div class="img-grid-3">
+      <div>
+        <img src="/comics/comics-collateral-01.png"
+             alt="Comics brand application"
+             onerror="this.style.display='none'">
+      </div>
+      <div>
+        <img src="/comics/comics-collateral-02.png"
+             alt="Comics brand application 2"
+             onerror="this.style.display='none'">
+      </div>
+      <div>
+        <img src="/comics/comics-collateral-03.png"
+             alt="Comics brand application 3"
+             onerror="this.style.display='none'">
+      </div>
+    </div>
+    <p class="img-caption">Collateral, Shaker, Pint Glass, Coaster</p>
+
+    <div class="img-full">
+      <img src="/comics/comics-08-guidelines.png"
+           alt="Comics brand guidelines"
+           onerror="this.style.display='none'">
+      <p class="img-caption">Brand Guidelines Document</p>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════
+     SPACE & ARCHITECTURE
+══════════════════════════════════════════ -->
+<section class="section desktop-only" id="space">
+  <div class="container">
+    <p class="section-label">03, Space & Architecture</p>
+    <h2>NOW<br><span class="red">SHOWING</span></h2>
+
+    <p>
+      The architectural concept translated the brand narrative directly into space.
+      The facade study drew from vintage Broadway marquees, a luminous COMICS sign in red,
+      framed by incandescent bulbs, rusted iron structures, and deliberate imperfection.
+    </p>
+    <p>
+      Inside, three reference worlds converged: the gritty urban texture of comics alleyways,
+      the warmth of jazz-era club interiors, and the immersive scenography of a curated cultural space.
+      Iron, wood, and velvet. Industrial rawness balanced by projected lighting
+      and carefully chosen artistic interventions.
+    </p>
+
+    <!-- Facade study images -->
+    <div class="img-grid-2">
+      <div>
+        <img src="/comics/comics-09-facade1.png"
+             alt="Comics facade study"
+             onerror="this.style.display='none'">
+        <p class="img-caption">Facade Study, Concept</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════
+     DELIVERABLES
+══════════════════════════════════════════ -->
+<section class="section desktop-only" id="deliverables">
+  <div class="container">
+    <p class="section-label">04, Deliverables</p>
+    <h2>WHAT<br>WAS <span class="red">BUILT</span></h2>
+
+    <p>A complete brand system designed to hold from the smallest printed item to an illuminated building facade.</p>
+
+    <div class="deliverables">
+      <div class="deliv-item">
+        <div class="deliv-n">01</div>
+        <div class="deliv-title">Logo & Trademark</div>
+        <p class="deliv-desc">Primary mark, icon variant, and all approved usages, designed for letterpress, digital, embossing, and neon applications.</p>
+      </div>
+      <div class="deliv-item">
+        <div class="deliv-n">02</div>
+        <div class="deliv-title">Brand Manual</div>
+        <p class="deliv-desc">Comprehensive guidelines covering colour, typography, usage rules, and the rationale behind every decision.</p>
+      </div>
+      <div class="deliv-item">
+        <div class="deliv-n">03</div>
+        <div class="deliv-title">Cardápio (Menu)</div>
+        <p class="deliv-desc">Editorial menu designed as a collectible comic book, "Nº 1 MENU", with cover art, typography and layout consistent with the brand world.</p>
+      </div>
+      <div class="deliv-item">
+        <div class="deliv-n">04</div>
+        <div class="deliv-title">Full Collateral</div>
+        <p class="deliv-desc">Branded glassware, cocktail shaker, coasters, stationery, and promotional materials, all carrying the same visual signature.</p>
+      </div>
+      <div class="deliv-item">
+        <div class="deliv-n">05</div>
+        <div class="deliv-title">Signage System</div>
+        <p class="deliv-desc">Interior and exterior signage, including the Broadway-style illuminated marquee facade concept, the anchor of the brand's physical presence.</p>
+      </div>
+      <div class="deliv-item">
+        <div class="deliv-n">06</div>
+        <div class="deliv-title">Architectural Concept</div>
+        <p class="deliv-desc">Full concept design by Casa Baeté, space planning, material direction, lighting concept, and scenographic specification across 340m².</p>
+      </div>
+      <div class="deliv-item">
+        <div class="deliv-n">07</div>
+        <div class="deliv-title">Uniforms</div>
+        <p class="deliv-desc">Uniform direction aligned with the industrial-noir aesthetic of the space, extending the brand into every human touchpoint.</p>
+      </div>
+      <div class="deliv-item">
+        <div class="deliv-n">08</div>
+        <div class="deliv-title">Posters & Banners</div>
+        <p class="deliv-desc">Print communication materials designed for both the venue interior and external promotion, always within the established visual system.</p>
+      </div>
+    </div>
+
+    <!-- Menu image - the uploaded one -->
+    <div class="img-full">
+      <img src="/comics/comics-01-hero.png"
+           alt="Comics menu design"
+           onerror="this.src='/comics/comics-01-hero.png'">
+      <p class="img-caption">Cardápio, Menu Design as a Comic Book</p>
+    </div>
+
+    <div class="img-grid-2">
+      <div>
+        <img src="/comics/comics-14-poster.png"
+             alt="Comics poster"
+             onerror="this.style.display='none'">
+        <p class="img-caption">Poster Series</p>
+      </div>
+      <div>
+        <img src="/comics/comics-14-poster.png"
+             alt="Comics final applications"
+             onerror="this.style.display='none'">
+        <p class="img-caption">Final Brand Applications</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════
+     CLOSING
+══════════════════════════════════════════ -->
+<section class="closing">
+  <div class="container">
+    <div class="closing-title">
+      THE DETAILS<br>
+      THAT <span class="red">GLOW</span><br>
+      IN THE DARK
+    </div>
+    <p class="closing-sub">
+      A complete brand identity built for a world, not just a venue.
+    </p>
+    <div class="cta-row">
+      <a href="https://www.behance.net/gallery/147540237/COMICS-Complete-Brand-Identity"
+         target="_blank" rel="noopener" class="btn btn-primary">View on Behance ↗</a>
+      <a href="/#project-grid" class="btn btn-ghost">← Back to Project Grid</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-logo">COMICS, Complete Brand Identity</div>
+  <div class="footer-note">São Paulo · 2019 · Casa Baeté x Brand Design</div>
+</footer>
+
+<script>
+  // Progress bar
+  const bar = document.getElementById('progress-bar');
+  const nav = document.getElementById('nav');
+  window.addEventListener('scroll', () => {
+    const total = document.body.scrollHeight - window.innerHeight;
+    bar.style.width = (window.scrollY / total * 100) + '%';
+    nav.classList.toggle('scrolled', window.scrollY > 60);
+  });
+
+  // Intersection observer for sections
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+        // stagger children
+        const children = e.target.querySelectorAll(
+          '.stat-card, .deliv-item, .principle, .swatch, img'
+        );
+        children.forEach((c, i) => {
+          c.style.opacity = '0';
+          c.style.transform = 'translateY(14px)';
+          c.style.transition = `opacity .5s ${i * 0.05}s, transform .5s ${i * 0.05}s`;
+          setTimeout(() => {
+            c.style.opacity = '1';
+            c.style.transform = 'translateY(0)';
+          }, 100 + i * 50);
+        });
+        obs.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.07 });
+
+  document.querySelectorAll('.section').forEach(s => obs.observe(s));
+
+  // Smooth nav scroll
+  document.querySelectorAll('a[href^="#"]').forEach(a => {
+    a.addEventListener('click', e => {
+      const t = document.querySelector(a.getAttribute('href'));
+      if (t) { e.preventDefault(); t.scrollIntoView({ behavior: 'smooth' }); }
+    });
+  });
+</script>
+
+</body>
+</html>
