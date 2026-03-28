@@ -26,9 +26,6 @@
     "@types/react-dom": "^19",
     "eslint": "^9",
     "eslint-config-next": "16.1.6",
-    "pdf2pic": "^3.2.0",
-    "pdfjs-dist": "^3.11.174",
-    "puppeteer": "^24.40.0",
     "tailwindcss": "^4",
     "typescript": "^5"
   }
