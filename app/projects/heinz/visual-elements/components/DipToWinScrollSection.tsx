@@ -11,7 +11,7 @@ const cardConfigs = [
     id: "hero",
     title: "Dip To Win Box",
     caption: "Primary campaign artifact",
-    image: "/Heinz/box3.png",
+    image: "/heinz-lab/dip-box-hero.png",
     variant: "heroBox",
     className:
       "left-1/2 top-1/2 z-50 w-[min(64vw,820px)] -translate-x-1/2 -translate-y-1/2 md:w-[min(58vw,820px)]",
@@ -74,7 +74,7 @@ const cardConfigs = [
     id: "grid-phones",
     title: "Social Phones Grid",
     caption: "Campaign posts and mobile feed rhythm",
-    image: "/Heinz/phones-social-grid.png",
+    image: "/heinz-lab/phones-grid.mp4",
     className:
       "left-[14%] top-[34%] w-[min(44vw,620px)] md:left-[16%] md:top-[34%] md:w-[min(40vw,620px)]",
     from: { x: -80, y: 120, rotate: -4, scale: 0.88 },
@@ -101,10 +101,8 @@ type Props = { embed?: boolean };
 export default function DipToWinScrollSection({ embed = false }: Props) {
   const sectionRef = useRef<HTMLElement | null>(null);
   const pinRef = useRef<HTMLDivElement | null>(null);
-  const chapterRef = useRef<HTMLDivElement | null>(null);
   const cardsLayerRef = useRef<HTMLDivElement | null>(null);
   const stageBgRef = useRef<HTMLDivElement | null>(null);
-  const bgImageRef = useRef<HTMLImageElement | null>(null);
   const fryCursorRef = useRef<HTMLImageElement | null>(null);
 
   useLayoutEffect(() => {
@@ -124,10 +122,8 @@ export default function DipToWinScrollSection({ embed = false }: Props) {
       const heroCard = cards.find((item) => item.cfg.id === "hero");
       const supportCards = cards.filter((item) => item.cfg.id !== "hero");
 
-      gsap.set(chapterRef.current, { autoAlpha: embed ? 0 : 1, y: embed ? -14 : 0 });
       gsap.set(cardsLayerRef.current, { transformPerspective: 1500 });
       gsap.set(stageBgRef.current, { scale: 1, y: 0 });
-      if (bgImageRef.current) gsap.set(bgImageRef.current, { opacity: embed ? 0.9 : 0 });
       gsap.set(fryCursorRef.current, {
         autoAlpha: embed ? 1 : 0,
         xPercent: -50,
@@ -283,13 +279,7 @@ export default function DipToWinScrollSection({ embed = false }: Props) {
         },
       });
 
-      // Phase 0: background appears immediately when section is in view
-      if (bgImageRef.current) {
-        tl.to(bgImageRef.current, { opacity: 0.9, duration: 1.2, ease: "power2.out" }, 0);
-      }
       // Phase 1: chapter intro
-      tl.to(chapterRef.current, { autoAlpha: 1, y: 0, duration: 2, ease: "power2.out" }, 1.5);
-      tl.to(chapterRef.current, { autoAlpha: 0, y: -14, duration: 5, ease: "power2.inOut" }, 9);
       if (heroCard) {
         const { el, cfg } = heroCard;
         const heroOvershootY = -14;
@@ -415,26 +405,11 @@ export default function DipToWinScrollSection({ embed = false }: Props) {
         style={{ top: 0, left: 0 }}
         className={`relative h-screen bg-transparent ${embed ? "overflow-visible" : "overflow-hidden"}`}
       >
-        <div ref={stageBgRef} className="pointer-events-none absolute inset-0 overflow-hidden bg-transparent">
-          <img
-            ref={bgImageRef}
-            src="/Heinz/adshel11.png"
-            alt=""
-            aria-hidden
-            className="absolute inset-0 h-full w-full object-cover object-center"
-          />
-        </div>
-
         <div
-          ref={chapterRef}
-          className="pointer-events-none absolute left-1/2 top-[11%] z-30 w-full max-w-4xl -translate-x-1/2 px-6 text-center"
+          ref={stageBgRef}
+          className="pointer-events-none absolute inset-0 overflow-hidden bg-transparent"
         >
-          <p className="text-[13px] font-semibold uppercase tracking-[0.22em] text-white/80">
-            Chapter 02
-          </p>
-          <h2 className="mt-3 text-3xl font-black tracking-tight text-white md:text-6xl">
-            DIP TO WIN
-          </h2>
+          <div className="absolute inset-0 bg-[#c8102e]" />
         </div>
 
         <div
