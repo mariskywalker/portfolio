@@ -74,7 +74,7 @@ const cardConfigs = [
     id: "grid-phones",
     title: "Social Phones Grid",
     caption: "Campaign posts and mobile feed rhythm",
-    image: "/heinz-lab/phones-grid.mp4",
+    image: "/Heinz/phones-social-grid.png",
     className:
       "left-[14%] top-[34%] w-[min(44vw,620px)] md:left-[16%] md:top-[34%] md:w-[min(40vw,620px)]",
     from: { x: -80, y: 120, rotate: -4, scale: 0.88 },
