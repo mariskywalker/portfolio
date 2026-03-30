@@ -11,7 +11,7 @@ const cardConfigs = [
     id: "hero",
     title: "Dip To Win Box",
     caption: "Primary campaign artifact",
-    image: "/heinz-lab/dip-box-hero.png",
+    image: "/Heinz/dip-to-win-keystone.png",
     variant: "heroBox",
     className:
       "left-1/2 top-1/2 z-50 w-[min(64vw,820px)] -translate-x-1/2 -translate-y-1/2 md:w-[min(58vw,820px)]",
@@ -62,7 +62,7 @@ const cardConfigs = [
     id: "ooh",
     title: "OOH Fragment",
     caption: "Street presence and station takeovers",
-    image: "/heinz-lab/pre-campaign.png",
+    image: "/Heinz/pre-campaign.png",
     className:
       "left-[8%] top-[12%] w-[min(44vw,620px)] md:left-[10%] md:top-[14%] md:w-[min(40vw,620px)]",
     from: { x: -20, y: -240, rotate: -5, scale: 0.9 },
@@ -74,7 +74,7 @@ const cardConfigs = [
     id: "grid-phones",
     title: "Social Phones Grid",
     caption: "Campaign posts and mobile feed rhythm",
-    image: "/Heinz/Phons%20(1).gif",
+    image: "/Heinz/phones-social-grid.png",
     className:
       "left-[14%] top-[34%] w-[min(44vw,620px)] md:left-[16%] md:top-[34%] md:w-[min(40vw,620px)]",
     from: { x: -80, y: 120, rotate: -4, scale: 0.88 },
@@ -86,7 +86,7 @@ const cardConfigs = [
     id: "grid",
     title: "Social System",
     caption: "It has to be Heinz grid cadence",
-    image: "/Heinz/gifdoschefes.gif",
+    image: "/Heinz/chefes_.mp4",
     className:
       "left-[34%] bottom-[5%] w-[min(44vw,620px)] md:left-[36%] md:bottom-[5%] md:w-[min(40vw,620px)]",
     from: { x: 40, y: 220, rotate: 9, scale: 0.86 },
@@ -418,7 +418,7 @@ export default function DipToWinScrollSection({ embed = false }: Props) {
         <div ref={stageBgRef} className="pointer-events-none absolute inset-0 overflow-hidden bg-transparent">
           <img
             ref={bgImageRef}
-            src="/Heinz/busposter.png"
+            src="/Heinz/adshel11.png"
             alt=""
             aria-hidden
             className="absolute inset-0 h-full w-full object-cover object-center"
