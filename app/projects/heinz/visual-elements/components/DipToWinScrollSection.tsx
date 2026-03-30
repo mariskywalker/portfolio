@@ -11,7 +11,7 @@ const cardConfigs = [
     id: "hero",
     title: "Dip To Win Box",
     caption: "Primary campaign artifact",
-    image: "/Heinz/dip-to-win-keystone.png",
+    image: "/Heinz/box3.png",
     variant: "heroBox",
     className:
       "left-1/2 top-1/2 z-50 w-[min(64vw,820px)] -translate-x-1/2 -translate-y-1/2 md:w-[min(58vw,820px)]",
