@@ -162,7 +162,8 @@
       position: relative;
       overflow: hidden;
     }
-    .hero-right img {
+    .hero-right img,
+    .hero-right video {
       width: 100%;
       height: 100%;
       object-fit: cover;
@@ -170,10 +171,113 @@
       filter: brightness(.7) contrast(1.1);
       transition: filter .4s;
     }
-    .hero-right:hover img { filter: brightness(.85) contrast(1.1); }
+    .hero-right:hover img,
+    .hero-right:hover video { filter: brightness(.85) contrast(1.1); }
     .hero-right-overlay {
       position: absolute; inset: 0;
       background: linear-gradient(to right, var(--black) 0%, transparent 40%);
+    }
+    /* Facade overlay (matches brand typography) */
+    .facade-shot { position: relative; overflow: hidden; }
+    .facade-shot img { display:block; }
+    .facade-overlay {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 22px 18px;
+      background: linear-gradient(to top, rgba(1,1,1,.88) 0%, rgba(1,1,1,.15) 55%, rgba(1,1,1,0) 100%);
+      pointer-events: none;
+    }
+    .facade-kicker {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 10px;
+      letter-spacing: 5px;
+      text-transform: uppercase;
+      color: rgba(200,32,42,.95);
+      margin-bottom: 10px;
+    }
+    .facade-title {
+      font-family: 'Bahn Pro', sans-serif;
+      font-size: clamp(42px, 9vw, 64px);
+      letter-spacing: 6px;
+      color: var(--white);
+      line-height: .9;
+      margin-bottom: 10px;
+    }
+    .facade-sub {
+      font-family: 'Bahn Pro', sans-serif;
+      font-size: clamp(16px, 4vw, 22px);
+      letter-spacing: 3px;
+      color: rgba(200,32,42,.95);
+      line-height: 1;
+    }
+
+    /* Sr. Comics block */
+    .sr-comics {
+      display: grid;
+      grid-template-columns: 1fr 1.15fr;
+      gap: 0;
+      border: 1px solid var(--border);
+      margin: 2rem 0;
+      background: rgba(255,255,255,0.02);
+      overflow: hidden;
+    }
+    .sr-comics-visual {
+      background: #0a0a08;
+      display:flex;
+      align-items:flex-end;
+      justify-content:center;
+      padding: 14px 14px 0;
+      min-height: 320px;
+      border-right: 1px solid var(--border);
+      position: relative;
+    }
+    .sr-comics-visual::before{
+      content:'';
+      position:absolute; inset:0;
+      background-image: radial-gradient(circle, rgba(200,32,42,.25) 1.5px, transparent 1.5px);
+      background-size: 14px 14px;
+      pointer-events:none;
+      opacity:.9;
+    }
+    .sr-comics-visual img{
+      position: relative;
+      z-index: 1;
+      width: min(78%, 260px);
+      height: auto;
+      display:block;
+      filter: drop-shadow(0 18px 34px rgba(0,0,0,.65));
+      mix-blend-mode: lighten;
+    }
+    .sr-comics-info{
+      padding: 1.75rem 1.5rem;
+      display:flex;
+      flex-direction:column;
+      justify-content:center;
+    }
+    .sr-tag{
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 5px;
+      text-transform: uppercase;
+      color: var(--red);
+      margin-bottom: .6rem;
+    }
+    .sr-name{
+      font-family: 'Bahn Pro', sans-serif;
+      font-size: clamp(30px, 7vw, 52px);
+      letter-spacing: 3px;
+      color: var(--white);
+      line-height: .88;
+      margin-bottom: .9rem;
+    }
+    .sr-body{
+      font-size: 13px;
+      color: var(--body);
+      line-height: 1.8;
+      margin: 0;
     }
 
     /* stamp badge */
@@ -554,12 +658,31 @@
       .hero-left { padding: 6rem 1.5rem 3rem; }
       .img-grid-2 { grid-template-columns: 1fr; }
       .img-grid-3 { grid-template-columns: 1fr; }
+      /* Stats: prevent overflow / page deformation on mobile */
+      .stat-grid {
+        grid-template-columns: 1fr;
+        margin: 1.75rem 0;
+        max-width: 100%;
+      }
+      .stat-card { padding: 1.5rem 1.25rem; }
+      .stat-n { font-size: 44px; }
+      .stat-l { padding: 0 6px; word-break: break-word; overflow-wrap: anywhere; }
       .principle { grid-template-columns: 1fr; gap: .5rem; }
       .deliverables { grid-template-columns: 1fr; }
       .palette { flex-wrap: wrap; }
       .swatch { min-width: calc(50% - 0px); }
       footer { flex-direction: column; gap: .75rem; text-align: center; }
       .nav-links { display: none; }
+      /* Reduce hero overlays for small screens */
+      .hero-stamp { top: 1rem; right: 1rem; }
+      .hero-stamp img { height: 110px; }
+      .facade-overlay { padding: 18px 14px; }
+      .facade-kicker { letter-spacing: 4px; }
+      .facade-title { letter-spacing: 5px; }
+      .sr-comics { grid-template-columns: 1fr; }
+      .sr-comics-visual { border-right: none; border-bottom: 1px solid var(--border); min-height: 280px; }
+      /* Content trims on mobile (match web UI, reduce clutter) */
+      .mobile-hide { display: none !important; }
     }
 
     /* ── GUIDELINES PAGE (matches drawer) ───────────────── */
@@ -721,9 +844,10 @@
     /* ── MOBILE: organize in parts (accordion) ─────────── */
     .desktop-only { display: block; }
     .mobile-only { display: none; }
+    /* Keep the same UI on mobile (no accordion). */
     @media (max-width: 768px) {
-      .desktop-only { display: none !important; }
-      .mobile-only { display: block !important; }
+      .desktop-only { display: block !important; }
+      .mobile-only { display: none !important; }
     }
     .parts {
       padding: 2rem 1.25rem 3rem;
@@ -813,7 +937,7 @@
     <div class="hero-rule"></div>
     <p class="hero-desc">
       Complete brand identity and architectural concept for Comics
-      a bar and entertainment venue in São Paulo built around the universe
+      a bar and entertainment venue in Sao Paulo built around the universe
       of comics, music, and stand-up comedy.
     </p>
     <div class="hero-tags">
@@ -829,11 +953,16 @@
   </div>
 
   <div class="hero-right">
-    <!-- Cover image from Behance -->
-    <img
-      src="/comics/comics-01-hero.png"
-      alt="Comics brand identity cover"
-      onerror="this.src=''; this.parentElement.style.background='#1a1a17'">
+    <!-- Web parity: hero is a looping venue video -->
+    <video
+      src="/comics/Comics_.mp4"
+      autoplay
+      muted
+      loop
+      playsinline
+      preload="metadata"
+      aria-hidden="true"
+    ></video>
     <div class="hero-right-overlay"></div>
 
     <div class="hero-stamp">
@@ -849,14 +978,14 @@
     <span class="marquee-item">BRAND IDENTITY <span class="marquee-dot">◆</span></span>
     <span class="marquee-item">COMPLETE BRAND SYSTEM <span class="marquee-dot">◆</span></span>
     <span class="marquee-item">ARCHITECTURAL CONCEPT <span class="marquee-dot">◆</span></span>
-    <span class="marquee-item">SÃO PAULO · 2019 <span class="marquee-dot">◆</span></span>
+    <span class="marquee-item">SAO PAULO · 2019 <span class="marquee-dot">◆</span></span>
     <span class="marquee-item">COMICS BAR <span class="marquee-dot">◆</span></span>
     <span class="marquee-item">LOGO · SIGNAGE · MENU <span class="marquee-dot">◆</span></span>
     <span class="marquee-item">NOW SHOWING <span class="marquee-dot">◆</span></span>
     <span class="marquee-item">BRAND IDENTITY <span class="marquee-dot">◆</span></span>
     <span class="marquee-item">COMPLETE BRAND SYSTEM <span class="marquee-dot">◆</span></span>
     <span class="marquee-item">ARCHITECTURAL CONCEPT <span class="marquee-dot">◆</span></span>
-    <span class="marquee-item">SÃO PAULO · 2019 <span class="marquee-dot">◆</span></span>
+    <span class="marquee-item">SAO PAULO · 2019 <span class="marquee-dot">◆</span></span>
     <span class="marquee-item">COMICS BAR <span class="marquee-dot">◆</span></span>
     <span class="marquee-item">LOGO · SIGNAGE · MENU <span class="marquee-dot">◆</span></span>
     <span class="marquee-item">NOW SHOWING <span class="marquee-dot">◆</span></span>
@@ -877,29 +1006,29 @@
     </summary>
     <div class="part-body">
       <p>
-        Comics is a bar and entertainment venue in São Paulo built around three cultural pillars:
+        Comics is a bar and entertainment venue in Sao Paulo built around three cultural pillars:
         <strong>comics, music, and stand-up comedy</strong>.
       </p>
       <div class="img-grid-3">
         <div>
-          <img src="/comics/comics-02-moodboard1.png" alt="Moodboard, Concept" onerror="this.style.display='none'">
-          <p class="img-caption">Conceito</p>
+          <img src="/comics/moodboard1.svg" alt="Moodboard, Concept" onerror="this.style.display='none'">
+          <p class="img-caption">Concept</p>
         </div>
         <div>
-          <img src="/comics/comics-03-moodboard2.png" alt="Moodboard, Decoration" onerror="this.style.display='none'">
-          <p class="img-caption">Decoração</p>
+          <img src="/comics/MOODBOARD2.svg" alt="Moodboard, Decoration" onerror="this.style.display='none'">
+          <p class="img-caption">Decoration</p>
         </div>
         <div>
-          <img src="/comics/comics-moodboard-mobiliario.png" alt="Moodboard, Furniture" onerror="this.style.display='none'">
-          <p class="img-caption">Mobiliário</p>
+          <img src="/comics/Mobiliario.svg" alt="Moodboard, Furniture" onerror="this.style.display='none'">
+          <p class="img-caption">Furniture</p>
         </div>
         <div>
-          <img src="/comics/comics-moodboard-iluminacao.png" alt="Moodboard, Lighting" onerror="this.style.display='none'">
-          <p class="img-caption">Iluminação</p>
+          <img src="/comics/iluminacao.svg" alt="Moodboard, Lighting" onerror="this.style.display='none'">
+          <p class="img-caption">Lighting</p>
         </div>
         <div>
-          <img src="/comics/comics-moodboard-cenografia.png" alt="Moodboard, Scenography" onerror="this.style.display='none'">
-          <p class="img-caption">Cenografia</p>
+          <img src="/comics/Herois.svg" alt="Moodboard, Scenography" onerror="this.style.display='none'">
+          <p class="img-caption">Scenography</p>
         </div>
       </div>
     </div>
@@ -1023,7 +1152,7 @@
     <h2>THE DETAILS<br>THAT <span class="red">GLOW</span><br><span class="outline">IN THE DARK</span></h2>
 
     <p>
-      Comics is a bar and entertainment venue in São Paulo built around three cultural pillars:
+      Comics is a bar and entertainment venue in Sao Paulo built around three cultural pillars:
       <strong>comics, music, and stand-up comedy</strong>. The concept demanded a brand identity
       as immersive as the space itself, one that felt lived-in, layered, and unmistakably of its world.
     </p>
@@ -1041,29 +1170,29 @@
     <!-- Moodboards -->
     <div class="img-grid-3">
       <div>
-        <img src="/comics/comics-02-moodboard1.png" alt="Moodboard, Concept" onerror="this.style.display='none'">
-        <p class="img-caption">Conceito</p>
+          <img src="/comics/moodboard1.svg" alt="Moodboard, Concept" onerror="this.style.display='none'">
+        <p class="img-caption">Concept</p>
       </div>
       <div>
-        <img src="/comics/comics-03-moodboard2.png" alt="Moodboard, Decoration" onerror="this.style.display='none'">
-        <p class="img-caption">Decoração</p>
+          <img src="/comics/MOODBOARD2.svg" alt="Moodboard, Decoration" onerror="this.style.display='none'">
+        <p class="img-caption">Decoration</p>
       </div>
       <div>
-        <img src="/comics/comics-moodboard-mobiliario.png" alt="Moodboard, Furniture" onerror="this.style.display='none'">
-        <p class="img-caption">Mobiliário</p>
+          <img src="/comics/Mobiliario.svg" alt="Moodboard, Furniture" onerror="this.style.display='none'">
+        <p class="img-caption">Furniture</p>
       </div>
       <div>
-        <img src="/comics/comics-moodboard-iluminacao.png" alt="Moodboard, Lighting" onerror="this.style.display='none'">
-        <p class="img-caption">Iluminação</p>
+          <img src="/comics/iluminacao.svg" alt="Moodboard, Lighting" onerror="this.style.display='none'">
+        <p class="img-caption">Lighting</p>
       </div>
       <div>
-        <img src="/comics/comics-moodboard-cenografia.png" alt="Moodboard, Scenography" onerror="this.style.display='none'">
-        <p class="img-caption">Cenografia</p>
+          <img src="/comics/Herois.svg" alt="Moodboard, Scenography" onerror="this.style.display='none'">
+        <p class="img-caption">Scenography</p>
       </div>
     </div>
 
-    <h3>Design Principles</h3>
-    <div class="principles">
+    <h3 class="mobile-hide">Design Principles</h3>
+    <div class="principles mobile-hide">
       <div class="principle">
         <div class="principle-label">Strong & Direct</div>
         <p class="principle-text">The identity was built to be bold without being loud. Inspired by legendary publishing houses and jazz club marks, strong, direct, and instantly memorable. No unnecessary decoration. Every line earns its place.</p>
@@ -1139,12 +1268,19 @@
       printed on a cocktail napkin, embossed on a shaker, or illuminated on a Broadway-style marquee.
     </p>
 
-    <!-- Brand identity image -->
-    <div class="img-full">
-      <img src="/comics/comics-04-brand.png"
-           alt="Comics brand identity system"
-           onerror="this.style.display='none'">
-      <p class="img-caption">Brand Identity, Primary Mark & Type System</p>
+    <!-- Sr. Comics (character block) -->
+    <div class="sr-comics" aria-label="Sr. Comics character">
+      <div class="sr-comics-visual">
+        <img src="/comics/SR%20COMIC.png" alt="Sr. Comics character" onerror="this.style.display='none'">
+      </div>
+      <div class="sr-comics-info">
+        <div class="sr-tag">Character</div>
+        <div class="sr-name">SR. COMICS</div>
+        <p class="sr-body">
+          A signature character designed as part of the identity world—equal parts stamp, host, and icon.
+          He reinforces the venue’s narrative and helps the system feel lived-in across signage, menu, and collateral.
+        </p>
+      </div>
     </div>
 
     <h3>Official Colour Palette</h3>
@@ -1187,8 +1323,8 @@
       </div>
     </div>
 
-    <!-- Brand applications -->
-    <div class="img-grid-3">
+    <!-- Brand applications (hide on mobile) -->
+    <div class="img-grid-3 mobile-hide">
       <div>
         <img src="/comics/comics-collateral-01.png"
              alt="Comics brand application"
@@ -1205,9 +1341,9 @@
              onerror="this.style.display='none'">
       </div>
     </div>
-    <p class="img-caption">Collateral, Shaker, Pint Glass, Coaster</p>
+    <p class="img-caption mobile-hide">Collateral, Shaker, Pint Glass, Coaster</p>
 
-    <div class="img-full">
+    <div class="img-full mobile-hide">
       <img src="/comics/comics-08-guidelines.png"
            alt="Comics brand guidelines"
            onerror="this.style.display='none'">
@@ -1238,10 +1374,15 @@
 
     <!-- Facade study images -->
     <div class="img-grid-2">
-      <div>
+      <div class="facade-shot">
         <img src="/comics/comics-09-facade1.png"
              alt="Comics facade study"
              onerror="this.style.display='none'">
+        <div class="facade-overlay" aria-hidden="true">
+          <div class="facade-kicker">FACADE &amp; SIGNAGE</div>
+          <div class="facade-title">NOW SHOWING</div>
+          <div class="facade-sub">Broadway-style marquee</div>
+        </div>
         <p class="img-caption">Facade Study, Concept</p>
       </div>
     </div>
@@ -1271,10 +1412,10 @@
       </div>
       <div class="deliv-item">
         <div class="deliv-n">03</div>
-        <div class="deliv-title">Cardápio (Menu)</div>
+        <div class="deliv-title">Menu</div>
         <p class="deliv-desc">Editorial menu designed as a collectible comic book, "Nº 1 MENU", with cover art, typography and layout consistent with the brand world.</p>
       </div>
-      <div class="deliv-item">
+      <div class="deliv-item mobile-hide">
         <div class="deliv-n">04</div>
         <div class="deliv-title">Full Collateral</div>
         <p class="deliv-desc">Branded glassware, cocktail shaker, coasters, stationery, and promotional materials, all carrying the same visual signature.</p>
@@ -1287,7 +1428,7 @@
       <div class="deliv-item">
         <div class="deliv-n">06</div>
         <div class="deliv-title">Architectural Concept</div>
-        <p class="deliv-desc">Full concept design by Casa Baeté, space planning, material direction, lighting concept, and scenographic specification across 340m².</p>
+        <p class="deliv-desc">Full concept design by Casa Baete, space planning, material direction, lighting concept, and scenographic specification across 340m².</p>
       </div>
       <div class="deliv-item">
         <div class="deliv-n">07</div>
@@ -1301,15 +1442,15 @@
       </div>
     </div>
 
-    <!-- Menu image - the uploaded one -->
-    <div class="img-full">
+    <!-- Menu image - hidden on mobile per request -->
+    <div class="img-full mobile-hide">
       <img src="/comics/comics-01-hero.png"
            alt="Comics menu design"
            onerror="this.src='/comics/comics-01-hero.png'">
-      <p class="img-caption">Cardápio, Menu Design as a Comic Book</p>
+      <p class="img-caption">Menu, Designed as a Collectible Comic Book</p>
     </div>
 
-    <div class="img-grid-2">
+    <div class="img-grid-2 mobile-hide">
       <div>
         <img src="/comics/comics-14-poster.png"
              alt="Comics poster"
@@ -1349,7 +1490,7 @@
 
 <footer>
   <div class="footer-logo">COMICS, Complete Brand Identity</div>
-  <div class="footer-note">São Paulo · 2019 · Casa Baeté x Brand Design</div>
+  <div class="footer-note">Sao Paulo · 2019 · Casa Baete x Brand Design</div>
 </footer>
 
 <script>

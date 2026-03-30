@@ -279,7 +279,13 @@
       .character-wrap { grid-template-columns: 1fr; }
       .character-visual { min-height: 280px; }
       .gl-logos { flex-direction: column; }
-      .moodboard-grid { grid-template-columns: 1fr; }
+      /* Keep the same moodboard configuration on mobile:
+         2-column cards + 4-column inner grids, just tighter and shorter. */
+      .moodboard-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .75rem; margin: 1.25rem 0; }
+      .moodboard-card-body { padding: .95rem; }
+      /* Mobile uses the original SVG moodboards (not the extracted PNG grid). */
+      .moodboard-inner-grid { display: none; }
+      .moodboard-card-img { display: block; min-height: 180px; height: 220px; object-fit: contain; background: #0a0a08; }
     }
   </style>
 </head>
@@ -294,7 +300,7 @@
       <div class="hero-rule"></div>
       <p class="hero-desc">
         Complete brand identity and architectural concept for Comics
-        a bar and entertainment venue in São Paulo built around the universe
+        a bar and entertainment venue in Sao Paulo built around the universe
         of comics, music, and stand-up comedy.
       </p>
       <div class="hero-tags">
@@ -316,7 +322,7 @@
     <div class="marquee-track">
       <span class="marquee-item">BRAND IDENTITY <span class="marquee-dot">◆</span></span>
       <span class="marquee-item">ARCHITECTURAL CONCEPT <span class="marquee-dot">◆</span></span>
-      <span class="marquee-item">SÃO PAULO · 2019 <span class="marquee-dot">◆</span></span>
+      <span class="marquee-item">SAO PAULO · 2019 <span class="marquee-dot">◆</span></span>
       <span class="marquee-item">BRAND IDENTITY <span class="marquee-dot">◆</span></span>
       <span class="marquee-item">ARCHITECTURAL CONCEPT <span class="marquee-dot">◆</span></span>
     </div>
@@ -336,7 +342,7 @@
     <p class="sec-label">01, Concept</p>
     <h2>THE DETAILS<br>THAT <span class="red">GLOW</span><br><span class="outline">IN THE DARK</span></h2>
     <p>
-      Comics is a bar and entertainment venue in São Paulo built around three cultural pillars:
+      Comics is a bar and entertainment venue in Sao Paulo built around three cultural pillars:
       <strong>comics, music, and stand-up comedy</strong>. The concept demanded a brand identity
       as immersive as the space itself, one that felt lived-in, layered, and unmistakably of its world.
     </p>
@@ -350,6 +356,7 @@
     </div>
     <div class="moodboard-grid">
       <div class="moodboard-card">
+        <img class="moodboard-card-img" src="./moodboard1.svg" alt="Concept moodboard" loading="lazy">
         <div class="moodboard-inner-grid">
           <img src="./moodboard-extracted/moodboard-0.png" alt="">
           <img src="./moodboard-extracted/moodboard-1.png" alt="">
@@ -361,12 +368,13 @@
           <img src="./moodboard-extracted/moodboard-7.png" alt="">
         </div>
         <div class="moodboard-card-body">
-          <h3>Moodboard Conceito</h3>
-          <p class="moodboard-tag">Os detalhes que brilham na escuridão</p>
+          <h3>Concept Moodboard</h3>
+          <p class="moodboard-tag">Details that glow in the dark</p>
           <p>Dark, wet alleys and hidden spots; rusty fire escapes and brick walls with graffiti. A world of details that shine in the darkness.</p>
         </div>
       </div>
       <div class="moodboard-card">
+        <img class="moodboard-card-img" src="./MOODBOARD2.svg" alt="Decoration moodboard" loading="lazy">
         <div class="moodboard-inner-grid">
           <img src="./moodboard-extracted/MOODBOARD2-0.png" alt="">
           <img src="./moodboard-extracted/MOODBOARD2-1.png" alt="">
@@ -377,12 +385,13 @@
           <img src="./moodboard-extracted/MOODBOARD2-6.png" alt="">
         </div>
         <div class="moodboard-card-body">
-          <h3>Moodboard Conceito Decoração</h3>
-          <p class="moodboard-tag">A decadência elegante</p>
+          <h3>Decoration Moodboard</h3>
+          <p class="moodboard-tag">Elegant decay</p>
           <p>Industrial, urban interiors; open, multifunctional spaces. Rough finishes balanced with designed lighting and art.</p>
         </div>
       </div>
       <div class="moodboard-card">
+        <img class="moodboard-card-img" src="./Mobiliario.svg" alt="Furniture moodboard" loading="lazy">
         <div class="moodboard-inner-grid">
           <img src="./moodboard-extracted/Mobiliario-0.png" alt="">
           <img src="./moodboard-extracted/Mobiliario-1.png" alt="">
@@ -394,12 +403,13 @@
           <img src="./moodboard-extracted/Mobiliario-7.png" alt="">
         </div>
         <div class="moodboard-card-body">
-          <h3>Moodboard Mobiliário</h3>
-          <p class="moodboard-tag">Ferro, madeira e veludo</p>
+          <h3>Furniture Moodboard</h3>
+          <p class="moodboard-tag">Iron, wood, and velvet</p>
           <p>Rustic, recycled pieces, metals, oxidized iron. Factory-style elements mixed with classic velvet furniture.</p>
         </div>
       </div>
       <div class="moodboard-card">
+        <img class="moodboard-card-img" src="./iluminacao.svg" alt="Lighting moodboard" loading="lazy">
         <div class="moodboard-inner-grid">
           <img src="./moodboard-extracted/iluminacao-0.png" alt="">
           <img src="./moodboard-extracted/iluminacao-1.png" alt="">
@@ -411,12 +421,13 @@
           <img src="./moodboard-extracted/iluminacao-7.png" alt="">
         </div>
         <div class="moodboard-card-body">
-          <h3>Moodboard Iluminação</h3>
-          <p class="moodboard-tag">Cores para o ambiente</p>
+          <h3>Lighting Moodboard</h3>
+          <p class="moodboard-tag">Colors for the space</p>
           <p>Comics, music, and comedy in lighting. Lamps from reused materials; multiple colors shaping the scenography.</p>
         </div>
       </div>
       <div class="moodboard-card moodboard-card-full">
+        <img class="moodboard-card-img" src="./Herois.svg" alt="Scenography moodboard" loading="lazy">
         <div class="moodboard-inner-grid">
           <img src="./moodboard-extracted/Herois-0.png" alt="">
           <img src="./moodboard-extracted/Herois-1.png" alt="">
@@ -428,8 +439,8 @@
           <img src="./moodboard-extracted/Herois-7.png" alt="">
         </div>
         <div class="moodboard-card-body">
-          <h3>Moodboard Cenografia</h3>
-          <p class="moodboard-tag">Quadrinhos e música</p>
+          <h3>Scenography Moodboard</h3>
+          <p class="moodboard-tag">Comics and music</p>
           <p>Objects and artifacts from comics and music for scenography. Playful immersion for the audience.</p>
         </div>
       </div>
@@ -559,7 +570,7 @@
     <div class="deliverables">
       <div class="deliv-item"><div class="deliv-n">01</div><div class="deliv-title">Logo & Trademark</div><p class="deliv-desc">Primary mark, icon variant, all usages.</p></div>
       <div class="deliv-item"><div class="deliv-n">02</div><div class="deliv-title">Brand Manual</div><p class="deliv-desc">Guidelines covering colour, typography, usage rules.</p></div>
-      <div class="deliv-item"><div class="deliv-n">03</div><div class="deliv-title">Cardápio (Menu)</div><p class="deliv-desc">Editorial menu designed as a collectible comic book.</p></div>
+      <div class="deliv-item"><div class="deliv-n">03</div><div class="deliv-title">Menu</div><p class="deliv-desc">Editorial menu designed as a collectible comic book.</p></div>
       <div class="deliv-item"><div class="deliv-n">04</div><div class="deliv-title">Full Collateral</div><p class="deliv-desc">Glassware, shaker, coasters, stationery.</p></div>
       <div class="deliv-item"><div class="deliv-n">05</div><div class="deliv-title">Signage System</div><p class="deliv-desc">Interior and exterior signage, Broadway-style marquee.</p></div>
       <div class="deliv-item"><div class="deliv-n">06</div><div class="deliv-title">Architectural Concept</div><p class="deliv-desc">Space planning, material direction, lighting concept.</p></div>

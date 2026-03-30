@@ -37,7 +37,7 @@ export function ComicsEmbed({
   return (
     <iframe
       ref={iframeRef}
-      src="/comics/comics-drawer-embed.html"
+      src="/comics/comics-drawer-embed.html?v=3"
       title="Comics, Portfolio"
       className="absolute inset-0 h-full w-full min-h-full border-0 block"
       style={{ minHeight: "100%" }}

@@ -154,6 +154,11 @@
     @media(max-width:768px){
       .hero{grid-template-columns:1fr}.hero-right{height:60vw}.hero-left{padding:6rem 1.5rem 3rem}
       .img-grid-2,.img-grid-3{grid-template-columns:1fr}.steps,.deliverables{grid-template-columns:1fr}
+      /* Fix overflow on mobile stats (was deforming page width) */
+      .stat-grid{grid-template-columns:1fr;max-width:100%}
+      .stat-card{padding:1.5rem 1.25rem}
+      .stat-n{font-size:44px}
+      .stat-l{padding:0 6px;word-break:break-word;overflow-wrap:anywhere}
       .nav-links{display:none}.footer{flex-direction:column;gap:.75rem;text-align:center}
     }
   </style>

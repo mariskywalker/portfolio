@@ -50,7 +50,24 @@ export function Spline3DLabSlider({
   onActiveSceneChange,
 }: Props) {
   const [activeIndex, setActiveIndex] = useState(0);
-  const active = scenes[activeIndex];
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    // Home mobile: remove the HEINZ bottle from the Spline hub.
+    const mql = window.matchMedia("(max-width: 767px)");
+    const update = () => setIsMobile(mql.matches);
+    update();
+    mql.addEventListener("change", update);
+    return () => mql.removeEventListener("change", update);
+  }, []);
+
+  const scenesToUse = isMobile ? scenes.filter((s) => s.id === "void") : scenes;
+  const active = scenesToUse[activeIndex] ?? scenesToUse[0];
+
+  // Clamp index when scene list changes (e.g. switching between mobile/desktop)
+  useEffect(() => {
+    setActiveIndex(0);
+  }, [isMobile]);
 
   // Report active scene when it changes
   useEffect(() => {
@@ -126,7 +143,7 @@ export function Spline3DLabSlider({
 
       {/* Horizontal nav dots */}
       <div className="absolute bottom-4 left-1/2 z-20 flex -translate-x-1/2 items-center gap-3">
-        {scenes.map((s, i) => (
+        {scenesToUse.map((s, i) => (
           <button
             key={s.id}
             type="button"
@@ -165,7 +182,7 @@ export function Spline3DLabSlider({
           </button>
           <button
             type="button"
-            onClick={() => setActiveIndex((i) => (i + 1) % scenes.length)}
+            onClick={() => setActiveIndex((i) => (i + 1) % scenesToUse.length)}
             className="absolute right-2 top-1/2 z-20 -translate-y-1/2 rounded border border-white/15 bg-black/40 px-2 py-3 font-[var(--font-geist-mono)] text-[13px] text-white/60 transition-colors hover:border-white/30 hover:bg-black/60 hover:text-white/90"
             aria-label="Next 3D scene"
           >

@@ -20,10 +20,15 @@
     font-display:swap;
   }
 
+  html, body {
+    height: 100%;
+    width: 100%;
+  }
+
   body {
     font-family: 'Poppins', sans-serif;
     background: linear-gradient(135deg, #e8e0d8 0%, #ddd5cc 30%, #cfd8dc 70%, #d4cfe0 100%);
-    min-height: 100vh;
+    min-height: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -167,6 +172,40 @@
   .card:hover .icon-heart {
     transform: translateY(-10px) rotate(-10deg) scale(1.08);
     filter: drop-shadow(0 16px 32px rgba(249,116,110,.6));
+  }
+
+  /* Mobile: fit inside the 4/3 iframe container without oversized typography. */
+  @media (max-width: 520px) {
+    body { overflow: hidden; }
+
+    .blob-pink { width: 200px; height: 120px; bottom: 28px; left: -60px; filter: blur(46px); }
+    .blob-blue { width: 220px; height: 160px; top: 8px; right: -60px; filter: blur(50px); }
+
+    .card {
+      width: min(420px, 86vw);
+      padding: 26px 20px 22px;
+      border-radius: 20px;
+    }
+
+    .bear-badge {
+      width: 48px;
+      height: 48px;
+      margin-bottom: 18px;
+      border-radius: 14px;
+    }
+
+    .pill { font-size: 11px; padding: 5px 10px; margin-bottom: 14px; }
+
+    .counter-num { font-size: 52px; letter-spacing: -2px; }
+    .counter-plus { font-size: 30px; }
+    .counter-label { font-size: 13px; margin-bottom: 20px; }
+
+    .divider { margin-bottom: 18px; }
+    .stat-val { font-size: 17px; }
+    .stat-label { font-size: 10px; }
+
+    .icon-asterisk { width: 96px; height: 96px; top: -26px; left: -22px; }
+    .icon-heart { width: 96px; height: 80px; bottom: -20px; right: -24px; }
   }
 </style>
 </head>

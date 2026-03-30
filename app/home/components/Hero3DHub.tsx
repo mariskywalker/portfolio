@@ -15,7 +15,17 @@ type Props = {
 export function Hero3DHub({ scene, pulseKey, aspect = "square", onHoverChange, onPointerMove }: Props) {
   const hubRef = useRef<HTMLDivElement | null>(null);
   const [hovered, setHovered] = useState(false);
-  const HUB_SCALE = 1;
+  const [hubScale, setHubScale] = useState(1);
+
+  // The Spline "portrait" framing can appear too tall on small screens.
+  // We apply a mobile-only scale to keep the bottle visually proportionate.
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+
+    const isMobile = window.matchMedia("(max-width: 767px)").matches;
+    if (aspect === "portrait" && isMobile) setHubScale(0.88);
+    else setHubScale(1);
+  }, [aspect]);
 
   useEffect(() => {
     const node = hubRef.current;
@@ -79,13 +89,15 @@ export function Hero3DHub({ scene, pulseKey, aspect = "square", onHoverChange, o
 
   return (
     <div className="absolute inset-0 z-10 flex items-center justify-center">
-      <div style={{ transform: `scale(${HUB_SCALE})`, transformOrigin: "center" }}>
+      <div style={{ transform: `scale(${hubScale})`, transformOrigin: "center" }}>
         <div
-          key={pulseKey}
+          key={`${pulseKey}-${aspect}-${hubScale}`}
           ref={hubRef}
           className={`homeHubPulse relative ${
             aspect === "portrait"
-              ? "h-[min(calc(100svh-140px),105vmin)] aspect-[48/105] w-auto"
+              ? // Mobile: reduzir o "frame" vertical para evitar que o Spline re-enquadre a garrafa
+                // com zoom excessivo (aparenta ficar mais alta).
+                "h-[min(calc(100svh-200px),90vmin)] md:h-[min(calc(100svh-140px),105vmin)] aspect-[48/105] w-auto"
               : "h-[min(74vmin,720px)] w-[min(74vmin,720px)]"
           }`}
           style={{

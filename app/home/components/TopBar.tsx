@@ -17,7 +17,7 @@ export function TopBar({
             MARI SYSTEMS
           </div>
           <div className="font-heading text-[15px] font-semibold tracking-tight text-white">
-            // INTERFACE HOME
+              {/* INTERFACE HOME */}
           </div>
         </div>
 

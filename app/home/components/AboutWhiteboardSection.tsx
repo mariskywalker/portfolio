@@ -258,12 +258,22 @@ export function AboutWhiteboardSection() {
         </div>
 
         <div className="relative z-10 mx-auto w-full max-w-6xl pb-4 lg:absolute lg:bottom-20 lg:left-[4%] lg:mx-0 lg:w-[92%] lg:max-w-none lg:pb-0">
+          <div className="flex flex-col items-start gap-3 sm:flex-row sm:items-center sm:gap-5">
           <a
-            href="mailto:hello@mari.studio?subject=Hello"
+            href="mailto:d.oliveiramariana@gmail.com?subject=Hello"
             className="inline-flex min-h-[44px] items-center rounded-xl border border-black/35 px-4 py-3 text-xl font-semibold tracking-tight text-black transition-colors hover:bg-black/[0.04] active:bg-black/[0.06] sm:text-2xl md:px-2 md:py-1 md:text-4xl"
           >
             Want to chat?
           </a>
+          <a
+            href="https://www.linkedin.com/in/marideoliveira/"
+            target="_blank"
+            rel="noreferrer"
+            className="inline-flex min-h-[44px] items-center rounded-xl border border-black/35 px-4 py-3 text-xl font-semibold tracking-tight text-black transition-colors hover:bg-black/[0.04] active:bg-black/[0.06] sm:text-2xl md:px-2 md:py-1 md:text-4xl"
+          >
+            Linkedin <span className="ml-2 text-[1.35em] leading-none">🔗</span>
+          </a>
+          </div>
         </div>
       </div>
 

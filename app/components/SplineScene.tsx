@@ -36,6 +36,7 @@ export function SplineScene({ scene, className, style }: Props) {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const interactiveLayerRef = useRef<HTMLDivElement | null>(null);
   const [loaded, setLoaded] = useState(false);
+  const resolvedMinHeight = style?.minHeight ?? 320;
 
   useEffect(() => {
     const node = containerRef.current;
@@ -95,7 +96,7 @@ export function SplineScene({ scene, className, style }: Props) {
       style={{
         width: "100%",
         height: "100%",
-        minHeight: 320,
+        minHeight: resolvedMinHeight,
         borderRadius: 16,
         overflow: "hidden",
         border: "1px solid rgba(0,0,0,0.08)",
@@ -109,7 +110,7 @@ export function SplineScene({ scene, className, style }: Props) {
         style={{
           width: "100%",
           height: "100%",
-          minHeight: 320,
+          minHeight: resolvedMinHeight,
           transition: "transform 320ms cubic-bezier(0.22, 1, 0.36, 1)",
           willChange: "transform",
         }}
@@ -119,7 +120,7 @@ export function SplineScene({ scene, className, style }: Props) {
             scene={scene}
             renderOnDemand={true}
             onLoad={() => setLoaded(true)}
-            style={{ width: "100%", height: "100%", minHeight: 320 }}
+            style={{ width: "100%", height: "100%", minHeight: resolvedMinHeight }}
           />
         </Suspense>
         {!loaded && (

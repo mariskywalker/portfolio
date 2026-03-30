@@ -313,6 +313,7 @@ export default function HomeSystem() {
   const [isMobile, setIsMobile] = useState(false);
   const [profileOpen, setProfileOpen] = useState(true);
   const [playgroundInView, setPlaygroundInView] = useState(false);
+  const [projectGridInView, setProjectGridInView] = useState(false);
   const [introScroll, setIntroScroll] = useState(0);
   const [introReady, setIntroReady] = useState(false);
   const transitionLockRef = useRef(false);
@@ -580,47 +581,32 @@ A 3D bottle was built in Spline to serve as the hero asset for the interactive e
                 )}
                 {sec.media.type === "colorSwatches" && (() => {
                   const swatches = sec.media;
-                  const iconPaths: Record<string, { paths: Array<{ fill: string; d: string }> }> = {
-                    Asterisk: { paths: [{ fill: "var", d: "M345.699 216.586L281.422 179.5L345.699 142.414C349.32 140.324 350.559 135.699 348.469 132.078L333.328 105.867C331.238 102.25 326.609 101.008 322.988 103.098L258.711 140.184V66.016C258.711 61.836 255.32 58.449 251.141 58.449H220.863C216.68 58.449 213.289 61.836 213.289 66.016V140.188L149.016 103.102C145.395 101.012 140.766 102.254 138.672 105.871L123.531 132.078C121.441 135.695 122.68 140.324 126.305 142.414L190.578 179.5L126.305 216.586C122.68 218.676 121.441 223.305 123.531 226.926L138.672 253.133C140.766 256.754 145.395 257.992 149.016 255.906L213.289 218.82V292.984C213.289 297.164 216.68 300.551 220.863 300.551H251.141C255.32 300.551 258.711 297.164 258.711 292.984V218.813L322.988 255.898C326.609 257.992 331.238 256.754 333.328 253.129L348.469 226.918C350.559 223.301 349.32 218.676 345.699 216.586Z" }] },
-                    Heart: { paths: [{ fill: "var", d: "M343.797 78.699C315.164 54.355 272.578 58.734 246.297 85.789L236.004 96.371L225.711 85.789C199.48 58.734 156.844 54.355 128.211 78.699C95.402 106.641 93.68 156.785 123.039 187.074L224.145 291.227C230.676 297.949 241.281 297.949 247.813 291.227L348.914 187.074C378.328 156.785 376.609 106.641 343.797 78.699Z" }] },
-                    House: { paths: [{ fill: "var", d: "M137.492 124.973C137.492 122.41 139.023 120.094 141.379 119.082L233.473 79.539C235.086 78.844 236.914 78.844 238.527 79.539L330.621 119.082C332.977 120.094 334.508 122.41 334.508 124.973V273.57C334.508 277.109 331.633 279.98 328.09 279.98H143.906C140.363 279.98 137.492 277.109 137.492 273.57V124.973Z" }] },
-                    Bear: { paths: [
-                      { fill: "var", d: "M166.707 85.938C164.074 67.207 147.992 52.809 128.543 52.809C107.246 52.809 89.984 70.07 89.984 91.367C89.984 109.289 102.211 124.344 118.781 128.676Z" },
-                      { fill: "#111", d: "M152.359 88.156C150.73 76.547 140.762 67.625 128.711 67.625C115.508 67.625 104.809 78.32 104.809 91.523C104.809 102.629 112.387 111.961 122.66 114.645Z" },
-                      { fill: "var", d: "M305.297 85.938C307.926 67.207 324.008 52.809 343.457 52.809C364.758 52.809 382.02 70.07 382.02 91.367C382.02 109.289 369.793 124.344 353.223 128.676Z" },
-                      { fill: "#111", d: "M320.762 86.594C322.395 74.988 332.363 66.063 344.414 66.063C357.617 66.063 368.313 76.762 368.313 89.961C368.313 101.066 360.738 110.398 350.465 113.082Z" },
-                      { fill: "var", d: "M235.684 306.191C267.496 306.191 329.5 305.195 361.387 262.246C373.602 245.797 381.391 223.211 381.391 192.18C381.391 80.047 299.891 52.809 235.684 52.809C171.48 52.809 89.98 78.531 89.98 192.18C89.98 222.492 97.418 244.738 109.125 261.082C140.754 305.18 203.582 306.191 235.684 306.191Z" },
-                      { fill: "#111", d: "M236.598 211.273C252.184 210.215 268.75 194.723 268.75 181.164C268.75 167.602 255.113 161.496 234.953 161.496H234.539C214.359 161.496 200.723 167.113 200.723 181.164C200.723 195.215 217.27 210.23 232.875 211.273Z" },
-                      { fill: "#111", d: "M172.469 164.707C180.227 164.707 186.516 157.594 186.516 148.816C186.516 140.039 180.227 132.922 172.469 132.922C164.711 132.922 158.422 140.039 158.422 148.816C158.422 157.594 164.711 164.707 172.469 164.707Z" },
-                      { fill: "#111", d: "M296.512 164.707C304.27 164.707 310.559 157.594 310.559 148.816C310.559 140.039 304.27 132.922 296.512 132.922C288.754 132.922 282.465 140.039 282.465 148.816C282.465 157.594 288.754 164.707 296.512 164.707Z" },
-                      { fill: "#111", d: "M216.301 249.586C213.93 249.586 211.496 249.359 209.094 248.883C202.684 247.613 197.391 244.859 194.191 241.109C193.641 240.469 193.715 239.504 194.359 238.953C195.004 238.402 195.965 238.477 196.516 239.121C199.227 242.289 204.031 244.754 209.691 245.871C215.262 246.969 220.969 246.68 225.344 245.059C228.863 243.758 233.074 241.02 233.074 235.387V207.371C233.074 206.527 233.762 205.84 234.602 205.84C235.445 205.84 236.133 206.527 236.133 207.371V235.387C236.133 241.172 232.676 245.625 226.418 247.934C223.434 249.035 219.945 249.586 216.301 249.586Z" },
-                      { fill: "#111", d: "M252.945 249.59C249.301 249.59 245.813 249.039 242.844 247.938C236.57 245.625 233.129 241.172 233.129 235.387V207.371C233.129 206.527 233.816 205.84 234.66 205.84C235.5 205.84 236.188 206.527 236.188 207.371V235.387C236.188 241.035 240.383 243.758 243.918 245.059C248.293 246.68 254 246.973 259.57 245.871C265.23 244.754 270.035 242.289 272.746 239.121C273.297 238.48 274.258 238.402 274.902 238.953C275.547 239.504 275.621 240.469 275.07 241.109C271.875 244.844 266.578 247.613 260.168 248.883C257.734 249.359 255.301 249.59 252.945 249.59Z" },
-                    ] },
-                  };
                   return (
                   <div
                     className="rounded-sm p-5 md:p-6 space-y-8"
                     style={{ backgroundColor: warmBg, border: `1px solid rgba(0,0,0,0.08)` }}
                   >
-                    <div className="flex flex-wrap justify-center gap-8 md:gap-16 items-start">
-                      {swatches.icons.map((ico, j) => {
-                        const paths = iconPaths[ico.label]?.paths ?? [];
-                        return (
-                          <div key={j} className="flex flex-col items-center gap-3 text-center">
-                            <div className="flex h-[72px] w-[72px] items-center justify-center">
-                              <svg width="64" height="64" viewBox="0 0 472 359" className="block">
-                                {paths.map((p, i) => (
-                                  <path key={i} fill={p.fill === "var" ? ico.fill : p.fill} d={p.d} />
-                                ))}
-                              </svg>
+                    <div className="flex items-center justify-center">
+                      <img
+                        src="/icones_casadourso.svg"
+                        alt=""
+                        aria-hidden
+                        className="h-[92px] w-auto max-w-full object-contain md:h-[108px]"
+                      />
+                    </div>
+
+                    <div className="grid grid-cols-2 gap-6 md:grid-cols-4 md:gap-10">
+                      {swatches.icons.map((ico, j) => (
+                        <div key={j} className="flex flex-col items-center gap-2 text-center">
+                          <div className="h-2 w-2 rounded-full" style={{ backgroundColor: ico.fill }} aria-hidden />
+                          <div>
+                            <div className="font-sans text-[15px] font-bold text-black/90 leading-tight">
+                              {ico.label}
                             </div>
-                            <div>
-                              <div className="font-sans text-[15px] font-bold text-black/90 leading-tight">{ico.label}</div>
-                              <div className="font-sans text-[13px] text-black/60 mt-0.5">{ico.sub}</div>
-                            </div>
+                            <div className="mt-0.5 font-sans text-[13px] text-black/60">{ico.sub}</div>
                           </div>
-                        );
-                      })}
+                        </div>
+                      ))}
                     </div>
                     <p className="font-sans text-[13px] text-black/60 text-center border-t border-black/10 pt-4 mt-2">
                       {swatches.note}
@@ -684,7 +670,7 @@ A 3D bottle was built in Spline to serve as the hero asset for the interactive e
                 )}
                 {sec.media.type === "customCanvas" && (
                   <div
-                    className="relative aspect-[4/3] w-full min-h-[280px] overflow-hidden rounded-sm border border-black/20 bg-black/5"
+                    className="relative h-[min(62svh,520px)] w-full min-h-[280px] overflow-hidden rounded-sm border border-black/20 bg-black/5"
                     aria-label={sec.media.src ? "Grovia cards demo" : "Canvas placeholder"}
                   >
                     {sec.media.src ? (
@@ -849,7 +835,7 @@ A 3D bottle was built in Spline to serve as the hero asset for the interactive e
         active: true,
         iconSrc: "/comics/comics-01-hero.png?v=20260325",
         videoSrc: "/comics/Comics_.mp4?v=20260325",
-        fullCaseHref: "/comics/comics-case.html?v=20260325",
+        fullCaseHref: "/comics/comics-case.html?v=20260330b",
       },
       {
         id: "casa",
@@ -922,7 +908,8 @@ A 3D bottle was built in Spline to serve as the hero asset for the interactive e
         fields: pokerFields,
         active: true,
         iconSrc: "/spades.svg",
-        fullCaseHref: "/Pokerbros/pokerbros-drawer.html",
+        // Use the embed directly (no confirmation card on mobile).
+        fullCaseHref: "/Pokerbros/pokerbros-drawer-embed.html?v=20260330",
       },
     ],
     []
@@ -1208,6 +1195,21 @@ A 3D bottle was built in Spline to serve as the hero asset for the interactive e
     return () => observer.disconnect();
   }, []);
 
+  useEffect(() => {
+    const target = document.getElementById("project-grid");
+    if (!target) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setProjectGridInView(entry.isIntersecting);
+      },
+      { root: null, threshold: 0.1 }
+    );
+
+    observer.observe(target);
+    return () => observer.disconnect();
+  }, []);
+
   return (
     <main className="relative w-full text-white" style={{ background: "var(--sys-bg)" }}>
       <div className="fixed inset-0 z-0">
@@ -1344,7 +1346,7 @@ A 3D bottle was built in Spline to serve as the hero asset for the interactive e
           >
             <PlayerPanel
               open={profileOpen}
-              showPlayerPanel={!playgroundInView}
+              showPlayerPanel={!playgroundInView && !projectGridInView}
               onClose={() => setProfileOpen(false)}
             />
           </motion.div>
@@ -1455,7 +1457,7 @@ A 3D bottle was built in Spline to serve as the hero asset for the interactive e
                         Activation → Calm ( *  ♥  Casa  Urso )
                       </div>
                       <div className="mt-3 flex w-full items-center justify-center">
-                        <SensoryIconSparkles src="/icones.svg" alt="" className="h-auto w-full opacity-90" />
+                        <SensoryIconSparkles src="/icones.svg" alt="" />
                       </div>
                     </div>
                   )}
@@ -1801,7 +1803,7 @@ A 3D bottle was built in Spline to serve as the hero asset for the interactive e
                             OUTCOME
                           </div>
                           {selectedProject.id === "casa" && (
-                            <div className="relative mt-4 aspect-[4/3] w-full min-h-[280px] overflow-hidden rounded-sm border border-black/10">
+                            <div className="relative mt-4 h-[min(62svh,520px)] w-full min-h-[280px] overflow-hidden rounded-sm border border-black/10">
                               <iframe
                                 src="/casa-urso-counter.html"
                                 title="Casa do Urso Counter"

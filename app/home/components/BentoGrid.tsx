@@ -53,7 +53,7 @@ const LanguagesWidget = () => (
   <div className="bento-card col-span-2 flex flex-col gap-5 p-6 md:p-8">
     <div className="grid grid-cols-2 gap-x-6 gap-y-5">
       {Object.entries(flags).map(([code, flag], i) => (
-        <FlagToggle key={code} code={code} flag={flag} defaultOn={i < 2} />
+        <FlagToggle key={code} code={code} flag={flag} defaultOn />
       ))}
     </div>
     <div>
