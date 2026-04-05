@@ -1,0 +1,1678 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CADU · Campanha 360° · Estratégia de Lançamento</title>
+<link href="https://fonts.googleapis.com/css2?family=Albert+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --coral: #D85A30;
+    --coral-light: #FAE8E0;
+    --coral-mid: #F0997B;
+    --coral-dark: #993C1D;
+    --cream: #FDF8F5;
+    --warm-white: #FFFCFA;
+    --charcoal: #2C2A28;
+    --mid: #5C5A57;
+    --muted: #9A9690;
+    --border: #EDE8E3;
+    --teal: #1D9E75;
+    --teal-light: #E1F5EE;
+    --blue: #185FA5;
+    --blue-light: #E6F1FB;
+    --amber: #BA7517;
+    --amber-light: #FAEEDA;
+    --purple: #534AB7;
+    --purple-light: #EEEDFE;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Albert Sans', sans-serif;
+    background: var(--cream);
+    color: var(--charcoal);
+    font-size: 15px;
+    line-height: 1.6;
+  }
+
+  /* ── COVER ── */
+  .cover {
+    min-height: 100vh;
+    background: var(--warm-white);
+    display: flex;
+    flex-direction: column;
+    padding: 64px 72px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .cover-constrain {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    max-width: 900px;
+    margin: 0 auto;
+    width: 100%;
+    position: relative;
+    z-index: 1;
+  }
+
+  .cover::before {
+    content: '';
+    position: absolute;
+    top: -80px; right: -80px;
+    width: 480px; height: 480px;
+    border-radius: 50%;
+    background: var(--coral-light);
+    opacity: 0.8;
+  }
+
+  .cover::after {
+    content: '';
+    position: absolute;
+    bottom: -120px; left: -120px;
+    width: 400px; height: 400px;
+    border-radius: 50%;
+    background: var(--coral-light);
+    opacity: 0.5;
+  }
+
+  .cover-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+  }
+
+  .wordmark {
+    font-size: 22px;
+    font-weight: 600;
+    letter-spacing: -0.5px;
+    color: var(--charcoal);
+  }
+
+  .wordmark span {
+    color: var(--coral);
+  }
+
+  .doc-label {
+    font-size: 12px;
+    font-weight: 400;
+    color: var(--muted);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-top: 4px;
+  }
+
+  .cover-inner {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr 440px;
+    gap: 48px;
+    align-items: center;
+    justify-items: center;
+    position: relative;
+    z-index: 1;
+  }
+
+  .cover-body {
+    justify-self: start;
+    width: 100%;
+    position: relative;
+    z-index: 1;
+  }
+
+  .cover-eyebrow {
+    font-size: 13px;
+    font-weight: 400;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--coral);
+    margin-bottom: 28px;
+  }
+
+  .cover-title {
+    font-size: clamp(48px, 6vw, 80px);
+    font-weight: 300;
+    line-height: 1.05;
+    color: var(--charcoal);
+    letter-spacing: -2px;
+    margin-bottom: 32px;
+  }
+
+  .cover-title strong {
+    font-weight: 600;
+    color: var(--coral);
+  }
+
+  .cover-subtitle {
+    font-size: 18px;
+    font-weight: 300;
+    color: var(--mid);
+    max-width: 520px;
+    line-height: 1.6;
+    border-left: 2px solid var(--coral);
+    padding-left: 20px;
+  }
+
+  .cover-tato {
+    justify-self: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    padding-bottom: 40px;
+  }
+
+  .cover-tato img,
+  .cover-tato canvas {
+    width: 420px;
+    height: 420px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .cover-tato-label {
+    position: absolute;
+    bottom: 0px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--coral);
+    color: #fff;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 6px 18px;
+    border-radius: 100px;
+    white-space: nowrap;
+  }
+
+  @keyframes tato-float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
+  }
+
+  .cover-bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    position: relative;
+    z-index: 1;
+  }
+
+  .cover-tags {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+
+  .tag {
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding: 6px 14px;
+    border-radius: 100px;
+    border: 1px solid var(--border);
+    color: var(--mid);
+  }
+
+  .tag.accent {
+    background: var(--coral);
+    border-color: var(--coral);
+    color: #fff;
+  }
+
+  .cover-date {
+    font-size: 12px;
+    color: var(--muted);
+  }
+
+    /* ── PAGE LAYOUT ── */
+  .page {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 80px 72px;
+  }
+
+  .page + .page {
+    border-top: 1px solid var(--border);
+  }
+
+  /* ── SECTION HEADER ── */
+  .section-label {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--coral);
+    margin-bottom: 12px;
+  }
+
+  .section-title {
+    font-size: 34px;
+    font-weight: 300;
+    letter-spacing: -1px;
+    color: var(--charcoal);
+    line-height: 1.15;
+    margin-bottom: 24px;
+  }
+
+  .section-title strong {
+    font-weight: 600;
+  }
+
+  .section-intro {
+    font-size: 17px;
+    color: var(--mid);
+    line-height: 1.7;
+    max-width: 680px;
+    margin-bottom: 48px;
+  }
+
+  hr.divider {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 48px 0;
+  }
+
+  /* ── CONCEPT BLOCK ── */
+  .concept-block {
+    background: var(--charcoal);
+    border-radius: 16px;
+    padding: 48px 56px;
+    position: relative;
+    overflow: hidden;
+    margin-bottom: 48px;
+  }
+
+  .concept-block::before {
+    content: '';
+    position: absolute;
+    top: -60px; right: -60px;
+    width: 260px; height: 260px;
+    border-radius: 50%;
+    background: var(--coral);
+    opacity: 0.15;
+  }
+
+  .concept-label {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--coral);
+    margin-bottom: 16px;
+  }
+
+  .concept-headline {
+    font-size: 42px;
+    font-weight: 300;
+    letter-spacing: -1.5px;
+    color: #fff;
+    line-height: 1.1;
+    margin-bottom: 20px;
+  }
+
+  .concept-headline em {
+    font-style: normal;
+    color: var(--coral);
+    font-weight: 600;
+  }
+
+  .concept-body {
+    font-size: 16px;
+    color: rgba(255, 255, 255, 1);
+    line-height: 1.7;
+    max-width: 560px;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* ── PILARES GRID ── */
+  .pilares-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    margin-bottom: 48px;
+  }
+
+  .pilar-card {
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 28px 24px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .pilar-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: var(--coral);
+  }
+
+  .pilar-number {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    color: var(--coral);
+    margin-bottom: 12px;
+  }
+
+  .pilar-name {
+    font-size: 20px;
+    font-weight: 600;
+    color: var(--charcoal);
+    margin-bottom: 8px;
+    letter-spacing: -0.3px;
+  }
+
+  .pilar-desc {
+    font-size: 13px;
+    color: var(--muted);
+    line-height: 1.55;
+  }
+
+  /* ── FASES ── */
+  .fases-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    margin-bottom: 48px;
+  }
+
+  .fase-row {
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    gap: 0;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    background: #fff;
+  }
+
+  .fase-sidebar {
+    padding: 32px 28px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    border-right: 1px solid var(--border);
+  }
+
+  .fase-sidebar.f1 { background: var(--coral-light); }
+  .fase-sidebar.f2 { background: #F5F3FF; }
+  .fase-sidebar.f3 { background: var(--teal-light); }
+
+  .fase-num {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--coral);
+    margin-bottom: 6px;
+  }
+
+  .fase-sidebar.f2 .fase-num { color: var(--purple); }
+  .fase-sidebar.f3 .fase-num { color: var(--teal); }
+
+  .fase-name {
+    font-size: 22px;
+    font-weight: 600;
+    color: var(--charcoal);
+    letter-spacing: -0.5px;
+    margin-bottom: 4px;
+  }
+
+  .fase-period {
+    font-size: 13px;
+    color: var(--muted);
+  }
+
+  .fase-body {
+    padding: 32px 36px;
+  }
+
+  .fase-desc {
+    font-size: 16px;
+    color: var(--mid);
+    line-height: 1.65;
+    margin-bottom: 20px;
+  }
+
+  .fase-bullets {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .fase-bullets li {
+    font-size: 13.5px;
+    color: var(--mid);
+    padding-left: 16px;
+    position: relative;
+  }
+
+  .fase-bullets li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 9px;
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: var(--coral);
+  }
+
+  /* ── PÚBLICOS ── */
+  .publicos-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    margin-bottom: 48px;
+  }
+
+  .publico-card {
+    border-radius: 14px;
+    padding: 36px 32px;
+    border: 1px solid transparent;
+  }
+
+  .publico-card.b2c {
+    background: var(--teal-light);
+    border-color: #9FE1CB;
+  }
+
+  .publico-card.b2b {
+    background: var(--blue-light);
+    border-color: #B5D4F4;
+  }
+
+  .publico-label {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+
+  .b2c .publico-label { color: var(--teal); }
+  .b2b .publico-label { color: var(--blue); }
+
+  .publico-title {
+    font-size: 22px;
+    font-weight: 600;
+    letter-spacing: -0.5px;
+    color: var(--charcoal);
+    margin-bottom: 20px;
+  }
+
+  .publico-row {
+    margin-bottom: 14px;
+  }
+
+  .publico-row-label {
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--muted);
+    margin-bottom: 4px;
+  }
+
+  .publico-row-value {
+    font-size: 14px;
+    color: var(--charcoal);
+    line-height: 1.5;
+  }
+
+  .cta-pill {
+    display: inline-block;
+    margin-top: 20px;
+    font-size: 13px;
+    font-weight: 500;
+    padding: 10px 20px;
+    border-radius: 100px;
+  }
+
+  .b2c .cta-pill {
+    background: var(--teal);
+    color: #fff;
+  }
+
+  .b2b .cta-pill {
+    background: var(--blue);
+    color: #fff;
+  }
+
+  /* ── FORMATOS ── */
+  .formatos-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin-bottom: 48px;
+  }
+
+  .formato-card {
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 28px 24px;
+  }
+
+  .formato-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    background: var(--coral-light);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 16px;
+    font-size: 18px;
+  }
+
+  .formato-name {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--charcoal);
+    margin-bottom: 8px;
+    letter-spacing: -0.2px;
+  }
+
+  .formato-desc {
+    font-size: 13px;
+    color: var(--muted);
+    line-height: 1.55;
+  }
+
+  /* ── MÉTRICAS ── */
+  .metricas-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin-bottom: 48px;
+  }
+
+  .metrica-card {
+    background: var(--amber-light);
+    border: 1px solid #FAC775;
+    border-radius: 12px;
+    padding: 28px 24px;
+  }
+
+  .metrica-label {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--amber);
+    margin-bottom: 10px;
+  }
+
+  .metrica-title {
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--charcoal);
+    margin-bottom: 8px;
+    letter-spacing: -0.3px;
+  }
+
+  .metrica-desc {
+    font-size: 13px;
+    color: var(--mid);
+    line-height: 1.5;
+  }
+
+  /* ── QUOTE ── */
+  .pull-quote {
+    border-left: 3px solid var(--coral);
+    padding: 8px 0 8px 32px;
+    margin: 40px 0;
+  }
+
+  .pull-quote p {
+    font-size: 22px;
+    font-weight: 300;
+    color: var(--charcoal);
+    letter-spacing: -0.5px;
+    line-height: 1.45;
+    font-style: italic;
+  }
+
+  .pull-quote cite {
+    display: block;
+    margin-top: 12px;
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--coral);
+  }
+
+  /* ── CASA DO URSO SECTION ── */
+  .laboratorio-block {
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 48px 52px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 48px;
+    margin-bottom: 48px;
+    align-items: start;
+  }
+
+  .laboratorio-title {
+    font-size: 28px;
+    font-weight: 600;
+    letter-spacing: -0.7px;
+    color: var(--charcoal);
+    line-height: 1.2;
+    margin-bottom: 16px;
+  }
+
+  .laboratorio-title span {
+    color: var(--coral);
+  }
+
+  .laboratorio-desc {
+    font-size: 15px;
+    color: var(--mid);
+    line-height: 1.7;
+  }
+
+  .laboratorio-facts {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .fact-item {
+    padding: 20px 24px;
+    background: var(--coral-light);
+    border-radius: 10px;
+    border-left: 3px solid var(--coral);
+  }
+
+  .fact-label {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--coral);
+    margin-bottom: 6px;
+  }
+
+  .fact-value {
+    font-size: 15px;
+    color: var(--charcoal);
+    line-height: 1.5;
+  }
+
+  /* ── TATO SECTION ── */
+  .tato-banner {
+    background: var(--charcoal);
+    border-radius: 16px;
+    padding: 48px 52px;
+    display: grid;
+    grid-template-columns: 1fr 280px;
+    gap: 40px;
+    align-items: center;
+    margin-bottom: 48px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .tato-banner::after {
+    content: 'TATO';
+    position: absolute;
+    right: -20px;
+    bottom: -30px;
+    font-size: 180px;
+    font-weight: 700;
+    color: rgba(255,255,255,0.03);
+    letter-spacing: -8px;
+    line-height: 1;
+  }
+
+  .tato-label {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--coral);
+    margin-bottom: 12px;
+  }
+
+  .tato-title {
+    font-size: 32px;
+    font-weight: 300;
+    color: #fff;
+    letter-spacing: -1px;
+    line-height: 1.2;
+    margin-bottom: 16px;
+  }
+
+  .tato-title strong {
+    font-weight: 600;
+    color: var(--coral);
+  }
+
+  .tato-body {
+    font-size: 15px;
+    color: rgba(255,255,255,0.55);
+    line-height: 1.65;
+  }
+
+  .tato-presence {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .presence-item {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 10px;
+    padding: 14px 18px;
+    font-size: 13px;
+    color: rgba(255,255,255,0.65);
+  }
+
+  .presence-item strong {
+    display: block;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--coral);
+    margin-bottom: 4px;
+  }
+
+  /* ── FOOTER ── */
+  .doc-footer {
+    background: var(--charcoal);
+    padding: 48px 72px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .footer-wordmark {
+    font-size: 18px;
+    font-weight: 600;
+    color: #fff;
+  }
+
+  .footer-wordmark span { color: var(--coral); }
+
+  .footer-meta {
+    font-size: 12px;
+    color: rgba(255,255,255,0.3);
+    text-align: right;
+    line-height: 1.7;
+  }
+
+  /* ── PRINT ── */
+  @media print {
+    .cover { min-height: auto; padding: 48px; page-break-after: always; }
+    .page { padding: 48px; }
+    body { background: #fff; }
+  }
+
+  @media (max-width: 960px) {
+    .cover-inner {
+      grid-template-columns: 1fr;
+      gap: 40px;
+    }
+    .cover-body {
+      justify-self: center;
+      text-align: center;
+    }
+    .cover-subtitle {
+      border-left: none;
+      border-top: 2px solid var(--coral);
+      padding-left: 0;
+      padding-top: 20px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+  }
+
+  @media (max-width: 700px) {
+    .pilares-grid { grid-template-columns: 1fr 1fr; }
+    .publicos-grid, .formatos-grid, .metricas-grid, .laboratorio-block { grid-template-columns: 1fr; }
+    .fase-row { grid-template-columns: 1fr; }
+    .tato-banner { grid-template-columns: 1fr; }
+    .cover, .page, .doc-footer { padding: 40px 28px; }
+    .cover-title { font-size: 40px; }
+  }
+
+  .wordmark-svg svg {
+    display: block;
+  }
+
+  /* ── RIVE FALLBACK BEAR ── */
+  .bear-wrapper {
+    width: 420px;
+    height: 420px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* Rive canvas */
+  .cover-tato canvas {
+    width: 420px;
+    height: 420px;
+    display: block;
+  }
+</style>
+</head>
+<body>
+
+<!-- ══════════════════════ COVER ══════════════════════ -->
+<section class="cover">
+  <div class="cover-constrain">
+  <div class="cover-top">
+    <div>
+      <div class="wordmark-svg">
+        <svg width="120" height="26" viewBox="0 0 531 112" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M59.2358 111.18C47.9963 111.18 37.8706 108.851 28.8587 104.193C19.8468 99.4343 12.7588 92.8526 7.59467 84.4483C2.53182 75.9427 0.00038892 66.3233 0.00038892 55.59C0.00038892 44.8567 2.53182 35.2879 7.59467 26.8836C12.7588 18.378 19.8468 11.7963 28.8587 7.13845C37.8706 2.37937 47.9963 -0.00017267 59.2358 -0.00017267C69.564 -0.00017267 78.7784 1.82246 86.879 5.46771C94.9796 9.11297 101.663 14.3783 106.928 21.2638L84.297 41.4646C77.7153 33.1615 69.9691 29.01 61.0584 29.01C53.5654 29.01 47.5406 31.4402 42.984 36.3005C38.4275 41.0596 36.1492 47.4894 36.1492 55.59C36.1492 63.6906 38.4275 70.171 42.984 75.0314C47.5406 79.7905 53.5654 82.17 61.0584 82.17C69.9691 82.17 77.7153 78.0185 84.297 69.7154L106.928 89.9162C101.663 96.8017 94.9796 102.067 86.879 105.712C78.7784 109.358 69.564 111.18 59.2358 111.18ZM168.767 -0.00017267C179.095 -0.00017267 188.208 2.0756 196.106 6.22714C204.004 10.2774 210.13 16.2516 214.484 24.1497C218.94 31.9465 221.167 41.2621 221.167 52.0966V108.75H185.322V87.3341H151.604V108.75H116.366V52.0966C116.366 41.2621 118.543 31.9465 122.897 24.1497C127.353 16.2516 133.529 10.2774 141.427 6.22714C149.325 2.0756 158.439 -0.00017267 168.767 -0.00017267ZM185.322 60.2985V49.0589C185.322 42.4772 183.753 37.5156 180.614 34.1741C177.576 30.7314 173.526 29.01 168.463 29.01C163.4 29.01 159.299 30.7314 156.16 34.1741C153.123 37.5156 151.604 42.4772 151.604 49.0589V60.2985H185.322ZM237.57 2.42999H289.97C301.817 2.42999 312.247 4.60703 321.259 8.96109C330.372 13.2139 337.409 19.3399 342.371 27.3393C347.434 35.3386 349.965 44.7555 349.965 55.59C349.965 66.4245 347.434 75.8414 342.371 83.8407C337.409 91.8401 330.372 98.0167 321.259 102.371C312.247 106.624 301.817 108.75 289.97 108.75H237.57V2.42999ZM288.452 80.803C296.147 80.803 302.273 78.626 306.83 74.2719C311.488 69.8166 313.816 63.5893 313.816 55.59C313.816 47.5907 311.488 41.414 306.83 37.0599C302.273 32.6046 296.147 30.377 288.452 30.377H273.415V80.803H288.452ZM465.728 2.42999V108.75H430.946V97.3586C423.757 106.573 413.935 111.18 401.481 111.18C389.026 111.18 379.356 107.079 372.47 98.8774C365.585 90.6756 362.142 79.031 362.142 63.9437V2.42999H397.987V62.8805C397.987 69.361 399.354 74.2213 402.088 77.4615C404.822 80.6005 408.619 82.17 413.48 82.17C418.239 82.17 422.137 80.4486 425.175 77.0059C428.314 73.4619 429.883 68.3484 429.883 61.6654V2.42999H465.728ZM503.652 65.9804C498.635 65.9804 494.052 64.7772 489.905 62.3708C485.809 59.9644 482.558 56.6876 480.152 52.5404C477.796 48.3932 476.619 43.8364 476.619 38.87C476.619 33.9036 477.796 29.3468 480.152 25.1996C482.558 21.0524 485.835 17.7756 489.982 15.3692C494.129 12.9628 498.737 11.7596 503.806 11.7596C508.875 11.7596 513.457 12.9372 517.553 15.2924C521.7 17.6476 524.952 20.8988 527.307 25.046C529.662 29.142 530.84 33.6988 530.84 38.7164C530.84 43.734 529.636 48.342 527.23 52.5404C524.824 56.6876 521.547 59.9644 517.4 62.3708C513.252 64.7772 508.67 65.9804 503.652 65.9804ZM503.652 59.222C507.441 59.222 510.846 58.326 513.867 56.534C516.939 54.742 519.32 52.2844 521.009 49.1612C522.75 46.038 523.62 42.5564 523.62 38.7164C523.62 34.8764 522.776 31.4204 521.086 28.3484C519.396 25.2764 517.041 22.87 514.02 21.1292C511.051 19.3884 507.646 18.518 503.806 18.518C499.966 18.518 496.536 19.414 493.515 21.206C490.494 22.998 488.113 25.4556 486.372 28.5788C484.683 31.6508 483.838 35.0812 483.838 38.87C483.838 42.6588 484.683 46.1148 486.372 49.238C488.113 52.31 490.468 54.742 493.438 56.534C496.459 58.326 499.864 59.222 503.652 59.222ZM504.881 54.0764C501.707 54.0764 498.84 53.4364 496.28 52.1564C493.771 50.8252 491.8 49.0076 490.366 46.7036C488.984 44.3996 488.292 41.7884 488.292 38.87C488.292 35.9516 488.984 33.3404 490.366 31.0364C491.8 28.7324 493.771 26.9404 496.28 25.6604C498.84 24.3292 501.707 23.6636 504.881 23.6636C508.26 23.6636 511.179 24.4316 513.636 25.9676C516.094 27.5036 517.784 29.6284 518.705 32.342L508.875 37.334C507.953 35.286 506.596 34.262 504.804 34.262C503.729 34.262 502.808 34.6716 502.04 35.4908C501.272 36.31 500.888 37.4364 500.888 38.87C500.888 40.3036 501.272 41.43 502.04 42.2492C502.808 43.0684 503.729 43.478 504.804 43.478C506.596 43.478 507.953 42.454 508.875 40.406L518.705 45.398C517.784 48.1116 516.094 50.2364 513.636 51.7724C511.179 53.3084 508.26 54.0764 504.881 54.0764Z" fill="var(--charcoal)"/>
+        </svg>
+      </div>
+      <div class="doc-label">Estratégia de Campanha · Confidencial</div>
+    </div>
+    <div style="text-align:right">
+      <div class="doc-label">Casa do Urso</div>
+      <div class="doc-label" style="margin-top:4px">2026</div>
+    </div>
+  </div>
+
+  <div class="cover-inner">
+    <div class="cover-body">
+      <div class="cover-eyebrow">Campanha de Lançamento · 360°</div>
+      <h1 class="cover-title">
+        A família<br>
+        <strong>cresceu.</strong>
+      </h1>
+      <p class="cover-subtitle">
+        CADU é o app da Casa do Urso para famílias em jornada de neurodesenvolvimento. Dentro dele vive um AI agent exclusivo para mães — que dorme enquanto espera, nasce quando o neuropsicológico chega, e cresce junto com cada conquista da criança.
+      </p>
+    </div>
+
+    <div class="cover-tato">
+      <div class="bear-wrapper">
+        <canvas id="tato-rive" width="420" height="420"></canvas>
+      </div>
+      <div class="cover-tato-label">AI Agent do CADU · exclusivo para mães</div>
+    </div>
+  </div>
+
+  <div class="cover-bottom">
+    <div class="cover-tags">
+      <div class="tag accent">Pré-lançamento</div>
+      <div class="tag">Educação de mercado</div>
+      <div class="tag">B2C + B2B</div>
+      <div class="tag">Meses 1–6</div>
+    </div>
+    <div class="cover-date">Documento interno · Direção Criativa</div>
+  </div>
+  </div>
+</section>
+
+<!-- ══════════════════════ CONCEITO CENTRAL ══════════════════════ -->
+<section class="page">
+  <div class="section-label">01 · Ideia Central</div>
+  <h2 class="section-title">O que é <strong>esta campanha</strong></h2>
+  <p class="section-intro">
+    O maior desafio não é explicar o que o CADU faz. É criar o contexto de problema antes de apresentar a solução. A campanha parte de uma verdade emocional para construir a necessidade — e só então revelar a resposta.
+  </p>
+
+  <div class="concept-block">
+    <div class="concept-label">Ideia central</div>
+    <div class="concept-headline">
+      "O desenvolvimento<br>tem <em>endereço.</em>"
+    </div>
+    <p class="concept-body">
+      Casa, família, clínica, escola — cada lugar onde uma criança existe é um endereço do seu desenvolvimento. O CADU é o que conecta esses endereços em uma visão única, coordenada e com AI. Nunca mais informação fragmentada. Nunca mais cada profissional falando uma língua diferente.
+    </p>
+  </div>
+
+  <div class="pull-quote">
+    <p>"A família da Casa do Urso cresceu — e agora apresentamos o CADU."</p>
+    <cite>Narrativa de lançamento</cite>
+  </div>
+
+  <p style="font-size:16px; color:var(--mid); line-height:1.7;">
+    A Casa do Urso não é o passado do CADU. É a <strong>prova</strong> de que o sistema funciona antes de ser escalado. Em um mercado onde noventa por cento dos produtos de saúde digital lançam sem evidência de campo, a clínica é o ativo mais valioso da campanha.
+  </p>
+</section>
+
+<!-- ══════════════════════ CASA DO URSO ══════════════════════ -->
+<section class="page">
+  <div class="section-label">02 · O Laboratório Vivo</div>
+  <h2 class="section-title"><strong>Casa do Urso</strong> como<br>diferencial inegociável</h2>
+  <p class="section-intro">
+    A clínica não é cenário — é personagem. É ela que transforma o discurso em evidência, e a narrativa em confiança.
+  </p>
+
+  <div class="laboratorio-block">
+    <div>
+      <h3 class="laboratorio-title">
+        Um laboratório<br><span>antes de ser</span><br>um produto
+      </h3>
+      <p class="laboratorio-desc">
+        O CADU nasceu de uma clínica que observou o que faltava: visibilidade entre os contextos da criança. A Casa do Urso é onde essa visão foi testada, refinada e validada com famílias reais, profissionais reais e resultados reais.
+      </p>
+      <p class="laboratorio-desc" style="margin-top:16px;">
+        A campanha filma ali dentro. Com os ursinhos, com as mães, com a equipe. Não uma produção estéril — a textura real de um lugar que funciona.
+      </p>
+    </div>
+
+    <div class="laboratorio-facts">
+      <div class="fact-item">
+        <div class="fact-label">Ativo principal</div>
+        <div class="fact-value">Prova de conceito com famílias e profissionais reais antes do lançamento público</div>
+      </div>
+      <div class="fact-item">
+        <div class="fact-label">Papel na campanha</div>
+        <div class="fact-value">Cenário do vídeo institucional e dos 6 mini-documentários temáticos</div>
+      </div>
+      <div class="fact-item">
+        <div class="fact-label">Mensagem implícita</div>
+        <div class="fact-value">Não é uma startup contando uma promessa. É uma clínica mostrando um resultado.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════ PILARES ══════════════════════ -->
+<section class="page">
+  <div class="section-label">03 · Universo Narrativo</div>
+  <h2 class="section-title">Os <strong>4 pilares</strong> do<br>desenvolvimento</h2>
+  <p class="section-intro">
+    Cada pilar é um endereço. Cada endereço é um mini-documentário. Juntos, formam o universo visual e narrativo da campanha.
+  </p>
+
+  <div class="pilares-grid">
+    <div class="pilar-card">
+      <div class="pilar-number">Pilar 01</div>
+      <div class="pilar-name">Casa</div>
+      <p class="pilar-desc">Ambiente seguro, rotinas, objetos, organização sensorial. O lar como extensão da terapia.</p>
+    </div>
+    <div class="pilar-card">
+      <div class="pilar-number">Pilar 02</div>
+      <div class="pilar-name">Família</div>
+      <p class="pilar-desc">Vínculos, participação ativa dos cuidadores, comunicação funcional no dia a dia.</p>
+    </div>
+    <div class="pilar-card">
+      <div class="pilar-number">Pilar 03</div>
+      <div class="pilar-name">Clínica</div>
+      <p class="pilar-desc">Casa do Urso como laboratório vivo. Protocolos, equipe multidisciplinar, dados reais.</p>
+    </div>
+    <div class="pilar-card">
+      <div class="pilar-number">Pilar 04</div>
+      <div class="pilar-name">Escola</div>
+      <p class="pilar-desc">Continuidade, generalização de habilidades, comunicação entre profissionais e professores.</p>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- TATO -->
+  <div class="tato-banner">
+    <div>
+      <div class="tato-label">Mascote da Clínica · Ursinho Tato</div>
+      <h3 class="tato-title">O urso que<br><strong>mora na clínica</strong></h3>
+      <p class="tato-body">
+        O Tato é o personagem físico da Casa do Urso — ele existe nas paredes, nos materiais, nos abraços das crianças. Na campanha, aparece como membro da família muito antes de qualquer produto ser revelado. Ele não é o agente digital. Ele é o afeto que prepara o terreno para o CADU chegar.
+      </p>
+    </div>
+    <div class="tato-presence">
+      <div class="presence-item">
+        <strong>Na clínica</strong>
+        Personagem físico nos espaços, materiais e memórias das famílias
+      </div>
+      <div class="presence-item">
+        <strong>Na campanha</strong>
+        Aparece na Fase 1 — constrói vínculo emocional com a marca antes do produto
+      </div>
+      <div class="presence-item">
+        <strong>No imaginário</strong>
+        A linguagem visual do Tato inspira o agent digital do CADU
+      </div>
+      <div class="presence-item">
+        <strong>Estratégia</strong>
+        Quando o CADU surgir, as mães já conhecem e amam o urso
+      </div>
+    </div>
+  </div>
+
+  <!-- CADU AGENT -->
+  <div style="margin-top: 40px; background: var(--cream); border: 1px solid var(--border); border-radius: 16px; padding: 48px 52px; position: relative; overflow: hidden;">
+    <div style="position:absolute; top:-40px; right:-40px; width:220px; height:220px; border-radius:50%; background:var(--coral-light); opacity:0.6;"></div>
+    <div style="position: relative; z-index:1; display:grid; grid-template-columns:1fr 1fr; gap:48px; align-items:start;">
+      <div>
+        <div class="tato-label" style="color:var(--coral);">AI Agent · Feature exclusiva para mães</div>
+        <h3 style="font-size:28px; font-weight:300; color:var(--charcoal); letter-spacing:-0.7px; line-height:1.2; margin-bottom:16px;">O CADU <strong style="font-weight:600;">dorme, nasce<br>e cresce</strong> com a criança</h3>
+        <p style="font-size:15px; color:var(--mid); line-height:1.7; margin-bottom:16px;">
+          O agente de AI do CADU não é uma feature qualquer — é uma presença viva que evolui com o desenvolvimento da criança. Ele existe em três estados: adormecido, recém-nascido e em crescimento.
+        </p>
+        <p style="font-size:15px; color:var(--mid); line-height:1.7;">
+          Antes do upload do neuropsicológico, o agent aparece dormindo no chat. Quando a mãe faz o upload, ele <em>nasce</em>. A partir daí, é nutrido pelas conquistas e pela evolução da criança — cada marco registrado alimenta o agent e o faz crescer.
+        </p>
+      </div>
+      <div style="display:flex; flex-direction:column; gap:16px;">
+        <!-- Estado 01: Adormecido -->
+        <div style="background:white; border:1px solid var(--border); border-radius:16px; padding:20px 24px; border-left:3px solid var(--muted); display:grid; grid-template-columns:80px 1fr; gap:16px; align-items:center;">
+          <div style="width:80px; height:80px; flex-shrink:0;"><svg width="100%" height="100%" viewBox="0 0 1140 1283" preserveAspectRatio="xMidYMid meet" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M885.388 911.519C892.056 936.68 894.857 962.989 892.333 988.896C878.351 1132.42 847.228 1197.1 593.313 1197.1C373.872 1197.1 340.22 1108.9 342.556 985.341C343.751 922.164 363.59 860.94 388.888 803.036C457.275 646.505 476.515 564.451 642.738 577.715C827.969 592.496 821.541 670.571 885.388 911.519Z" fill="#F16677"/>
+<path d="M880.363 899.62C887.03 924.781 889.832 951.091 887.308 976.997C873.326 1120.52 842.203 1185.21 588.287 1185.21C368.847 1185.21 335.194 1097.01 337.531 973.442C338.726 910.265 358.565 849.041 383.863 791.138C452.25 634.606 471.49 552.553 637.713 565.817C822.943 580.598 816.515 658.672 880.363 899.62Z" fill="url(#paint0_linear_31807_1824)"/>
+<path d="M162.103 989.319C237.71 859.707 362.352 963.695 376.113 1013.99H471.007C519.435 1013.99 545.12 1112.45 502.389 1146.64C459.659 1180.82 381.079 1210.31 320.337 1214.67C247.043 1219.94 72.4179 1143.06 162.103 989.319Z" fill="url(#paint1_linear_31807_1824)"/>
+<path d="M339.773 1076.39C341.88 1095.78 333.812 1173.33 273.601 1173.33C213.39 1173.33 151.064 1119.3 151.064 1059.09C151.064 998.879 192.169 947.355 252.38 947.355C312.591 947.355 339.773 1041.83 339.773 1076.39Z" fill="#F9746E" fill-opacity="0.73"/>
+<path d="M249.451 1016C252.265 1034.21 262.555 1039.31 275.075 1038.16C287.595 1037.01 295.422 1025.03 294.143 1011.12C292.865 997.203 281.678 986.856 269.158 988.007C256.637 989.158 248.172 1002.08 249.451 1016Z" fill="url(#paint2_linear_31807_1824)"/>
+<path d="M231.689 1063.99C214.862 1074.69 189.1 1099.58 206.288 1134.11C223.476 1168.64 258.447 1135.45 271.693 1128.18C284.938 1120.9 359.161 1097.46 299.224 1056.84C274.278 1044.07 244.935 1056.72 231.689 1063.99Z" fill="url(#paint3_linear_31807_1824)"/>
+<path d="M168.056 1070.87C182.57 1084.53 193.756 1082.84 202.361 1074.63C210.967 1066.42 208.683 1051.84 198.25 1040.91C187.816 1029.98 172.382 1027.77 163.777 1035.98C155.171 1044.2 157.623 1059.94 168.056 1070.87Z" fill="url(#paint4_linear_31807_1824)"/>
+<path d="M197.657 1020.81C209.415 1041.04 221.582 1043.34 232.702 1037.57C243.822 1031.81 245.133 1015.09 236.965 999.335C228.797 983.576 213.161 975.473 202.041 981.237C190.92 987.001 189.489 1005.05 197.657 1020.81Z" fill="url(#paint5_linear_31807_1824)"/>
+<path d="M1097.82 1000.41C1012.72 828.639 883.484 972.392 868.755 1027.4C839.28 1027.4 812.241 1046.76 770.773 1046.76C718.938 1046.76 718.269 1135.1 764.006 1172.48C809.743 1209.87 874.758 1233.9 939.774 1238.67C1018.22 1244.43 1183.86 1174.08 1097.82 1000.41Z" fill="url(#paint6_linear_31807_1824)"/>
+<path d="M1112.6 986.899C1029.91 845.157 893.606 958.876 878.557 1013.88C848.443 1013.88 820.817 1033.24 778.449 1033.24C725.489 1033.24 706.113 1129.15 752.842 1166.53C799.572 1203.91 873.127 1228.57 939.554 1233.34C1019.71 1239.1 1210.67 1155.03 1112.6 986.899Z" fill="url(#paint7_linear_31807_1824)"/>
+<path d="M918.298 1082.12C915.993 1103.32 924.817 1188.13 990.663 1188.13C1056.51 1188.13 1124.67 1129.05 1124.67 1063.2C1124.67 997.354 1079.72 941.008 1013.87 941.008C948.024 941.008 918.298 1044.32 918.298 1082.12Z" fill="#F9746E" fill-opacity="0.73"/>
+<path d="M1017.07 1016.07C1014 1035.99 1002.74 1041.57 989.051 1040.31C975.359 1039.05 966.799 1025.95 968.198 1010.74C969.597 995.521 981.83 984.206 995.522 985.464C1009.21 986.723 1018.47 1000.86 1017.07 1016.07Z" fill="url(#paint8_linear_31807_1824)"/>
+<path d="M1036.5 1068.56C1054.9 1080.26 1083.07 1107.48 1064.28 1145.24C1045.48 1183 1007.24 1146.71 992.75 1138.76C978.264 1130.8 897.096 1105.17 962.642 1060.74C989.922 1046.77 1022.01 1060.6 1036.5 1068.56Z" fill="url(#paint9_linear_31807_1824)"/>
+<path d="M1106.09 1076.08C1090.21 1091.02 1077.98 1089.18 1068.57 1080.19C1059.16 1071.21 1061.66 1055.27 1073.07 1043.32C1084.48 1031.36 1101.35 1028.95 1110.77 1037.93C1120.18 1046.91 1117.5 1064.13 1106.09 1076.08Z" fill="url(#paint10_linear_31807_1824)"/>
+<path d="M1073.71 1021.33C1060.86 1043.46 1047.55 1045.97 1035.39 1039.67C1023.23 1033.37 1021.79 1015.09 1030.73 997.852C1039.66 980.619 1056.76 971.758 1068.92 978.061C1081.08 984.364 1082.65 1004.1 1073.71 1021.33Z" fill="url(#paint11_linear_31807_1824)"/>
+<path d="M841.363 776.672C837.925 735.47 785.892 650.198 813.998 659.471C939.438 712.862 969.662 1024.39 922.3 1117.04C856.137 1246.47 694.047 1209.41 709.054 1149.23C709.054 1149.23 832.916 856.382 789.121 819.733C762.314 755.004 842.788 793.747 841.363 776.672Z" fill="#F16677"/>
+<path d="M732.194 681.678C729.041 640.522 782.78 648.51 810.043 657.649C931.67 710.431 970.3 1024.39 917.778 1112.79C843.598 1237.64 696.599 1203.66 720.265 1136.76C720.265 1136.76 832.988 860.528 790.606 824.105C764.856 759.544 733.5 698.734 732.194 681.678Z" fill="url(#paint12_linear_31807_1824)"/>
+<path d="M417.072 809.352C418.734 767.91 463.811 683.801 438.101 692.117C323.799 741.343 307.31 1054.53 354.641 1149.76C420.761 1282.79 569.64 1251.4 553.503 1190.14C553.503 1190.14 427.851 890.086 467.091 854.731C489.545 790.416 416.383 826.527 417.072 809.352Z" fill="#F16677"/>
+<path d="M514.752 717.55C516.152 676.143 466.634 682.214 441.7 690.425C330.91 739.179 306.718 1054.51 358.675 1145.64C432.057 1274.36 567.062 1245.51 542.649 1177.14C542.649 1177.14 427.938 894.266 465.876 859.087C487.357 794.902 514.172 734.71 514.752 717.55Z" fill="url(#paint13_linear_31807_1824)"/>
+<path d="M844.036 672.77C788.95 843.347 581.698 843.99 484.838 825.706C591.71 774.538 809.259 667.18 818.754 664.121C828.248 661.063 839.007 671.843 844.036 672.77Z" fill="#F9746E"/>
+<circle cx="635.765" cy="212.157" r="83.4289" transform="rotate(-8.78054 635.765 212.157)" fill="black"/>
+<circle cx="635.765" cy="212.157" r="83.4289" transform="rotate(-8.78054 635.765 212.157)" fill="url(#paint14_linear_31807_1824)"/>
+<circle cx="634.346" cy="208.922" r="83.4289" transform="rotate(-8.78054 634.346 208.922)" fill="black"/>
+<circle cx="634.346" cy="208.922" r="83.4289" transform="rotate(-8.78054 634.346 208.922)" fill="url(#paint15_linear_31807_1824)"/>
+<path d="M593.534 239.201C584.018 220.43 589.496 197.026 607.256 184.623C626.702 171.042 653.455 175.793 667.036 195.239C678.459 211.595 676.906 233.13 664.541 247.657L593.534 239.201Z" fill="#F16677"/>
+<path d="M302.203 414.614C316.61 459.336 292.036 507.269 247.314 521.677C202.593 536.084 154.659 511.51 140.252 466.788C125.844 422.067 150.419 374.133 195.14 359.725C239.862 345.318 287.796 369.893 302.203 414.614Z" fill="black"/>
+<path d="M302.203 414.614C316.61 459.336 292.036 507.269 247.314 521.677C202.593 536.084 154.659 511.51 140.252 466.788C125.844 422.067 150.419 374.133 195.14 359.725C239.862 345.318 287.796 369.893 302.203 414.614Z" fill="url(#paint16_linear_31807_1824)"/>
+<path d="M239.342 489.356C218.642 495.019 196.384 484.755 187.63 464.475C178.045 442.269 188.268 416.516 210.475 406.93C229.152 398.868 250.346 404.828 262.327 420.154L239.342 489.356Z" fill="#F16677"/>
+<path d="M883.659 543.479C802.766 864.783 422.555 869.232 322.313 779.972C291.397 818.049 286.732 779.719 288.265 755.794C265.171 783.737 271.358 730.486 275.014 714.663C277.939 702.005 266.597 688.536 263.473 678.839C213.851 529.337 242.428 477.66 261.793 424.557C277.285 382.075 322.702 343.426 343.475 329.411C349.774 312.737 337.918 312.163 334.926 302.875C332.532 295.445 357.952 298.874 370.961 301.518C365.468 293.524 353.464 273.471 349.392 257.208C345.32 240.946 381.565 261.977 400.196 274.525C399.652 269.818 399.902 258.217 405.252 249.464C411.94 238.522 429.273 265.157 439.847 261.751L479.498 248.977C673.555 202.862 806.586 335.941 848.845 408.244C917.506 432.989 896.808 448.443 877.877 453.078C925.796 478.646 905.537 487.614 889.418 488.901C914.353 530.076 895.968 542.442 883.659 543.479Z" fill="url(#paint17_linear_31807_1824)"/>
+<path d="M882.053 539.846C800.882 859.919 421.046 864.775 321.005 775.994C290.077 813.95 285.46 775.782 287.017 751.953C263.916 779.808 270.156 726.768 273.826 711.007C276.762 698.397 265.446 684.996 262.337 675.343C212.931 526.511 241.538 475.015 260.942 422.109C276.466 379.784 321.882 341.243 342.649 327.263C348.961 310.65 337.117 310.092 334.139 300.845C331.756 293.449 357.146 296.835 370.139 299.453C364.66 291.499 352.691 271.541 348.641 255.35C344.592 239.16 380.776 260.063 399.375 272.539C398.837 267.852 399.1 256.298 404.454 247.575C411.147 236.671 428.434 263.177 439.001 259.773L478.627 247.007C672.54 200.865 805.29 333.247 847.425 405.206C915.99 429.772 895.296 445.186 876.378 449.823C924.221 475.233 903.972 484.186 887.868 485.486C912.732 526.463 894.352 538.8 882.053 539.846Z" fill="url(#paint18_linear_31807_1824)"/>
+<ellipse cx="588.076" cy="603.705" rx="112.903" ry="97.2841" transform="rotate(-24.5109 588.076 603.705)" fill="#FDCB99" fill-opacity="0.38"/>
+<path d="M646.738 594.355C632.791 614.394 620.584 616.099 596.185 613.441C587.248 639.085 577.924 646.249 554.401 647.487" stroke="#9E423D" stroke-width="6.37305" stroke-linecap="round"/>
+<ellipse cx="739.916" cy="495.622" rx="62.4696" ry="38.561" transform="rotate(-56.3379 739.916 495.622)" fill="#F9746E"/>
+<ellipse cx="410.795" cy="697.385" rx="62.4696" ry="38.561" transform="rotate(-7.94394 410.795 697.385)" fill="#F9746E"/>
+<path d="M583.124 591.266C605.804 576.905 618.907 541.558 608.512 522.601C598.118 503.643 572.88 506.375 542.489 523.038L541.861 523.382C511.44 540.063 495.191 559.186 505.962 578.83C516.732 598.474 553.187 605.788 577.507 594.345L583.124 591.266Z" fill="#C15A55"/>
+<path d="M575.933 363.091C600.204 353.54 622.336 355.099 631.819 356.241C645.566 354.032 656.723 354.657 661.071 335.552C665.419 316.447 645.655 304.376 632.637 302.562C619.618 300.749 578.481 306.8 563.903 313.604C538.259 330.738 545.595 375.03 575.933 363.091Z" fill="#F16677"/>
+<path d="M575.917 357.286C599.533 347.771 620.903 348.904 630.051 349.842C643.375 347.511 655.467 350.079 659.978 331.757C664.488 313.436 644.262 300.072 631.705 298.549C619.149 297.027 579.286 303.469 565.083 310.204C540.019 326.985 546.397 369.18 575.917 357.286Z" fill="#F9746E"/>
+<path d="M377.263 477.232C356.394 492.878 346.105 512.535 342.1 521.205C333.005 531.747 327.681 541.573 309.137 535.246C290.592 528.919 290.69 505.761 295.98 493.728C301.27 481.695 328.01 449.856 341.454 441.017C369.497 428.183 403.348 457.675 377.263 477.232Z" fill="#F16677"/>
+<path d="M372.414 471.055C351.92 486.163 341.668 504.947 337.665 513.226C328.687 523.344 324.526 534.984 306.564 529.207C288.601 523.431 287.842 499.2 293.136 487.713C298.431 476.226 324.837 445.676 338.023 437.122C365.463 424.595 398.031 452.17 372.414 471.055Z" fill="#F9746E"/>
+<path d="M405.614 603.095C421.764 605.714 457.993 601.261 473.707 562.501" stroke="#9E423D" stroke-width="13.8083" stroke-linecap="round"/>
+<path d="M596.131 490.673C615.13 498.336 651.795 490.673 668.818 452.505" stroke="#9E423D" stroke-width="13.8083" stroke-linecap="round"/>
+<defs>
+<linearGradient id="paint0_linear_31807_1824" x1="633.319" y1="1041.84" x2="645.154" y2="730.785" gradientUnits="userSpaceOnUse">
+<stop stop-color="#F9746E"/>
+<stop offset="0.603435" stop-color="#FD8E78"/>
+<stop offset="1" stop-color="#FD9068"/>
+</linearGradient>
+<linearGradient id="paint1_linear_31807_1824" x1="465.324" y1="1100.83" x2="309.617" y2="1078.18" gradientUnits="userSpaceOnUse">
+<stop stop-color="#F9746E"/>
+<stop offset="1" stop-color="#FD916B"/>
+</linearGradient>
+<linearGradient id="paint2_linear_31807_1824" x1="202.297" y1="981.104" x2="231.806" y2="1038.04" gradientUnits="userSpaceOnUse">
+<stop stop-color="#C15A55"/>
+</linearGradient>
+<linearGradient id="paint3_linear_31807_1824" x1="274.243" y1="1103.36" x2="226.388" y2="1129.64" gradientUnits="userSpaceOnUse">
+<stop stop-color="#C15A55"/>
+</linearGradient>
+<linearGradient id="paint4_linear_31807_1824" x1="202.297" y1="981.104" x2="231.806" y2="1038.04" gradientUnits="userSpaceOnUse">
+<stop stop-color="#C15A55"/>
+</linearGradient>
+<linearGradient id="paint5_linear_31807_1824" x1="202.297" y1="981.104" x2="231.806" y2="1038.04" gradientUnits="userSpaceOnUse">
+<stop stop-color="#C15A55"/>
+</linearGradient>
+<linearGradient id="paint6_linear_31807_1824" x1="719.833" y1="1149.2" x2="945.78" y2="1217.27" gradientUnits="userSpaceOnUse">
+<stop stop-color="#F16677"/>
+</linearGradient>
+<linearGradient id="paint7_linear_31807_1824" x1="780.998" y1="1108.85" x2="951.277" y2="1084.08" gradientUnits="userSpaceOnUse">
+<stop stop-color="#F9746E"/>
+<stop offset="1" stop-color="#FD916B"/>
+</linearGradient>
+<linearGradient id="paint8_linear_31807_1824" x1="1068.64" y1="977.915" x2="1036.37" y2="1040.18" gradientUnits="userSpaceOnUse">
+<stop stop-color="#C15A55"/>
+</linearGradient>
+<linearGradient id="paint9_linear_31807_1824" x1="989.961" y1="1111.62" x2="1042.29" y2="1140.36" gradientUnits="userSpaceOnUse">
+<stop stop-color="#C15A55"/>
+</linearGradient>
+<linearGradient id="paint10_linear_31807_1824" x1="1068.64" y1="977.915" x2="1036.37" y2="1040.18" gradientUnits="userSpaceOnUse">
+<stop stop-color="#C15A55"/>
+</linearGradient>
+<linearGradient id="paint11_linear_31807_1824" x1="1068.64" y1="977.915" x2="1036.37" y2="1040.18" gradientUnits="userSpaceOnUse">
+<stop stop-color="#C15A55"/>
+</linearGradient>
+<linearGradient id="paint12_linear_31807_1824" x1="1057.41" y1="1107.12" x2="791.779" y2="756.173" gradientUnits="userSpaceOnUse">
+<stop stop-color="#F9746E"/>
+<stop offset="0.507388" stop-color="#FD956F"/>
+<stop offset="1" stop-color="#FD9069"/>
+</linearGradient>
+<linearGradient id="paint13_linear_31807_1824" x1="229.028" y1="1134.76" x2="494.796" y2="817.771" gradientUnits="userSpaceOnUse">
+<stop stop-color="#F9746E"/>
+<stop offset="0.507388" stop-color="#FD956F"/>
+<stop offset="1" stop-color="#FD9069"/>
+</linearGradient>
+<linearGradient id="paint14_linear_31807_1824" x1="654.351" y1="128.728" x2="608.861" y2="223.834" gradientUnits="userSpaceOnUse">
+<stop stop-color="#F16677"/>
+</linearGradient>
+<linearGradient id="paint15_linear_31807_1824" x1="652.932" y1="125.493" x2="607.442" y2="220.599" gradientUnits="userSpaceOnUse">
+<stop stop-color="#F77870"/>
+<stop offset="1" stop-color="#FD9276"/>
+</linearGradient>
+<linearGradient id="paint16_linear_31807_1824" x1="131.361" y1="408.329" x2="228.787" y2="464.168" gradientUnits="userSpaceOnUse">
+<stop offset="0.00961538" stop-color="#F9746E"/>
+<stop offset="1" stop-color="#FD9177"/>
+</linearGradient>
+<linearGradient id="paint17_linear_31807_1824" x1="831.762" y1="642.935" x2="827.887" y2="641.741" gradientUnits="userSpaceOnUse">
+<stop offset="1" stop-color="#F67970"/>
+</linearGradient>
+<linearGradient id="paint18_linear_31807_1824" x1="678.923" y1="659.675" x2="746.152" y2="740.094" gradientUnits="userSpaceOnUse">
+<stop stop-color="#FD9276"/>
+<stop offset="1" stop-color="#F67970"/>
+</linearGradient>
+</defs>
+</svg></div>
+          <div>
+            <div style="font-size:10px; font-weight:600; letter-spacing:0.1em; text-transform:uppercase; color:var(--muted); margin-bottom:4px;">Estado 01 · Antes do neuropsicológico</div>
+            <div style="font-size:14px; color:var(--charcoal); font-weight:600; margin-bottom:4px;">Adormecido</div>
+            <div style="font-size:12px; color:var(--muted); line-height:1.5;">O CADU aparece dormindo no chat. A mãe o vê, mas ele ainda não acordou. Cria expectativa e curiosidade.</div>
+          </div>
+        </div>
+        <!-- Estado 02: Nasce -->
+        <div style="background:white; border:1px solid var(--border); border-radius:16px; padding:20px 24px; border-left:3px solid var(--coral); display:grid; grid-template-columns:80px 1fr; gap:16px; align-items:center;">
+          <div style="width:80px; height:80px; flex-shrink:0;"><svg width="100%" height="100%" viewBox="0 0 1003 1244" preserveAspectRatio="xMidYMid meet" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M748.313 872.753C754.98 897.914 757.782 924.223 755.258 950.13C741.276 1093.65 710.153 1158.34 456.238 1158.34C236.797 1158.34 203.145 1070.14 205.481 946.575C206.676 883.398 226.515 822.174 251.813 764.27C320.2 607.739 339.44 525.685 505.663 538.949C690.894 553.73 684.466 631.805 748.313 872.753Z" fill="#F16677"/>
+<path d="M743.288 860.854C749.955 886.015 752.756 912.325 750.233 938.231C736.251 1081.75 705.128 1146.44 451.212 1146.44C231.772 1146.44 198.119 1058.24 200.456 934.676C201.65 871.499 221.49 810.275 246.787 752.371C315.175 595.84 334.415 513.786 500.638 527.051C685.868 541.832 679.44 619.906 743.288 860.854Z" fill="url(#paint0_linear_31813_2812)"/>
+<path d="M25.0268 950.552C100.634 820.941 225.276 924.928 239.037 975.227H333.931C382.359 975.227 408.044 1073.69 365.313 1107.87C322.583 1142.06 244.003 1171.54 183.261 1175.91C109.967 1181.17 -64.6582 1104.3 25.0268 950.552Z" fill="url(#paint1_linear_31813_2812)"/>
+<path d="M202.697 1037.62C204.804 1057.01 196.736 1134.56 136.525 1134.56C76.3138 1134.56 13.9883 1080.53 13.9883 1020.32C13.9883 960.113 55.093 908.588 115.304 908.588C175.515 908.588 202.697 1003.06 202.697 1037.62Z" fill="#F9746E" fill-opacity="0.73"/>
+<path d="M112.375 977.229C115.188 995.446 125.478 1000.54 137.999 999.39C150.519 998.239 158.346 986.264 157.067 972.35C155.788 958.436 144.602 948.089 132.081 949.24C119.561 950.391 111.096 963.315 112.375 977.229Z" fill="url(#paint2_linear_31813_2812)"/>
+<path d="M94.6131 1025.22C77.7856 1035.92 52.024 1060.82 69.2117 1095.34C86.3994 1129.87 121.37 1096.69 134.616 1089.41C147.862 1082.14 222.085 1058.7 162.148 1018.08C137.202 1005.3 107.859 1017.95 94.6131 1025.22Z" fill="url(#paint3_linear_31813_2812)"/>
+<path d="M30.9798 1032.11C45.4938 1045.76 56.6793 1044.08 65.2851 1035.86C73.8908 1027.65 71.6068 1013.07 61.1735 1002.14C50.7402 991.21 35.3061 989.005 26.7003 997.218C18.0946 1005.43 20.5465 1021.17 30.9798 1032.11Z" fill="url(#paint4_linear_31813_2812)"/>
+<path d="M60.5809 982.041C72.3391 1002.27 84.5056 1004.57 95.6259 998.807C106.746 993.043 108.057 976.327 99.8892 960.568C91.7212 944.809 76.0848 936.707 64.9645 942.47C53.8442 948.234 52.4128 966.282 60.5809 982.041Z" fill="url(#paint5_linear_31813_2812)"/>
+<path d="M960.747 961.648C875.641 789.873 746.409 933.625 731.679 988.632C702.205 988.632 675.166 1007.99 633.698 1007.99C581.863 1007.99 581.194 1096.33 626.931 1133.72C672.667 1171.1 737.683 1195.14 802.698 1199.91C881.149 1205.66 1046.79 1135.32 960.747 961.648Z" fill="url(#paint6_linear_31813_2812)"/>
+<path d="M975.521 948.132C892.839 806.391 756.531 920.11 741.482 975.117C711.368 975.117 683.742 994.474 641.374 994.474C588.414 994.474 569.037 1090.38 615.767 1127.76C662.496 1165.15 736.052 1189.81 802.478 1194.58C882.632 1200.33 1073.6 1116.27 975.521 948.132Z" fill="url(#paint7_linear_31813_2812)"/>
+<path d="M781.223 1043.35C778.919 1064.56 787.742 1149.36 853.588 1149.36C919.434 1149.36 987.593 1090.28 987.593 1024.43C987.593 958.588 942.641 902.241 876.795 902.241C810.949 902.241 781.223 1005.56 781.223 1043.35Z" fill="#F9746E" fill-opacity="0.73"/>
+<path d="M879.999 977.306C876.922 997.228 865.669 1002.8 851.976 1001.54C838.284 1000.28 829.725 987.187 831.123 971.97C832.522 956.754 844.755 945.439 858.447 946.698C872.14 947.956 881.397 962.09 879.999 977.306Z" fill="url(#paint8_linear_31813_2812)"/>
+<path d="M899.422 1029.79C917.825 1041.49 945.997 1068.72 927.201 1106.48C908.405 1144.23 870.161 1107.94 855.675 1099.99C841.19 1092.03 760.021 1066.4 825.568 1021.98C852.847 1008 884.937 1021.84 899.422 1029.79Z" fill="url(#paint9_linear_31813_2812)"/>
+<path d="M969.011 1037.32C953.139 1052.25 940.906 1050.41 931.495 1041.43C922.084 1032.45 924.582 1016.51 935.992 1004.55C947.401 992.595 964.28 990.184 973.691 999.166C983.102 1008.15 980.421 1025.36 969.011 1037.32Z" fill="url(#paint10_linear_31813_2812)"/>
+<path d="M936.64 982.568C923.781 1004.69 910.476 1007.21 898.315 1000.9C886.154 994.6 884.72 976.319 893.653 959.086C902.585 941.852 919.685 932.991 931.846 939.294C944.007 945.597 945.572 965.334 936.64 982.568Z" fill="url(#paint11_linear_31813_2812)"/>
+<path d="M704.287 737.905C700.849 696.704 648.816 611.431 676.922 620.704C802.361 674.095 832.586 985.621 785.223 1078.27C719.06 1207.7 556.971 1170.64 571.978 1110.47C571.978 1110.47 695.84 817.615 652.045 780.967C625.238 716.237 705.712 754.98 704.287 737.905Z" fill="#F16677"/>
+<path d="M595.117 642.911C591.965 601.755 645.703 609.743 672.967 618.882C794.594 671.665 833.224 985.621 780.702 1074.02C706.522 1198.88 559.523 1164.9 583.188 1097.99C583.188 1097.99 695.912 821.761 653.53 785.338C627.78 720.778 596.424 659.967 595.117 642.911Z" fill="url(#paint12_linear_31813_2812)"/>
+<path d="M279.996 770.585C281.658 729.143 326.735 645.035 301.025 653.351C186.724 702.577 170.234 1015.76 217.565 1110.99C283.685 1244.03 432.564 1212.63 416.427 1151.37C416.427 1151.37 290.775 851.319 330.015 815.964C352.469 751.649 279.307 787.76 279.996 770.585Z" fill="#F16677"/>
+<path d="M377.676 678.783C379.076 637.376 329.558 643.447 304.624 651.659C193.834 700.412 169.643 1015.74 221.599 1106.87C294.981 1235.59 429.986 1206.75 405.573 1138.37C405.573 1138.37 290.862 855.5 328.801 820.32C350.281 756.136 377.096 695.943 377.676 678.783Z" fill="url(#paint13_linear_31813_2812)"/>
+<path d="M717.732 652.808C614.321 799.222 416.293 738.079 329.281 691.763C446.544 674.765 686.202 637.109 696.176 637.019C706.151 636.928 713.208 650.425 717.732 652.808Z" fill="#F9746E"/>
+<circle cx="656.176" cy="151.058" r="83.4289" transform="rotate(8.55574 656.176 151.058)" fill="black"/>
+<circle cx="656.176" cy="151.058" r="83.4289" transform="rotate(8.55574 656.176 151.058)" fill="url(#paint14_linear_31813_2812)"/>
+<circle cx="655.785" cy="147.548" r="83.4289" transform="rotate(8.55574 655.785 147.548)" fill="black"/>
+<circle cx="655.785" cy="147.548" r="83.4289" transform="rotate(8.55574 655.785 147.548)" fill="url(#paint15_linear_31813_2812)"/>
+<path d="M607.805 164.29C604.315 143.536 616.518 122.828 637.166 116.28C659.776 109.111 683.899 121.618 691.068 144.228C697.098 163.245 689.199 183.338 673.067 193.521L607.805 164.29Z" fill="#F16677"/>
+<path d="M277.439 244.924C277.866 291.907 240.124 330.341 193.141 330.767C146.158 331.194 107.725 293.453 107.298 246.47C106.871 199.486 144.612 161.053 191.595 160.626C238.579 160.199 277.012 197.941 277.439 244.924Z" fill="black"/>
+<path d="M277.439 244.924C277.866 291.907 240.124 330.341 193.141 330.767C146.158 331.194 107.725 293.453 107.298 246.47C106.871 199.486 144.612 161.053 191.595 160.626C238.579 160.199 277.012 197.941 277.439 244.924Z" fill="url(#paint16_linear_31813_2812)"/>
+<path d="M195.162 297.539C173.715 296.777 155.527 280.346 153.213 258.379C150.68 234.325 168.113 212.789 192.167 210.256C212.399 208.125 230.854 220.13 237.724 238.33L195.162 297.539Z" fill="#F16677"/>
+<path d="M794.081 541.196C621.122 823.8 256.857 714.752 187.766 599.676C146.908 626.812 153.877 588.833 162.469 566.451C132.098 586.244 153.872 537.255 162.077 523.24C168.64 512.029 161.827 495.792 161.735 485.605C158.915 328.108 201.593 287.294 235.901 242.374C263.348 206.438 318.22 183.077 342.224 175.889C353.206 161.849 342.06 157.769 341.971 148.011C341.9 140.206 365.143 151.054 376.773 157.453C373.912 148.186 368.429 125.467 369.388 108.73C370.346 91.993 398.678 122.868 412.724 140.398C413.607 135.743 417.303 124.744 425.018 117.982C434.662 109.531 443.272 140.12 454.38 140.019L496.037 139.641C695.018 153.446 782.352 320.12 801.146 401.731C859.314 445.811 834.952 454.396 815.5 453.179C853.623 491.865 831.612 494.388 815.842 490.814C827.376 537.548 806.14 543.875 794.081 541.196Z" fill="url(#paint17_linear_31813_2812)"/>
+<path d="M793.631 537.25C620.773 818.595 256.745 710.048 187.703 595.489C146.87 622.505 153.836 584.695 162.423 562.413C132.071 582.119 153.832 533.348 162.032 519.396C168.592 508.234 161.784 492.07 161.692 481.929C158.879 325.136 201.531 284.503 235.819 239.783C263.25 204.007 318.087 180.749 342.076 173.593C353.052 159.615 341.913 155.553 341.824 145.839C341.754 138.069 364.981 148.867 376.604 155.238C373.745 146.012 368.266 123.395 369.225 106.733C370.183 90.0706 398.496 120.807 412.532 138.258C413.415 133.624 417.109 122.673 424.819 115.942C434.457 107.528 443.06 137.98 454.162 137.879L495.791 137.501C694.645 151.238 781.917 317.163 800.696 398.408C858.826 442.289 834.479 450.836 815.039 449.625C853.137 488.137 831.14 490.65 815.38 487.092C826.904 533.617 805.683 539.916 793.631 537.25Z" fill="url(#paint18_linear_31813_2812)"/>
+<ellipse cx="493.98" cy="510.609" rx="112.903" ry="97.2841" transform="rotate(-7.17458 493.98 510.609)" fill="#FDCB99" fill-opacity="0.38"/>
+<ellipse cx="497.118" cy="529.226" rx="9.40883" ry="6.13952" transform="rotate(-16.3432 497.118 529.226)" fill="#C15A55"/>
+<ellipse cx="671.129" cy="452.682" rx="62.4696" ry="38.561" transform="rotate(-39.0017 671.129 452.682)" fill="#F9746E"/>
+<ellipse cx="296.838" cy="547.208" rx="62.4696" ry="38.561" transform="rotate(9.39233 296.838 547.208)" fill="#F9746E"/>
+<path d="M492.96 497.26C518.889 490.309 541.929 460.473 537.656 439.279C533.382 418.086 508.477 413.173 474.501 420.024L473.8 420.165C439.79 427.023 418.58 440.435 423.008 462.396C427.437 484.357 460.056 502.202 486.68 498.526L492.96 497.26Z" fill="#C15A55"/>
+<path d="M523.545 345.897C548.374 337.91 570.362 340.874 579.753 342.617C593.612 341.287 604.707 342.621 610.262 323.831C615.817 305.042 596.862 291.737 583.985 289.099C571.108 286.461 529.67 289.882 514.688 295.744C488.006 311.212 492.509 355.881 523.545 345.897Z" fill="#F16677"/>
+<path d="M523.898 340.103C548.071 332.11 569.326 334.601 578.396 336.119C591.842 334.641 603.745 337.972 609.413 319.975C615.08 301.978 595.745 287.354 583.311 285.035C570.877 282.717 530.685 286.609 516.082 292.426C490.001 307.578 493.681 350.094 523.898 340.103Z" fill="#F9746E"/>
+<path d="M355.487 392.267C330.904 400.984 315.225 416.681 308.818 423.765C296.995 431.118 288.985 438.91 273.168 427.345C257.352 415.78 264.346 393.703 272.981 383.793C281.616 373.883 316.63 351.458 332.096 347.027C362.69 343.132 386.215 381.371 355.487 392.267Z" fill="#F16677"/>
+<path d="M352.699 384.925C328.634 393.24 313.25 408.116 306.962 414.826C295.377 421.81 287.937 431.681 272.512 420.814C257.087 409.947 263.583 386.591 272.059 377.204C280.535 367.817 314.845 346.523 329.982 342.286C359.908 338.505 382.779 374.532 352.699 384.925Z" fill="#F9746E"/>
+<path d="M535.519 402.432C542.233 415.925 551.941 406.431 571.374 402.432C590.808 398.433 618.018 396.134 614.435 385.574C610.853 375.014 590.01 370.145 567.882 374.697C545.754 379.25 531.937 391.872 535.519 402.432Z" fill="url(#paint19_linear_31813_2812)"/>
+<path d="M329.288 476.094C339.362 487.303 346.181 475.56 363.84 466.515C381.499 457.47 407.105 447.985 400.832 438.766C394.558 429.547 373.173 430.423 353.065 440.722C332.957 451.021 323.015 466.875 329.288 476.094Z" fill="url(#paint20_linear_31813_2812)"/>
+<path d="M548.109 391.205C547.523 402.867 548.59 409.473 565.375 404.744C582.16 400.015 585.212 400.909 595.41 397.881C609.114 363.591 551.018 378.965 573.896 376.179C564.757 374.007 549.395 382.52 548.109 391.205Z" fill="url(#paint21_linear_31813_2812)"/>
+<path d="M338.421 461.911C340.971 473.306 343.765 479.387 358.676 470.345C373.588 461.304 376.768 461.35 385.786 455.708C389.831 419.004 337.954 449.339 359.256 440.542C349.869 440.891 337.34 453.199 338.421 461.911Z" fill="url(#paint22_linear_31813_2812)"/>
+<path d="M612.78 382.05C598.939 373.326 563.853 363.26 534.237 392.792" stroke="#9E423D" stroke-width="13.8083" stroke-linecap="round"/>
+<path d="M400.267 437.674C385.082 431.582 348.758 427.992 324.937 462.37" stroke="#9E423D" stroke-width="13.8083" stroke-linecap="round"/>
+<defs>
+<linearGradient id="paint0_linear_31813_2812" x1="496.244" y1="1003.07" x2="508.079" y2="692.018" gradientUnits="userSpaceOnUse">
+<stop stop-color="#F9746E"/>
+<stop offset="0.603435" stop-color="#FD8E78"/>
+<stop offset="1" stop-color="#FD9068"/>
+</linearGradient>
+<linearGradient id="paint1_linear_31813_2812" x1="328.248" y1="1062.07" x2="172.541" y2="1039.41" gradientUnits="userSpaceOnUse">
+<stop stop-color="#F9746E"/>
+<stop offset="1" stop-color="#FD916B"/>
+</linearGradient>
+<linearGradient id="paint2_linear_31813_2812" x1="65.2209" y1="942.338" x2="94.7303" y2="999.271" gradientUnits="userSpaceOnUse">
+<stop stop-color="#C15A55"/>
+</linearGradient>
+<linearGradient id="paint3_linear_31813_2812" x1="137.167" y1="1064.6" x2="89.3122" y2="1090.88" gradientUnits="userSpaceOnUse">
+<stop stop-color="#C15A55"/>
+</linearGradient>
+<linearGradient id="paint4_linear_31813_2812" x1="65.2209" y1="942.338" x2="94.7303" y2="999.271" gradientUnits="userSpaceOnUse">
+<stop stop-color="#C15A55"/>
+</linearGradient>
+<linearGradient id="paint5_linear_31813_2812" x1="65.2209" y1="942.338" x2="94.7303" y2="999.271" gradientUnits="userSpaceOnUse">
+<stop stop-color="#C15A55"/>
+</linearGradient>
+<linearGradient id="paint6_linear_31813_2812" x1="582.758" y1="1110.44" x2="808.705" y2="1178.51" gradientUnits="userSpaceOnUse">
+<stop stop-color="#F16677"/>
+</linearGradient>
+<linearGradient id="paint7_linear_31813_2812" x1="643.922" y1="1070.08" x2="814.202" y2="1045.31" gradientUnits="userSpaceOnUse">
+<stop stop-color="#F9746E"/>
+<stop offset="1" stop-color="#FD916B"/>
+</linearGradient>
+<linearGradient id="paint8_linear_31813_2812" x1="931.565" y1="939.149" x2="899.294" y2="1001.41" gradientUnits="userSpaceOnUse">
+<stop stop-color="#C15A55"/>
+</linearGradient>
+<linearGradient id="paint9_linear_31813_2812" x1="852.886" y1="1072.85" x2="905.219" y2="1101.59" gradientUnits="userSpaceOnUse">
+<stop stop-color="#C15A55"/>
+</linearGradient>
+<linearGradient id="paint10_linear_31813_2812" x1="931.565" y1="939.149" x2="899.294" y2="1001.41" gradientUnits="userSpaceOnUse">
+<stop stop-color="#C15A55"/>
+</linearGradient>
+<linearGradient id="paint11_linear_31813_2812" x1="931.565" y1="939.149" x2="899.294" y2="1001.41" gradientUnits="userSpaceOnUse">
+<stop stop-color="#C15A55"/>
+</linearGradient>
+<linearGradient id="paint12_linear_31813_2812" x1="920.339" y1="1068.36" x2="654.703" y2="717.407" gradientUnits="userSpaceOnUse">
+<stop stop-color="#F9746E"/>
+<stop offset="0.507388" stop-color="#FD956F"/>
+<stop offset="1" stop-color="#FD9069"/>
+</linearGradient>
+<linearGradient id="paint13_linear_31813_2812" x1="91.9522" y1="1095.99" x2="357.72" y2="779.004" gradientUnits="userSpaceOnUse">
+<stop stop-color="#F9746E"/>
+<stop offset="0.507388" stop-color="#FD956F"/>
+<stop offset="1" stop-color="#FD9069"/>
+</linearGradient>
+<linearGradient id="paint14_linear_31813_2812" x1="674.762" y1="67.6294" x2="629.272" y2="162.735" gradientUnits="userSpaceOnUse">
+<stop stop-color="#F16677"/>
+</linearGradient>
+<linearGradient id="paint15_linear_31813_2812" x1="674.372" y1="64.1192" x2="628.882" y2="159.225" gradientUnits="userSpaceOnUse">
+<stop stop-color="#F77870"/>
+<stop offset="1" stop-color="#FD9276"/>
+</linearGradient>
+<linearGradient id="paint16_linear_31813_2812" x1="116.23" y1="188.017" x2="192.592" y2="270.35" gradientUnits="userSpaceOnUse">
+<stop offset="0.00961538" stop-color="#F9746E"/>
+<stop offset="1" stop-color="#FD9177"/>
+</linearGradient>
+<linearGradient id="paint17_linear_31813_2812" x1="714.906" y1="620.67" x2="711.563" y2="618.375" gradientUnits="userSpaceOnUse">
+<stop offset="1" stop-color="#F67970"/>
+</linearGradient>
+<linearGradient id="paint18_linear_31813_2812" x1="564.022" y1="591.106" x2="604.234" y2="687.905" gradientUnits="userSpaceOnUse">
+<stop stop-color="#FD9276"/>
+<stop offset="1" stop-color="#F67970"/>
+</linearGradient>
+<linearGradient id="paint19_linear_31813_2812" x1="571.106" y1="374.593" x2="579.619" y2="413.545" gradientUnits="userSpaceOnUse">
+<stop stop-color="white"/>
+</linearGradient>
+<linearGradient id="paint20_linear_31813_2812" x1="356.144" y1="439.759" x2="374.754" y2="475.022" gradientUnits="userSpaceOnUse">
+<stop stop-color="white"/>
+</linearGradient>
+<linearGradient id="paint21_linear_31813_2812" x1="580.308" y1="363.251" x2="567.025" y2="406.923" gradientUnits="userSpaceOnUse">
+<stop stop-color="#9E423D"/>
+</linearGradient>
+<linearGradient id="paint22_linear_31813_2812" x1="361.981" y1="426.372" x2="360.848" y2="472.004" gradientUnits="userSpaceOnUse">
+<stop stop-color="#9E423D"/>
+</linearGradient>
+</defs>
+</svg></div>
+          <div>
+            <div style="font-size:10px; font-weight:600; letter-spacing:0.1em; text-transform:uppercase; color:var(--coral); margin-bottom:4px;">Estado 02 · Upload do neuropsicológico</div>
+            <div style="font-size:14px; color:var(--charcoal); font-weight:600; margin-bottom:4px;">Nasce ✨</div>
+            <div style="font-size:12px; color:var(--muted); line-height:1.5;">O upload do laudo acorda o CADU. Ele começa a ajudar a mãe em crises, dúvidas e momentos do dia a dia.</div>
+          </div>
+        </div>
+        <!-- Estado 03: Cresce -->
+        <div style="background:white; border:1px solid var(--border); border-radius:16px; padding:20px 24px; border-left:3px solid var(--teal); display:grid; grid-template-columns:80px 1fr; gap:16px; align-items:center;">
+          <div style="width:80px; height:80px; flex-shrink:0;"><svg width="100%" height="100%" viewBox="0 0 1113 1519" preserveAspectRatio="xMidYMid meet" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M869.911 1318.93C866.65 1296.89 829.605 1219.21 811.49 1183.13C723.05 1108.34 671.806 1183.13 652.207 1195.63C636.528 1205.62 645.674 1320.98 652.207 1377.41C652.336 1378.47 653.891 1391.49 659.074 1435.03C665.552 1489.46 677.601 1484.49 687.577 1487.3C697.554 1490.12 732.558 1490.67 770.741 1480.48C802.435 1472.03 833.228 1469.5 859.042 1438.99C884.856 1408.48 873.987 1346.48 869.911 1318.93Z" fill="url(#paint0_linear_31812_2331)"/>
+<path d="M852.562 1439.1C807.19 1422.75 716.89 1445.91 677.412 1459.54C658.729 1484.81 669.627 1498.56 677.412 1502.27C830.876 1533.86 894.264 1511.56 897.6 1502.27C900.937 1492.98 909.277 1459.54 852.562 1439.1Z" fill="#FA7A74"/>
+<path d="M248.809 1320.02C252.07 1299.77 263.686 1224.07 281.801 1190.92C370.241 1122.22 446.915 1195.27 466.513 1206.75C482.192 1215.93 488.972 1326.27 482.439 1378.1C482.309 1379.08 477.858 1392.33 464.727 1429.61C447.519 1478.47 441.119 1472.11 431.143 1474.69C421.166 1477.28 315.788 1465.43 281.8 1450.54C259.678 1440.85 247.73 1435.54 262.483 1432.7C236.669 1404.68 244.733 1345.33 248.809 1320.02Z" fill="url(#paint1_linear_31812_2331)"/>
+<path d="M260.378 1419.27C305.75 1404.91 396.05 1425.25 435.529 1437.21C454.212 1459.4 443.313 1471.47 435.529 1474.73C282.064 1502.46 218.676 1482.88 215.34 1474.73C212.004 1466.57 203.663 1437.21 260.378 1419.27Z" fill="#EB6E90"/>
+<path d="M320.496 1104.6C314.219 1128.29 311.581 1153.06 313.958 1177.45C327.121 1312.57 479.381 1417.55 624.056 1388.85C716.002 1370.6 833.753 1290.43 831.553 1174.1C830.428 1114.62 811.75 1056.98 787.933 1002.47C723.549 855.098 705.435 777.848 548.942 790.335C374.554 804.251 380.606 877.755 320.496 1104.6Z" fill="#F16677"/>
+<path d="M325.227 1093.4C318.95 1117.09 316.313 1141.85 318.689 1166.24C331.852 1301.36 449.317 1388.85 589.996 1388.85C671.607 1388.85 838.484 1279.23 836.284 1162.9C835.159 1103.42 816.481 1045.78 792.664 991.265C728.28 843.896 710.167 766.646 553.673 779.133C379.286 793.049 385.337 866.553 325.227 1093.4Z" fill="url(#paint2_linear_31812_2331)"/>
+<path d="M401.9 815C422.929 781.76 504.338 732.727 476.551 728.182C347.251 718.024 184.686 967.496 183.87 1066.49C182.73 1204.77 335.757 1244.83 349.575 1187.47C349.575 1187.47 373.953 885.952 427.019 874.309C478.111 831.505 393.185 828.776 401.9 815Z" fill="#F16677"/>
+<path d="M535.781 782.908C556.549 749.58 507.706 732.673 480.688 728.385C354.873 719.392 184.147 967.215 189.553 1064.89C197.187 1202.84 336.131 1238.86 345.607 1172.02C345.607 1172.02 372.068 889.417 423.843 877.343C473.969 834.216 527.174 796.72 535.781 782.908Z" fill="url(#paint3_linear_31812_2331)"/>
+<path d="M774.985 869.88C773.404 830.454 730.519 750.437 754.979 758.348C863.721 805.18 879.408 1103.13 834.379 1193.73C771.475 1320.29 629.838 1290.43 645.19 1232.14C645.19 1232.14 764.73 946.687 727.399 913.052C706.037 851.865 775.64 886.22 774.985 869.88Z" fill="#F16677"/>
+<path d="M682.056 782.543C680.724 743.151 727.834 748.927 751.555 756.738C856.956 803.12 879.971 1103.11 830.541 1189.81C760.729 1312.27 632.291 1284.83 655.516 1219.78C655.516 1219.78 764.647 950.664 728.554 917.196C708.119 856.134 682.608 798.869 682.056 782.543Z" fill="url(#paint4_linear_31812_2331)"/>
+<path d="M406.243 860.035C536.335 998.796 738.214 910.687 822.891 849.287C759.516 632.293 443.08 847.467 432.583 848.831C422.087 850.194 410.65 856.868 406.243 860.035Z" fill="#F9746E"/>
+<circle cx="88.5282" cy="88.5282" r="88.5282" transform="matrix(-0.904184 0.427143 0.427143 0.904184 338.585 204.547)" fill="black"/>
+<circle cx="88.5282" cy="88.5282" r="88.5282" transform="matrix(-0.904184 0.427143 0.427143 0.904184 338.585 204.547)" fill="url(#paint5_linear_31812_2331)"/>
+<circle cx="88.5282" cy="88.5282" r="88.5282" transform="matrix(-0.904184 0.427143 0.427143 0.904184 337.91 200.86)" fill="black"/>
+<circle cx="88.5282" cy="88.5282" r="88.5282" transform="matrix(-0.904184 0.427143 0.427143 0.904184 337.91 200.86)" fill="url(#paint6_linear_31812_2331)"/>
+<path d="M349.55 321.078C346.757 298.921 328.03 281.605 305.047 281.259C279.881 280.88 259.188 300.958 258.809 326.124C258.491 347.291 272.656 365.298 292.16 370.718L349.55 321.078Z" fill="#F16677"/>
+<path d="M723.08 340.378C736.998 388.253 787.091 415.78 834.966 401.862C882.841 387.944 910.368 337.851 896.45 289.976C882.532 242.101 832.439 214.574 784.564 228.492C736.689 242.41 709.162 292.503 723.08 340.378Z" fill="black"/>
+<path d="M723.08 340.378C736.998 388.253 787.091 415.78 834.966 401.862C882.841 387.944 910.368 337.851 896.45 289.976C882.532 242.101 832.439 214.574 784.564 228.492C736.689 242.41 709.162 292.503 723.08 340.378Z" fill="url(#paint7_linear_31812_2331)"/>
+<path d="M822.762 368.713C844.324 361.387 857.788 339.134 853.429 316.104C848.655 290.887 824.361 274.326 799.143 279.1C777.933 283.115 762.846 300.952 761.424 321.545L822.762 368.713Z" fill="#F16677"/>
+<path d="M854.133 775.246C592.044 1009.6 250.651 811.702 215.593 673.657C165.784 688.751 184.468 652.285 200.036 632.166C163.127 643.002 200.218 599.87 212.836 588.135C222.931 578.746 220.968 560.165 223.985 549.785C269.231 388.875 329.603 336.243 378.189 301.075C417.058 272.941 479.955 265.964 506.544 265.992C521.992 255.079 511.912 247.527 514.802 237.585C517.115 229.631 537.421 247.755 547.285 257.811C547.208 247.519 548.575 222.757 554.662 206.042C560.749 189.327 580.109 229.356 589.027 251.461C591.347 247.001 598.463 236.952 608.368 232.438C620.75 226.795 620.155 260.51 631.474 263.801L673.921 276.141C871.91 350.953 909.745 547.005 903.914 635.679C949.56 698.242 922.18 699.524 902.785 692.345C929.708 743.303 906.57 739.144 891.636 730.695C889.081 781.709 865.569 781.652 854.133 775.246Z" fill="url(#paint8_linear_31812_2331)"/>
+<path d="M854.881 771.098C593.279 1004.2 251.974 806.887 216.808 669.382C167.061 684.362 185.689 648.068 201.222 628.048C164.358 638.801 201.37 595.888 213.965 584.214C224.041 574.876 222.06 556.37 225.064 546.037C270.102 385.844 330.393 333.389 378.897 298.418C417.701 270.441 480.531 263.558 507.095 263.613C522.518 252.762 512.439 245.231 515.317 235.333C517.619 227.415 537.924 245.484 547.789 255.508C547.702 245.259 549.043 220.601 555.107 203.962C561.171 187.323 580.553 227.206 589.486 249.227C591.799 244.788 598.898 234.788 608.789 230.303C621.154 224.697 620.594 258.271 631.906 261.559L674.326 273.892C872.206 348.594 910.207 543.867 904.472 632.165C950.14 694.514 922.787 695.763 903.402 688.593C930.353 739.366 907.232 735.201 892.303 726.771C889.803 777.57 866.313 777.489 854.881 771.098Z" fill="url(#paint9_linear_31812_2331)"/>
+<ellipse cx="119.804" cy="103.23" rx="119.804" ry="103.23" transform="matrix(-0.986124 0.166013 0.166013 0.986124 655.184 530.805)" fill="#FDCB99" fill-opacity="0.38"/>
+<ellipse cx="66.2878" cy="40.9179" rx="66.2878" ry="40.9179" transform="matrix(-0.925402 -0.378988 -0.378988 0.925402 433.316 634.997)" fill="#F9746E"/>
+<ellipse cx="66.2878" cy="40.9179" rx="66.2878" ry="40.9179" transform="matrix(-0.897851 0.4403 0.4403 0.897851 807.196 563.538)" fill="#F9746E"/>
+<path d="M551.139 638.614C522.666 639.472 490.139 616.19 488.007 593.348C485.876 570.505 509.684 557.905 546.303 554.488L547.059 554.418C583.715 550.997 609.365 558.149 611.574 581.818C613.782 605.488 586.085 633.586 557.907 637.983L551.139 638.614Z" fill="#C15A55"/>
+<path d="M719.348 532.967C714.918 565.523 695.471 574.924 671.42 573.262C647.369 571.601 631.74 550.501 633.455 525.662C635.171 500.822 656.06 482.033 680.111 483.694C704.162 485.355 721.064 508.127 719.348 532.967Z" fill="url(#paint10_linear_31812_2331)"/>
+<path d="M469.367 547.555C465.286 579.346 441.042 589.783 419.94 588.852C398.838 587.922 382.089 566.654 383.542 542.436C384.995 518.219 405.651 499.446 429.679 500.505C453.708 501.564 470.82 523.337 469.367 547.555Z" fill="url(#paint11_linear_31812_2331)"/>
+<path d="M704.526 536.243C700.838 563.352 684.643 571.18 664.616 569.796C644.589 568.413 631.574 550.843 633.003 530.159C634.432 509.475 651.826 493.829 671.853 495.213C691.88 496.596 705.955 515.558 704.526 536.243Z" fill="url(#paint12_linear_31812_2331)"/>
+<path d="M469.797 550.372C466.398 576.845 446.21 585.535 428.638 584.761C411.066 583.986 397.119 566.276 398.329 546.11C399.539 525.944 416.74 510.311 436.748 511.193C456.757 512.075 471.007 530.206 469.797 550.372Z" fill="url(#paint13_linear_31812_2331)"/>
+<path d="M421.832 433.771C394.821 439.802 376.293 454.327 368.636 460.967C355.24 467.197 345.804 474.378 330.626 460.169C315.447 445.959 325.645 423.601 336.011 414.269C346.377 404.937 386.133 385.804 402.992 383.119C435.717 382.938 455.596 426.232 421.832 433.771Z" fill="#F16677"/>
+<path d="M418.396 428.658C391.982 434.332 373.87 448.03 366.387 454.292C353.289 460.163 344.186 469.607 329.331 456.184C314.476 442.76 324.312 418.99 334.444 410.188C344.576 401.387 383.445 383.355 399.933 380.832C431.94 380.685 451.414 421.567 418.396 428.658Z" fill="#F9746E"/>
+<path d="M664.313 416.012C691.956 417.361 712.685 428.524 721.359 433.765C735.62 437.625 746.14 443.097 758.68 426.513C771.22 409.93 757.369 389.632 745.567 382.198C733.764 374.765 691.334 362.673 674.263 362.894C641.984 368.282 629.758 414.326 664.313 416.012Z" fill="#F16677"/>
+<path d="M664.903 407.7C691.898 408.799 712.075 419.217 720.515 424.115C734.42 427.673 744.997 435.431 757.352 419.676C769.708 403.921 755.972 382.171 744.491 375.221C733.01 368.271 691.639 357.112 674.963 357.431C643.397 362.729 631.16 406.328 664.903 407.7Z" fill="#F9746E"/>
+<ellipse cx="10.6047" cy="6.91984" rx="10.6047" ry="6.91984" transform="matrix(-0.992233 0.124395 0.124395 0.992233 564.145 676.489)" fill="#C15A55"/>
+<defs>
+<linearGradient id="paint0_linear_31812_2331" x1="863.652" y1="1500.91" x2="823.014" y2="1186.68" gradientUnits="userSpaceOnUse">
+<stop offset="0.0426162" stop-color="#F9746E"/>
+<stop offset="0.528846" stop-color="#FB837C"/>
+<stop offset="1" stop-color="#FD706A"/>
+</linearGradient>
+<linearGradient id="paint1_linear_31812_2331" x1="331.01" y1="1493.25" x2="332.688" y2="1280.28" gradientUnits="userSpaceOnUse">
+<stop offset="0.0426162" stop-color="#E4689C"/>
+<stop offset="0.528846" stop-color="#EF718A"/>
+<stop offset="1" stop-color="#FA7E72"/>
+</linearGradient>
+<linearGradient id="paint2_linear_31812_2331" x1="557.809" y1="1227.29" x2="546.667" y2="934.444" gradientUnits="userSpaceOnUse">
+<stop stop-color="#F9746E"/>
+<stop offset="0.603435" stop-color="#FD8E78"/>
+<stop offset="1" stop-color="#FD9068"/>
+</linearGradient>
+<linearGradient id="paint3_linear_31812_2331" x1="74.2637" y1="998.67" x2="452.743" y2="819.527" gradientUnits="userSpaceOnUse">
+<stop stop-color="#F9746E"/>
+<stop offset="0.507388" stop-color="#FD956F"/>
+<stop offset="1" stop-color="#FD9069"/>
+</linearGradient>
+<linearGradient id="paint4_linear_31812_2331" x1="953.882" y1="1179.46" x2="701.042" y2="877.89" gradientUnits="userSpaceOnUse">
+<stop stop-color="#F9746E"/>
+<stop offset="0.507388" stop-color="#FD956F"/>
+<stop offset="1" stop-color="#FD9069"/>
+</linearGradient>
+<linearGradient id="paint5_linear_31812_2331" x1="108.251" y1="5.42029e-07" x2="59.9806" y2="100.919" gradientUnits="userSpaceOnUse">
+<stop stop-color="#F16677"/>
+</linearGradient>
+<linearGradient id="paint6_linear_31812_2331" x1="108.251" y1="5.42029e-07" x2="59.9806" y2="100.919" gradientUnits="userSpaceOnUse">
+<stop stop-color="#F77870"/>
+<stop offset="1" stop-color="#FD9276"/>
+</linearGradient>
+<linearGradient id="paint7_linear_31812_2331" x1="869.517" y1="233.305" x2="817.068" y2="340.298" gradientUnits="userSpaceOnUse">
+<stop offset="0.00961538" stop-color="#F9746E"/>
+<stop offset="1" stop-color="#FD9177"/>
+</linearGradient>
+<linearGradient id="paint8_linear_31812_2331" x1="748.296" y1="837.427" x2="745.575" y2="834.051" gradientUnits="userSpaceOnUse">
+<stop offset="1" stop-color="#F67970"/>
+</linearGradient>
+<linearGradient id="paint9_linear_31812_2331" x1="605.1" y1="755.689" x2="616.395" y2="866.34" gradientUnits="userSpaceOnUse">
+<stop stop-color="#FD9276"/>
+<stop offset="1" stop-color="#F67970"/>
+</linearGradient>
+<linearGradient id="paint10_linear_31812_2331" x1="679.556" y1="483.656" x2="673.356" y2="573.396" gradientUnits="userSpaceOnUse">
+<stop stop-color="white"/>
+</linearGradient>
+<linearGradient id="paint11_linear_31812_2331" x1="429.125" y1="500.48" x2="425.266" y2="588.034" gradientUnits="userSpaceOnUse">
+<stop stop-color="white"/>
+</linearGradient>
+<linearGradient id="paint12_linear_31812_2331" x1="668.235" y1="495.182" x2="663.302" y2="571.645" gradientUnits="userSpaceOnUse">
+<stop stop-color="#9E423D"/>
+</linearGradient>
+<linearGradient id="paint13_linear_31812_2331" x1="449.591" y1="515.274" x2="446.377" y2="588.18" gradientUnits="userSpaceOnUse">
+<stop stop-color="#9E423D"/>
+</linearGradient>
+</defs>
+</svg></div>
+          <div>
+            <div style="font-size:10px; font-weight:600; letter-spacing:0.1em; text-transform:uppercase; color:var(--teal); margin-bottom:4px;">Estado 03 · Com cada conquista</div>
+            <div style="font-size:14px; color:var(--charcoal); font-weight:600; margin-bottom:4px;">Cresce 🌱</div>
+            <div style="font-size:12px; color:var(--muted); line-height:1.5;">Nutrido pelas conquistas e marcos da criança, o CADU evolui com ela. A mãe vê esse crescimento acontecer.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════ FASES ══════════════════════ -->
+<section class="page">
+  <div class="section-label">04 · Estrutura de Campanha</div>
+  <h2 class="section-title">Três <strong>fases</strong>,<br>seis meses</h2>
+  <p class="section-intro">
+    Criar o problema. Apresentar a resposta. Ativar os primeiros. A ordem importa tanto quanto o conteúdo.
+  </p>
+
+  <div class="fases-stack">
+
+    <div class="fase-row">
+      <div class="fase-sidebar f1">
+        <div class="fase-num">Fase 01</div>
+        <div class="fase-name">Semear</div>
+        <div class="fase-period">Meses 1 – 2</div>
+      </div>
+      <div class="fase-body">
+        <p class="fase-desc">Construir audiência e contexto de problema antes de mostrar qualquer produto. A campanha ainda não fala sobre o CADU — fala sobre a realidade das famílias.</p>
+        <ul class="fase-bullets">
+          <li>Conteúdo orgânico: realidade do neurodesenvolvimento, validação emocional de mães</li>
+          <li>Bastidores da Casa do Urso — o Tato aparece como personagem da clínica</li>
+          <li>Teaser institucional: "a família cresceu" sem revelar o produto</li>
+          <li>B2B: artigos e LinkedIn sobre lacunas na comunicação entre contextos</li>
+          <li>Lista de espera ativada — sem pressão, com curiosidade</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="fase-row">
+      <div class="fase-sidebar f2">
+        <div class="fase-num" style="color:var(--purple)">Fase 02</div>
+        <div class="fase-name">Revelar</div>
+        <div class="fase-period">Meses 3 – 4</div>
+      </div>
+      <div class="fase-body">
+        <p class="fase-desc">O CADU é apresentado como resposta ao problema narrado na fase 1. A audiência já reconhece a dor — agora recebe a solução com contexto emocional construído.</p>
+        <ul class="fase-bullets">
+          <li>Lançamento do vídeo institucional — Casa do Urso como cenário</li>
+          <li>Primeiros 2 mini-docs: pilares Casa e Família (máxima identificação B2C)</li>
+          <li>CADU em ação: roteiros de interação reais publicados como conteúdo</li>
+          <li>B2B: demo para clínicas parceiras, white paper metodológico</li>
+          <li>PR: imprensa especializada em saúde infantil e tecnologia</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="fase-row">
+      <div class="fase-sidebar f3">
+        <div class="fase-num" style="color:var(--teal)">Fase 03</div>
+        <div class="fase-name">Ativar</div>
+        <div class="fase-period">Meses 5 – 6</div>
+      </div>
+      <div class="fase-body">
+        <p class="fase-desc">Primeiros usuários reais, prova social e conversão. O produto está no ar — a campanha passa de narrativa para evidência.</p>
+        <ul class="fase-bullets">
+          <li>Histórias reais de famílias que usaram o CADU (com autorização)</li>
+          <li>Mini-docs dos pilares Clínica e Escola — credibilidade B2B</li>
+          <li>Programa de clínicas parceiras com onboarding e co-marketing</li>
+          <li>CADU: campanha de awareness com roteiros publicados em série</li>
+          <li>Loop de feedback: dados da fase 3 alimentam narrativa da fase 1 do próximo ciclo</li>
+        </ul>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ══════════════════════ PÚBLICOS ══════════════════════ -->
+<section class="page">
+  <div class="section-label">05 · Dois Públicos</div>
+  <h2 class="section-title">Mesma filosofia,<br><strong>linguagens diferentes</strong></h2>
+  <p class="section-intro">
+    B2C e B2B se validam mutuamente: mães buscam clínicas que usam CADU, clínicas atraem mães que conheceram o CADU no Instagram.
+  </p>
+
+  <div class="publicos-grid">
+    <div class="publico-card b2c">
+      <div class="publico-label">B2C</div>
+      <div class="publico-title">Mães e famílias</div>
+
+      <div class="publico-row">
+        <div class="publico-row-label">Tom</div>
+        <div class="publico-row-value">Acolhimento, validação, esperança. "Finalmente alguém que organiza o que eu já sabia."</div>
+      </div>
+      <div class="publico-row">
+        <div class="publico-row-label">Canais</div>
+        <div class="publico-row-value">Instagram, TikTok, WhatsApp, grupos de mães</div>
+      </div>
+      <div class="publico-row">
+        <div class="publico-row-label">Formatos</div>
+        <div class="publico-row-value">Reels, carrosséis, Tato em situações reais, histórias de família</div>
+      </div>
+
+      <div class="cta-pill">→ "Entenda o desenvolvimento do seu filho"</div>
+    </div>
+
+    <div class="publico-card b2b">
+      <div class="publico-label">B2B</div>
+      <div class="publico-title">Clínicas e profissionais</div>
+
+      <div class="publico-row">
+        <div class="publico-row-label">Tom</div>
+        <div class="publico-row-value">Evidência, metodologia, eficiência. "Infraestrutura que faz seu protocolo chegar em casa."</div>
+      </div>
+      <div class="publico-row">
+        <div class="publico-row-label">Canais</div>
+        <div class="publico-row-value">LinkedIn, e-mail direto, eventos de saúde infantil</div>
+      </div>
+      <div class="publico-row">
+        <div class="publico-row-label">Formatos</div>
+        <div class="publico-row-value">White papers, demos, webinars, cases da Casa do Urso</div>
+      </div>
+
+      <div class="cta-pill">→ "Seja um parceiro CADU"</div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════ FORMATOS ══════════════════════ -->
+<section class="page">
+  <div class="section-label">06 · Produção de Conteúdo</div>
+  <h2 class="section-title">O que a <strong>Thunder Mídias</strong><br>precisa entregar</h2>
+  <p class="section-intro">
+    A prioridade de produção segue a lógica das fases. Vídeo institucional e dois mini-docs primeiro — os que constroem o contexto emocional para B2C.
+  </p>
+
+  <div class="formatos-grid">
+    <div class="formato-card">
+      <div class="formato-icon">🎬</div>
+      <div class="formato-name">Vídeo institucional</div>
+      <p class="formato-desc">Filmado na Casa do Urso. Protagonistas: equipe, famílias e Tato. Narrativa: "a família cresceu". Duração: 90–120 segundos.</p>
+    </div>
+    <div class="formato-card">
+      <div class="formato-icon">📽</div>
+      <div class="formato-name">6 mini-documentários</div>
+      <p class="formato-desc">Um por pilar (Casa, Família, Clínica, Escola) + dois episódios temáticos. Prioridade de entrega: Casa e Família primeiro. 3–5 minutos cada.</p>
+    </div>
+    <div class="formato-card">
+      <div class="formato-icon" style="font-size:20px;">🐻</div>
+      <div class="formato-name">CADU em ação — o AI agent</div>
+      <p class="formato-desc">🐻 O agent em cena. Roteiros de 15 segundos por gatilho de crise. 8 roteiros produzidos. Formato: reels e stories mostrando o CADU respondendo mães em tempo real — animação Lottie integrada.</p>
+    </div>
+    <div class="formato-card">
+      <div class="formato-icon">📖</div>
+      <div class="formato-name">Conteúdo contínuo</div>
+      <p class="formato-desc">Carrosséis educativos, dicas ABA, histórias reais de famílias (autorização prévia), bastidores da clínica.</p>
+    </div>
+    <div class="formato-card">
+      <div class="formato-icon">📄</div>
+      <div class="formato-name">White paper B2B</div>
+      <p class="formato-desc">Metodologia CADU: pilares, dados da Casa do Urso, protocolo de integração entre contextos. Para clínicas parceiras e imprensa especializada.</p>
+    </div>
+    <div class="formato-card">
+      <div class="formato-icon">🎙</div>
+      <div class="formato-name">PR e mídia</div>
+      <p class="formato-desc">Releases para imprensa de saúde infantil e tecnologia. Participação de Manu Costa em podcasts e eventos de AI + saúde.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════ MÉTRICAS ══════════════════════ -->
+<section class="page">
+  <div class="section-label">07 · O que medir</div>
+  <h2 class="section-title">Indicadores de<br><strong>sucesso no pré-lançamento</strong></h2>
+  <p class="section-intro">
+    No pré-lançamento, quantidade importa menos que qualidade de audiência. Cada métrica deve indicar intenção real, não alcance passivo.
+  </p>
+
+  <div class="metricas-grid">
+    <div class="metrica-card">
+      <div class="metrica-label">Audiência</div>
+      <div class="metrica-title">Lista de espera qualificada</div>
+      <p class="metrica-desc">Mães que se cadastraram ativamente, não apenas seguidores. Taxa de conversão do perfil à lista é o número que importa.</p>
+    </div>
+    <div class="metrica-card">
+      <div class="metrica-label">Engajamento</div>
+      <div class="metrica-title">Salvamentos e compartilhamentos</div>
+      <p class="metrica-desc">Mais reveladores que curtidas. Indicam que o conteúdo foi percebido como útil o suficiente para guardar ou passar adiante.</p>
+    </div>
+    <div class="metrica-card">
+      <div class="metrica-label">B2B</div>
+      <div class="metrica-title">Clínicas em conversa ativa</div>
+      <p class="metrica-desc">Número de clínicas que solicitaram demo ou informações. Qualidade das conversas importa mais do que volume de leads.</p>
+    </div>
+    <div class="metrica-card">
+      <div class="metrica-label">Marca</div>
+      <div class="metrica-title">Menções espontâneas</div>
+      <p class="metrica-desc">Mães e profissionais falando sobre o CADU sem estímulo pago. Sinal de que a narrativa está circulando organicamente.</p>
+    </div>
+    <div class="metrica-card">
+      <div class="metrica-label">Conteúdo</div>
+      <div class="metrica-title">Retenção nos vídeos</div>
+      <p class="metrica-desc">Taxa de conclusão dos mini-docs indica se a narrativa está funcionando. Abaixo de 40% = reformular o roteiro.</p>
+    </div>
+    <div class="metrica-card">
+      <div class="metrica-label">Tato</div>
+      <div class="metrica-title">Engajamento nos roteiros</div>
+      <p class="metrica-desc">Comentários de identificação ("isso aconteceu comigo") indicam que o Tato está funcionando como espelho emocional da audiência.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════ FOOTER ══════════════════════ -->
+<footer class="doc-footer">
+  <div>
+    <div class="footer-wordmark">
+      <svg width="80" height="18" viewBox="0 0 531 112" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M59.2358 111.18C47.9963 111.18 37.8706 108.851 28.8587 104.193C19.8468 99.4343 12.7588 92.8526 7.59467 84.4483C2.53182 75.9427 0.00038892 66.3233 0.00038892 55.59C0.00038892 44.8567 2.53182 35.2879 7.59467 26.8836C12.7588 18.378 19.8468 11.7963 28.8587 7.13845C37.8706 2.37937 47.9963 -0.00017267 59.2358 -0.00017267C69.564 -0.00017267 78.7784 1.82246 86.879 5.46771C94.9796 9.11297 101.663 14.3783 106.928 21.2638L84.297 41.4646C77.7153 33.1615 69.9691 29.01 61.0584 29.01C53.5654 29.01 47.5406 31.4402 42.984 36.3005C38.4275 41.0596 36.1492 47.4894 36.1492 55.59C36.1492 63.6906 38.4275 70.171 42.984 75.0314C47.5406 79.7905 53.5654 82.17 61.0584 82.17C69.9691 82.17 77.7153 78.0185 84.297 69.7154L106.928 89.9162C101.663 96.8017 94.9796 102.067 86.879 105.712C78.7784 109.358 69.564 111.18 59.2358 111.18ZM168.767 -0.00017267C179.095 -0.00017267 188.208 2.0756 196.106 6.22714C204.004 10.2774 210.13 16.2516 214.484 24.1497C218.94 31.9465 221.167 41.2621 221.167 52.0966V108.75H185.322V87.3341H151.604V108.75H116.366V52.0966C116.366 41.2621 118.543 31.9465 122.897 24.1497C127.353 16.2516 133.529 10.2774 141.427 6.22714C149.325 2.0756 158.439 -0.00017267 168.767 -0.00017267ZM185.322 60.2985V49.0589C185.322 42.4772 183.753 37.5156 180.614 34.1741C177.576 30.7314 173.526 29.01 168.463 29.01C163.4 29.01 159.299 30.7314 156.16 34.1741C153.123 37.5156 151.604 42.4772 151.604 49.0589V60.2985H185.322ZM237.57 2.42999H289.97C301.817 2.42999 312.247 4.60703 321.259 8.96109C330.372 13.2139 337.409 19.3399 342.371 27.3393C347.434 35.3386 349.965 44.7555 349.965 55.59C349.965 66.4245 347.434 75.8414 342.371 83.8407C337.409 91.8401 330.372 98.0167 321.259 102.371C312.247 106.624 301.817 108.75 289.97 108.75H237.57V2.42999ZM288.452 80.803C296.147 80.803 302.273 78.626 306.83 74.2719C311.488 69.8166 313.816 63.5893 313.816 55.59C313.816 47.5907 311.488 41.414 306.83 37.0599C302.273 32.6046 296.147 30.377 288.452 30.377H273.415V80.803H288.452ZM465.728 2.42999V108.75H430.946V97.3586C423.757 106.573 413.935 111.18 401.481 111.18C389.026 111.18 379.356 107.079 372.47 98.8774C365.585 90.6756 362.142 79.031 362.142 63.9437V2.42999H397.987V62.8805C397.987 69.361 399.354 74.2213 402.088 77.4615C404.822 80.6005 408.619 82.17 413.48 82.17C418.239 82.17 422.137 80.4486 425.175 77.0059C428.314 73.4619 429.883 68.3484 429.883 61.6654V2.42999H465.728ZM503.652 65.9804C498.635 65.9804 494.052 64.7772 489.905 62.3708C485.809 59.9644 482.558 56.6876 480.152 52.5404C477.796 48.3932 476.619 43.8364 476.619 38.87C476.619 33.9036 477.796 29.3468 480.152 25.1996C482.558 21.0524 485.835 17.7756 489.982 15.3692C494.129 12.9628 498.737 11.7596 503.806 11.7596C508.875 11.7596 513.457 12.9372 517.553 15.2924C521.7 17.6476 524.952 20.8988 527.307 25.046C529.662 29.142 530.84 33.6988 530.84 38.7164C530.84 43.734 529.636 48.342 527.23 52.5404C524.824 56.6876 521.547 59.9644 517.4 62.3708C513.252 64.7772 508.67 65.9804 503.652 65.9804ZM503.652 59.222C507.441 59.222 510.846 58.326 513.867 56.534C516.939 54.742 519.32 52.2844 521.009 49.1612C522.75 46.038 523.62 42.5564 523.62 38.7164C523.62 34.8764 522.776 31.4204 521.086 28.3484C519.396 25.2764 517.041 22.87 514.02 21.1292C511.051 19.3884 507.646 18.518 503.806 18.518C499.966 18.518 496.536 19.414 493.515 21.206C490.494 22.998 488.113 25.4556 486.372 28.5788C484.683 31.6508 483.838 35.0812 483.838 38.87C483.838 42.6588 484.683 46.1148 486.372 49.238C488.113 52.31 490.468 54.742 493.438 56.534C496.459 58.326 499.864 59.222 503.652 59.222ZM504.881 54.0764C501.707 54.0764 498.84 53.4364 496.28 52.1564C493.771 50.8252 491.8 49.0076 490.366 46.7036C488.984 44.3996 488.292 41.7884 488.292 38.87C488.292 35.9516 488.984 33.3404 490.366 31.0364C491.8 28.7324 493.771 26.9404 496.28 25.6604C498.84 24.3292 501.707 23.6636 504.881 23.6636C508.26 23.6636 511.179 24.4316 513.636 25.9676C516.094 27.5036 517.784 29.6284 518.705 32.342L508.875 37.334C507.953 35.286 506.596 34.262 504.804 34.262C503.729 34.262 502.808 34.6716 502.04 35.4908C501.272 36.31 500.888 37.4364 500.888 38.87C500.888 40.3036 501.272 41.43 502.04 42.2492C502.808 43.0684 503.729 43.478 504.804 43.478C506.596 43.478 507.953 42.454 508.875 40.406L518.705 45.398C517.784 48.1116 516.094 50.2364 513.636 51.7724C511.179 53.3084 508.26 54.0764 504.881 54.0764Z" fill="white"/>
+      </svg>
+    </div>
+    <div style="font-size:12px; color:rgba(255,255,255,0.25); margin-top:6px;">Neurodesenvolvimento · Casa do Urso</div>
+  </div>
+  <div class="footer-meta">
+    Campanha 360° · Estratégia de Lançamento<br>
+    Direção Criativa · Confidencial · 2026
+  </div>
+</footer>
+
+
+<script src="https://unpkg.com/@rive-app/canvas@2.21.6/rive.js"></script>
+<script>
+(function() {
+  var b64 = "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";
+  var bytes = new Uint8Array(atob(b64).split('').map(function(c) { return c.charCodeAt(0); }));
+  var blob = new Blob([bytes], { type: 'application/octet-stream' });
+  var url = URL.createObjectURL(blob);
+  var r = new rive.Rive({
+    src: url,
+    canvas: document.getElementById('tato-rive'),
+    autoplay: true,
+    stateMachines: 'State Machine 1',
+    onLoad: function() {
+      r.resizeDrawingSurfaceToCanvas();
+    }
+  });
+})();
+</script>
+</body>
+</html>
